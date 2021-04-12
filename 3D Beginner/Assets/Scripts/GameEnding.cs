@@ -9,7 +9,9 @@ public class GameEnding : MonoBehaviour {
     public GameObject player;
     public CanvasGroup exitBackgroundImageCanvasGroup;
     public CanvasGroup caughtBackgroundImageCanvasGroup;
-
+    public AudioSource exitAudio;
+    public AudioSource caughtAudio;
+    bool m_HasAudioPlayed;
     bool m_IsPlayerAtExit;
     bool m_IsPlayerCaught;
     float m_Timer;
@@ -24,19 +26,26 @@ public class GameEnding : MonoBehaviour {
         m_IsPlayerCaught = true;
     }
 
-    // void Update() {
-    //
-    //     if (m_isPlayerAtExit) {
-    //         EndLevel(exitBackgroundImageCanvasGroup, false);
-    //     }
-    //     else if (m_IsPlayerCaught) {
-    //         EndLevel(caughtBackgroundImageCanvasGroup, true);
-    //     }
-    // }
+    void Update() {
+    
+         if (m_IsPlayerAtExit) {
+             EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
+         }
+         else if (m_IsPlayerCaught) {
+             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
+         }
+     }
 
-    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart) {
+    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource) {
         m_Timer += Time.deltaTime;
         imageCanvasGroup.alpha = m_Timer / fadeDuration;
+
+        if (!m_HasAudioPlayed)
+        {
+            audioSource.Play();
+            m_HasAudioPlayed = true;
+
+        }
 
         if (m_Timer > fadeDuration + displayImageDuration) {
             if (doRestart) {
@@ -45,5 +54,6 @@ public class GameEnding : MonoBehaviour {
                 Application.Quit();
             }
         }
+
     }
 }
