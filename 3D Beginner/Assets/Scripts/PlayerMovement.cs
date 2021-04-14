@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float turnSpeed = 20f;
+    
     Vector3 m_Movement;
     Quaternion m_rotation = Quaternion.identity;
     Animator m_Animator;
     Rigidbody m_rigidbody;
     AudioSource m_AudioSource;
-    public float turnSpeed = 20f;
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWalking)
         {
+            m_rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX |
+                                      RigidbodyConstraints.FreezeRotationY;
             if (!m_AudioSource.isPlaying)
             {
                 m_AudioSource.Play();
@@ -44,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             m_AudioSource.Stop();
         }
 
