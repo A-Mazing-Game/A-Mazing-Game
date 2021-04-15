@@ -77,29 +77,33 @@ public class Hearing : MonoBehaviour
             // Calculate the unit direction to the player
             Vector3 direction = player.position - transform.position;
             direction.Normalize();
-            
-            // Rotates the ghost over some time using Quaternion interpolation
-            // (simulates the ghost hearing the player and turning in the direction of the sound)
-            Quaternion rot = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, _interpolatedSpeed * Time.deltaTime);
 
             // Calculates the relative angle between the player and the ghost
             _angle = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(Vector3.forward, direction));
 
+            // Rotates the ghost over some time using Quaternion interpolation until the dot product reaches ~ 0.8
+            // (simulates the ghost hearing the player and turning in the direction of the sound)
+            float dotProd = Vector3.Dot(Vector3.forward, direction);
+            if (dotProd < 0.8f)
+            {
+                Quaternion rot = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rot, _interpolatedSpeed * Time.deltaTime);
+            }
+            // This next part is 100% added in here only as a way for me to implement the dot product like we did in class.
+            // There are many easier ways to accomplish the same desired effect...
+            else
+            {
+                // eulerAngles calculation takes over and tracks the player's movement, resets the transform.rotation
+                transform.rotation = Quaternion.identity;
+                _angles.y = _angle;
+                transform.eulerAngles = _angles;
+            }
+            
             // Negates the angle if the angle exceeds a certain threshold
             Vector3 cross = Vector3.Cross(Vector3.forward, direction);
             if (cross.y < 0.0f)
             {
                 _angle = -_angle;
-            }
-
-            // Determines when the ghost has been rotated enough to face the player
-            float dotProd = Vector3.Dot(Vector3.forward,direction);
-            if (dotProd > 0.99f)
-            {
-                // If the ghost is facing the player, update the eulerAngle of the ghost to continue facing the player
-                _angles.y = _angle;
-                transform.eulerAngles = _angles;
             }
         }
 
