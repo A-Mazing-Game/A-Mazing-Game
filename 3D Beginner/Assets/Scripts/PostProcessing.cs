@@ -34,7 +34,7 @@ public class PostProcessing : MonoBehaviour
         Vector3[] enemiesPos = new Vector3[enemies.Length];
         float distance;
         float minDistance = Mathf.Infinity;
-        int itter = enemies.Length;
+        int itter = enemies.Length;g
         for (int i = 0; i < itter; i++)
         {
             enemiesPos[i] = enemies[i].transform.position;
