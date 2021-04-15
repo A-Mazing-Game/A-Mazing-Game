@@ -8,3 +8,6 @@ Enemies Parts 1 and 2: Tyler Christenson
 
 Linear interpolation: When the player gets close to an enemy, the vignette
 increases and decreases when the player moves away from the enemy: Jacob Rammer 
+
+Linear interpolation / Dot Product: When a player gets close to a ghost, the ghost stops
+moving and faces the player: Tyler Christenson
