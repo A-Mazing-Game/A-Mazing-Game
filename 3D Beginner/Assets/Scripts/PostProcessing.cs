@@ -43,8 +43,6 @@ public class PostProcessing : MonoBehaviour
         }
 
         f = 1 - ((minDistance - 1) / 6.0f);
-        f = Mathf.Min(1.0f, f);
-        f = Math.Max(0.0f, f);
         v.intensity.value = (1 - f) * a + f * b;
     }
 }
