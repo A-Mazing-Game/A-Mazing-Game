@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float turnSpeed = 20f;
+    public ParticleSystem dust;
     
     Vector3 m_Movement;
     Quaternion m_rotation = Quaternion.identity;
@@ -39,8 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWalking)
         {
+            
             m_rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX |
                                       RigidbodyConstraints.FreezeRotationY;
+            dust.Play();
             if (!m_AudioSource.isPlaying)
             {
                 m_AudioSource.Play();
@@ -62,4 +65,5 @@ public class PlayerMovement : MonoBehaviour
         m_rigidbody.MovePosition(m_rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
         m_rigidbody.MoveRotation(m_rotation);
     }
+
 }
