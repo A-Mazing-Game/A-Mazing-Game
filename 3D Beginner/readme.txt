@@ -11,3 +11,5 @@ increases and decreases when the player moves away from the enemy: Jacob Rammer
 
 Linear interpolation / Dot Product: When a player gets close to a ghost, the ghost stops
 moving and faces the player: Tyler Christenson
+
+Particle effect: There is a particle effect that follows the player. Sarah Hartley
