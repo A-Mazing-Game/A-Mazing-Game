@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a19b8a0388d43ac8198e65a63e4d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showDebug: 0
+  showDebug: 1
   mazeMat1: {fileID: 0}
   mazeMat2: {fileID: 0}
   startMat: {fileID: 0}
