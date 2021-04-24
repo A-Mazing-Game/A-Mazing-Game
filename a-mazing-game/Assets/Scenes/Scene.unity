@@ -655,6 +655,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822e96e164ca54d3880a16517091bbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1773131083}
+  timeLabel: {fileID: 1966176014}
+  scoreLabel: {fileID: 1280697454}
 --- !u!114 &1944142327
 MonoBehaviour:
   m_ObjectHideFlags: 0
