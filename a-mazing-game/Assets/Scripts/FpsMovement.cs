@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -14,8 +15,12 @@ using UnityEngine;
 public class FpsMovement : MonoBehaviour
 {
     [SerializeField] private Camera headCam;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float runSpeed;
+    private Animator animator;
 
-    public float speed = 6.0f;
+    // public float speed = 6.0f;
     public float gravity = -9.8f;
 
     public float sensitivityHor = 9.0f;
@@ -26,28 +31,55 @@ public class FpsMovement : MonoBehaviour
 
     private float rotationVert = 0;
 
+    private bool swordOut;
+
     private CharacterController charController;
 
-    void Start()
+    private void Start()
     {
         charController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         MoveCharacter();
         RotateCharacter();
         RotateCamera();
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Slash();
+        }
     }
 
     private void MoveCharacter()
     {
-        float deltaX = Input.GetAxis("Horizontal") * speed;
-        float deltaZ = Input.GetAxis("Vertical") * speed;
+        // COMMENTED OUT FOR SPRINT IMPLEMENTATION
+        // float deltaX = Input.GetAxis("Horizontal") * moveSpeed;
+        // float deltaZ = Input.GetAxis("Vertical") * moveSpeed;
+        float deltaX = Input.GetAxis("Horizontal");
+        float deltaZ = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(deltaX, 0, deltaZ);
-        movement = Vector3.ClampMagnitude(movement, speed);
+        // COMMENTED OUT FOR SPRING IMPLEMENTATION
+        // movement = Vector3.ClampMagnitude(movement, moveSpeed);
 
+        if (movement != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
+        {
+            // Walk
+            Walk();
+        }
+        else if (movement != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
+        {
+            // Run
+            Run();
+        }
+        else if (movement == Vector3.zero)
+        {
+            Idle();
+        }
+
+        movement *= moveSpeed;
         movement.y = gravity;
         movement *= Time.deltaTime;
         movement = transform.TransformDirection(movement);
@@ -55,6 +87,34 @@ public class FpsMovement : MonoBehaviour
         charController.Move(movement);
     }
 
+    private void Idle()
+    {
+        moveSpeed = 0f;
+        animator.SetFloat("Speed", 0f, 0.1f, Time.deltaTime);
+    }
+
+    private void Walk()
+    {
+        moveSpeed = walkSpeed;
+        if (Input.GetKey(KeyCode.W))
+        {
+            animator.SetFloat("Speed", 0.5f, 0.1f, Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            animator.SetFloat("Speed", 1f, 0.1f, Time.deltaTime);
+        }
+    }
+
+    private void Slash()
+    {
+        animator.SetTrigger("Slash");
+    }
+    private void Run()
+    {
+        moveSpeed = runSpeed;
+    }
+    
     private void RotateCharacter()
     {
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
