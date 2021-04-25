@@ -1,5 +1,7 @@
 using System;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(MazeConstructor))]
@@ -8,7 +10,7 @@ public class GameController : MonoBehaviour
 {
     //1
     [SerializeField] private FpsMovement player;
-    [SerializeField] private Text timeLabel;
+    [FormerlySerializedAs("timeLabel")] [SerializeField] private Text healthLabel;
     [SerializeField] private Text scoreLabel;
 
     private MazeConstructor generator;
@@ -17,6 +19,7 @@ public class GameController : MonoBehaviour
     private DateTime startTime;
     private int timeLimit;
     private int reduceLimitBy;
+    private int health;
 
     private int score;
     private bool goalReached;
@@ -30,9 +33,10 @@ public class GameController : MonoBehaviour
     //4
     private void StartNewGame()
     {
-        timeLimit = 80;
+        timeLimit = 10;
         reduceLimitBy = 5;
         startTime = DateTime.Now;
+        health = 5;
 
         score = 0;
         scoreLabel.text = score.ToString();
@@ -43,7 +47,7 @@ public class GameController : MonoBehaviour
     //5
     private void StartNewMaze()
     {
-        generator.GenerateNewMaze(13, 15, OnStartTrigger, OnGoalTrigger);
+        generator.GenerateNewMaze(7, 5, OnStartTrigger, reduceHealth);
 
         float x = generator.startCol * generator.hallWidth;
         float y = 1;
@@ -58,28 +62,37 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
     }
 
+    void reduceHealth(GameObject trigger, GameObject other)
+    {
+        /*
+         * Reduces the player's health
+         */
+        
+        
+        health -= 5;
+        // goalReached = true;  // todo remove
+        healthLabel.text = health.ToString();
+        Debug.Log("took 5 damage");
+        Destroy(trigger);
+        // Invoke("StartNewGame", 1);
+        
+    }
+
     //6
-    void Update()
+    private void Update()
     {
         if (!player.enabled)
         {
             return;
         }
 
-        int timeUsed = (int)(DateTime.Now - startTime).TotalSeconds;
-        int timeLeft = timeLimit - timeUsed;
-
-        if (timeLeft > 0)
+        if (health == 0)
         {
-            timeLabel.text = timeLeft.ToString();
-        }
-        else
-        {
-            timeLabel.text = "TIME UP";
+            healthLabel.text = "You have died!";
             player.enabled = false;
-
-            Invoke("StartNewGame", 4);
         }
+        // Invoke("StartNewGame", 4);
+        
     }
 
     //7
@@ -90,6 +103,7 @@ public class GameController : MonoBehaviour
 
         score += 1;
         scoreLabel.text = score.ToString();
+        
 
         Destroy(trigger);
     }
