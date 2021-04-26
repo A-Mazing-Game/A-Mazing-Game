@@ -15,7 +15,7 @@ using UnityEngine;
 public class FpsMovement : MonoBehaviour
 {
     [SerializeField] private Camera headCam;
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     private Animator animator;
@@ -32,6 +32,8 @@ public class FpsMovement : MonoBehaviour
     private float rotationVert = 0;
 
     private bool swordOut;
+    private float attackRate = 2.0f;
+    private float nextAttack;
 
     private CharacterController charController;
 
@@ -46,9 +48,10 @@ public class FpsMovement : MonoBehaviour
         MoveCharacter();
         RotateCharacter();
         RotateCamera();
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
         {
-            Slash();
+            nextAttack = Time.time + attackRate;
+            StartCoroutine(Slash());
         }
     }
 
@@ -90,7 +93,7 @@ public class FpsMovement : MonoBehaviour
     private void Idle()
     {
         moveSpeed = 0f;
-        animator.SetFloat("Speed", 0f, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", 0f, 0.2f, Time.deltaTime);
     }
 
     private void Walk()
@@ -98,23 +101,37 @@ public class FpsMovement : MonoBehaviour
         moveSpeed = walkSpeed;
         if (Input.GetKey(KeyCode.W))
         {
-            animator.SetFloat("Speed", 0.5f, 0.1f, Time.deltaTime);
+            animator.SetFloat("Speed", 0.5f, 0.2f, Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            animator.SetFloat("Speed", 1f, 0.1f, Time.deltaTime);
+            animator.SetFloat("Speed", 1f, 0.2f, Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            animator.SetFloat("Speed", 1.5f, 0.2f, Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            animator.SetFloat("Speed", 2f, 0.2f, Time.deltaTime);
         }
     }
-
-    private void Slash()
-    {
-        animator.SetTrigger("Slash");
-    }
+    
     private void Run()
     {
         moveSpeed = runSpeed;
+        animator.SetFloat("Speed", 2.5f, 0.2f, Time.deltaTime);
     }
-    
+
+    private IEnumerator Slash()
+    {
+        animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
+        animator.SetTrigger("Slash");
+
+        yield return new WaitForSeconds(2.0f);
+        animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
+    }
+
     private void RotateCharacter()
     {
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
