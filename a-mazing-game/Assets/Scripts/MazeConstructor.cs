@@ -4,13 +4,21 @@
  * text of license https://opensource.org/licenses/MIT
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 public class MazeConstructor : MonoBehaviour
 {
     public bool showDebug;
+    private int[] col;
+    public int[] row;
+    private int[] enemies; // the spawn location of enemies
+    public int length;
+    
 
     [SerializeField] private Material mazeMat1;
     [SerializeField] private Material mazeMat2;
@@ -56,6 +64,7 @@ public class MazeConstructor : MonoBehaviour
     {
         dataGenerator = new MazeDataGenerator();
         meshGenerator = new MazeMeshGenerator();
+        length = 0;
 
         // default to walls surrounding a single empty cell
         data = new int[,]
@@ -86,9 +95,22 @@ public class MazeConstructor : MonoBehaviour
         hallHeight = meshGenerator.height;
 
         DisplayMaze();
-
+        
         PlaceStartTrigger(startCallback);
-        PlaceGoalTrigger(goalCallback);
+        enemies = new int[length];
+        for (int i = 0; i < 3; i++)
+        {
+            System.Random random = new System.Random();
+            int temp = random.Next() % length;
+            Debug.Log("temp " + temp);
+            bool contains = enemies.Contains(temp);
+            bool start = col[temp] != startCol && row[temp] != startRow;
+            Debug.Log("bool " + contains + " spawned at start " + start);
+            if(!(enemies.Contains(temp)) && !(col[temp] != startCol && row[temp] != startRow))
+                PlaceGoalTrigger(col[temp], row[temp], goalCallback);
+            enemies[i] = temp;
+        }
+        PlaceGoalTrigger(col[0], row[0], goalCallback);
     }
 
     private void DisplayMaze()
@@ -149,9 +171,28 @@ public class MazeConstructor : MonoBehaviour
             {
                 if (maze[i, j] == 0)
                 {
-                    goalRow = i;
-                    goalCol = j;
-                    return;
+                    length++;
+                    // goalRow = i;
+                    // goalCol = j;
+                    // return;
+                }
+            }
+        }
+
+        col = new int[length];
+        row = new int [length];
+        int itter = 0;
+        
+        for (int i = rMax; i >= 0; i--)
+        {
+            for (int j = cMax; j >= 0; j--)
+            {
+                if (maze[i, j] == 0)
+                {
+                    row[itter] = i;
+                    col[itter] = j;
+                    itter++;
+                    // return;
                 }
             }
         }
@@ -171,10 +212,10 @@ public class MazeConstructor : MonoBehaviour
         tc.callback = callback;
     }
 
-    private void PlaceGoalTrigger(TriggerEventHandler callback)
+    private void PlaceGoalTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position = new Vector3(goalCol * hallWidth, .5f, goalRow * hallWidth);
+        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
         go.name = "Treasure";
         go.tag = "Generated";
 

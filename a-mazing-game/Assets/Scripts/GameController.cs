@@ -86,10 +86,10 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (health == 0)
+        if (health <= 0)
         {
             healthLabel.text = "You have died!";
-            player.enabled = false;
+            // player.enabled = false;
         }
         // Invoke("StartNewGame", 4);
         
