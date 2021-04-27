@@ -28,6 +28,7 @@ public class MazeConstructor : MonoBehaviour
     private GameController player;
     public GameObject start;
     public GameObject enemy;
+    public GameObject skeleton;
 
     public int[,] data
     {
@@ -103,7 +104,7 @@ public class MazeConstructor : MonoBehaviour
         
         // PlaceStartTrigger(startCallback);
         enemies = new int[length];
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 2; i++)
         {
             System.Random random = new System.Random();
             int temp = random.Next(0, length - 1);
@@ -117,7 +118,6 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
         PlaceEndTrigger(col[0], row[0], endGame);
-        player.movePlayer();
     }
 
     private void DisplayMaze()
@@ -224,16 +224,18 @@ public class MazeConstructor : MonoBehaviour
 
     private void PlaceGoalTrigger(int column, int newRow, TriggerEventHandler callback)
     {
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
-        go.name = "Treasure";
-        go.tag = "Generated";
+        // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject sk = Instantiate(skeleton) as GameObject;
+        sk.transform.position = new Vector3(column * hallWidth, 0, newRow * hallWidth);
+        // Instantiate(skeleton);
+        sk.name = "Skeleton";
+        sk.tag = "Generated";
         
-        go.GetComponent<BoxCollider>().isTrigger = true;
-        go.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
+        // sk.GetComponent<BoxCollider>().isTrigger = true;
+        // skeleton.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
         
-        TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
+        // TriggerEventRouter tc = skeleton.AddComponent<TriggerEventRouter>();
+        // tc.callback = callback;
         
     }
     
@@ -241,7 +243,7 @@ public class MazeConstructor : MonoBehaviour
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
-        go.name = "Treasure";
+        go.name = "End";
         go.tag = "Generated";
         
         go.GetComponent<BoxCollider>().isTrigger = true;

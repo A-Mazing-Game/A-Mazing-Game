@@ -742,6 +742,7 @@ MonoBehaviour:
   endGoal: {fileID: 2100000, guid: 509e26402678c4813854f7346702e9ec, type: 2}
   start: {fileID: 0}
   enemy: {fileID: 0}
+  skeleton: {fileID: 823155169055971741, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0
@@ -916,7 +917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.283
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.z
