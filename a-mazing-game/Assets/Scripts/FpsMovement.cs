@@ -35,10 +35,13 @@ public class FpsMovement : MonoBehaviour
     private float attackRate = 2.0f;
     private float nextAttack;
 
+    AudioSource m_AudioSource;
+
     private CharacterController charController;
 
     private void Start()
     {
+        m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
@@ -71,6 +74,11 @@ public class FpsMovement : MonoBehaviour
         {
             // Walk
             Walk();
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.Play();
+
+            }
         }
         else if (movement != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
@@ -80,6 +88,7 @@ public class FpsMovement : MonoBehaviour
         else if (movement == Vector3.zero)
         {
             Idle();
+            m_AudioSource.Stop();
         }
 
         movement *= moveSpeed;
