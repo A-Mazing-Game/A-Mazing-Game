@@ -24,6 +24,9 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material mazeMat2;
     [SerializeField] private Material startMat;
     [SerializeField] private Material treasureMat;
+    [SerializeField] private Material endGoal;
+    public GameObject start;
+    public GameObject enemy;
 
     public int[,] data
     {
@@ -76,7 +79,7 @@ public class MazeConstructor : MonoBehaviour
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols,
-        TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null)
+        TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null, TriggerEventHandler endGame=null)
     {
         if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
         {
@@ -96,21 +99,22 @@ public class MazeConstructor : MonoBehaviour
 
         DisplayMaze();
         
-        PlaceStartTrigger(startCallback);
+        // PlaceStartTrigger(startCallback);
         enemies = new int[length];
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 7; i++)
         {
             System.Random random = new System.Random();
-            int temp = random.Next() % length;
+            int temp = random.Next(0, length - 1);
             Debug.Log("temp " + temp);
             bool contains = enemies.Contains(temp);
-            bool start = col[temp] != startCol && row[temp] != startRow;
-            Debug.Log("bool " + contains + " spawned at start " + start);
-            if(!(enemies.Contains(temp)) && !(col[temp] != startCol && row[temp] != startRow))
-                PlaceGoalTrigger(col[temp], row[temp], goalCallback);
+            Debug.Log("temp in contains " + contains);
+            while(enemies.Contains(temp))
+                temp = random.Next(0, length - 1);
+            // if(!(enemies.Contains(temp)))
+            PlaceGoalTrigger(col[temp], row[temp], goalCallback);
             enemies[i] = temp;
         }
-        PlaceGoalTrigger(col[0], row[0], goalCallback);
+        PlaceEndTrigger(col[0], row[0], endGame);
     }
 
     private void DisplayMaze()
@@ -163,6 +167,7 @@ public class MazeConstructor : MonoBehaviour
         int[,] maze = data;
         int rMax = maze.GetUpperBound(0);
         int cMax = maze.GetUpperBound(1);
+        
 
         // loop top to bottom, right to left
         for (int i = rMax; i >= 0; i--)
@@ -178,6 +183,7 @@ public class MazeConstructor : MonoBehaviour
                 }
             }
         }
+        Debug.Log("rmax " + rMax + " cmax " + cMax + " length " + length);
 
         col = new int[length];
         row = new int [length];
@@ -192,6 +198,7 @@ public class MazeConstructor : MonoBehaviour
                     row[itter] = i;
                     col[itter] = j;
                     itter++;
+                    
                     // return;
                 }
             }
@@ -218,12 +225,28 @@ public class MazeConstructor : MonoBehaviour
         go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
         go.name = "Treasure";
         go.tag = "Generated";
-
+        
         go.GetComponent<BoxCollider>().isTrigger = true;
         go.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
-
+        
         TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
+        
+    }
+    
+    private void PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
+        go.name = "Treasure";
+        go.tag = "Generated";
+        
+        go.GetComponent<BoxCollider>().isTrigger = true;
+        go.GetComponent<MeshRenderer>().sharedMaterial = endGoal;
+        
+        TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
+        tc.callback = callback;
+        
     }
 
     // top-down debug display

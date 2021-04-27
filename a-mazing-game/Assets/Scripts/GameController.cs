@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
     //5
     private void StartNewMaze()
     {
-        generator.GenerateNewMaze(7, 5, OnStartTrigger, reduceHealth);
+        generator.GenerateNewMaze(9, 11, OnStartTrigger, reduceHealth, endGame) ;
 
         float x = generator.startCol * generator.hallWidth;
         float y = 1;
@@ -62,6 +62,18 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
     }
 
+    void endGame(GameObject trigger, GameObject other)
+    {
+        /*
+         * This method will end the game when the end of the
+         * maze object is touched
+         */
+
+        healthLabel.text = "You have reached the end of the maze!";
+        player.enabled = false;
+        Destroy(trigger);
+    }
+    
     void reduceHealth(GameObject trigger, GameObject other)
     {
         /*
