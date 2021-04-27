@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -23,7 +24,13 @@ public class GameController : MonoBehaviour
 
     private int score;
     private bool goalReached;
+    public int test = 1;
 
+    public float x;
+
+    public float y;
+
+    public float z;
     //3
     void Start() {
         generator = GetComponent<MazeConstructor>();
@@ -49,10 +56,11 @@ public class GameController : MonoBehaviour
     {
         generator.GenerateNewMaze(9, 11, OnStartTrigger, reduceHealth, endGame) ;
 
-        float x = generator.startCol * generator.hallWidth;
-        float y = 1;
-        float z = generator.startRow * generator.hallWidth;
-        player.transform.position = new Vector3(x, y, z);
+        x = generator.startCol * generator.hallWidth;
+        y = 1;
+        z = generator.startRow * generator.hallWidth;
+        Thread.Sleep(1000);
+        
 
         goalReached = false;
         player.enabled = true;
