@@ -25,6 +25,7 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material startMat;
     [SerializeField] private Material treasureMat;
     [SerializeField] private Material endGoal;
+    private GameController player;
     public GameObject start;
     public GameObject enemy;
 
@@ -67,6 +68,7 @@ public class MazeConstructor : MonoBehaviour
     {
         dataGenerator = new MazeDataGenerator();
         meshGenerator = new MazeMeshGenerator();
+        player = GetComponent<GameController>();
         length = 0;
 
         // default to walls surrounding a single empty cell
@@ -115,6 +117,7 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
         PlaceEndTrigger(col[0], row[0], endGame);
+        player.movePlayer();
     }
 
     private void DisplayMaze()

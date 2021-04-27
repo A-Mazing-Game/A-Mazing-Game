@@ -51,17 +51,27 @@ public class GameController : MonoBehaviour
         StartNewMaze();
     }
 
+    public void movePlayer()
+    {
+        x = generator.startCol * generator.hallWidth;
+        y = 1;
+        z = generator.startRow * generator.hallWidth;
+        player.transform.position = new Vector3(z, y, z);
+
+    }
+
     //5
     private void StartNewMaze()
     {
         generator.GenerateNewMaze(9, 11, OnStartTrigger, reduceHealth, endGame) ;
-
         x = generator.startCol * generator.hallWidth;
         y = 1;
         z = generator.startRow * generator.hallWidth;
-        Thread.Sleep(1000);
         
-
+        // Thread.Sleep(10000);
+        Debug.Log("start row " + x + " start col " + z);
+        movePlayer();
+        
         goalReached = false;
         player.enabled = true;
 
