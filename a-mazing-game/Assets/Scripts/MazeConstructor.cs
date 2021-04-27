@@ -9,7 +9,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = System.Random;
+using UnityEditor.AI;
+using UnityEngine.AI;
+using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -79,6 +83,7 @@ public class MazeConstructor : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
+        
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols,
@@ -101,6 +106,7 @@ public class MazeConstructor : MonoBehaviour
         hallHeight = meshGenerator.height;
 
         DisplayMaze();
+        NavMeshBuilder.BuildNavMesh();
         
         // PlaceStartTrigger(startCallback);
         enemies = new int[length];
@@ -226,7 +232,8 @@ public class MazeConstructor : MonoBehaviour
     {
         // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         GameObject sk = Instantiate(skeleton) as GameObject;
-        sk.transform.position = new Vector3(column * hallWidth, 0, newRow * hallWidth);
+        // sk.AddComponent<NavMeshAgent>();
+        sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
         // Instantiate(skeleton);
         sk.name = "Skeleton";
         sk.tag = "Generated";
