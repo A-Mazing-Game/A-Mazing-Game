@@ -113,7 +113,7 @@ public class MazeConstructor : MonoBehaviour
         
         // PlaceStartTrigger(startCallback);
         enemies = new int[length];
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 2; i++)
         {
             System.Random random = new System.Random();
             int temp = random.Next(0, length - 1);
