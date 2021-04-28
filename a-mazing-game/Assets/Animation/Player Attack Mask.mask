@@ -7,20 +7,20 @@ AvatarMask:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Player Attack Mask
-  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Mask: 01000000000000000000000000000000000000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: PT_Medieval_Boy_Peasant_01_a
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Boy_Peasant_01_a/PT_Medieval_Boy_Peasant_01_head
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Boy_Peasant_01_a/PT_Medieval_Boy_Peasant_01_lower
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Boy_Peasant_01_a/PT_Medieval_Boy_Peasant_01_upper
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_LeftUpLeg
     m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_LeftUpLeg/PT_Medieval_Child_LeftLeg
@@ -38,11 +38,11 @@ AvatarMask:
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_RightUpLeg/PT_Medieval_Child_RightLeg/PT_Medieval_Child_RightFoot/PT_Medieval_Child_RightToe
     m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_LeftShoulder
     m_Weight: 1
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_LeftShoulder/PT_Medieval_Child_LeftArm
@@ -82,11 +82,11 @@ AvatarMask:
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_LeftShoulder/PT_Medieval_Child_LeftArm/PT_Medieval_Child_LeftForeArm/PT_Medieval_Child_LeftHand/PT_Medieval_Child_LeftHandThumb1/PT_Medieval_Child_LeftHandThumb2/PT_Medieval_Child_LeftHandThumb3
     m_Weight: 1
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_Neck
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_Neck/PT_Medieval_Child_Head
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_Neck/PT_Medieval_Child_Head/PT_Medieval_Child_HeadTop
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_RightShoulder
     m_Weight: 1
   - m_Path: PT_Medieval_Child_Hips/PT_Medieval_Child_Spine/PT_Medieval_Child_Spine2/PT_Medieval_Child_Spine3/PT_Medieval_Child_RightShoulder/PT_Medieval_Child_RightArm

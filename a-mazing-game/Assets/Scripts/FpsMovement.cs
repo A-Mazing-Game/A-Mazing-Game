@@ -32,7 +32,7 @@ public class FpsMovement : MonoBehaviour
     private float rotationVert = 0;
 
     private bool swordOut;
-    private float attackRate = 2.0f;
+    private float attackRate = 1.5f;
     private float nextAttack;
 
     AudioSource m_AudioSource;
@@ -137,7 +137,7 @@ public class FpsMovement : MonoBehaviour
         animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
         animator.SetTrigger("Slash");
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
         animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
     }
 
