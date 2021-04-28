@@ -11,11 +11,18 @@ public class PlayerCombat : MonoBehaviour
     
     public float attackRange;
     public int attackDamage = 40;
+    public int maxHealth = 100;
+    private int currentHealth;
     
     private float attackRate = 1f;
     private float nextAttack;
 
     public int score;
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+    }
     
     void Update()
     {
@@ -30,8 +37,8 @@ public class PlayerCombat : MonoBehaviour
     {
         // Play attack animation
         animator.speed = 1;
-        // animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
         animator.SetTrigger("Attack");
+        
         // Detect enemies in range of attack
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         
@@ -43,9 +50,6 @@ public class PlayerCombat : MonoBehaviour
                 score++;
             }
         }
-        
-        // yield return new WaitForSeconds(1f);
-        // animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
     }
 
     private void OnDrawGizmosSelected()
@@ -54,5 +58,26 @@ public class PlayerCombat : MonoBehaviour
             return;
         
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    public void TakePlayerDamage(int damage)
+    {
+        currentHealth -= damage;
+        animator.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
+        {
+            PlayerDie();
+        }
+    }
+
+    private void PlayerDie()
+    {
+        Debug.Log("Player died!");
+        animator.SetBool("IsDead", true);
+        GetComponent<Collider>().enabled = false;
+        GetComponent<CharacterController>().enabled = false;
+        GetComponent<FpsMovement>().enabled = false;
+        // this.enabled = false;
     }
 }

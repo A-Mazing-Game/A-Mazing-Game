@@ -1,16 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class AIMovement : MonoBehaviour
 {
-    public Transform player; 
     public NavMeshAgent agent;
-    
+    public Transform player;
+    public Transform attackPoint;
+    public LayerMask playerLayers;
+
     public float lookRadius;
     public float wanderRadius;
 
+    public float attackRange = 1f;
+    public int attackDamage = 20;
+    
     public int maxHealth = 100;
     private int currentHealth;
     
@@ -43,12 +50,6 @@ public class AIMovement : MonoBehaviour
         // If not inside the lookRadius
         if (distance >= lookRadius)
         {
-            // if (!agent.pathPending)
-            // {
-            //     if (agent.remainingDistance <= agent.stoppingDistance)
-            //     {
-            //         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-            //         {
             if (Time.time > wanderTimer) 
             {
                 Wander();
@@ -56,18 +57,15 @@ public class AIMovement : MonoBehaviour
                 agent.SetDestination(newPos);
                 wanderTimer = Time.time + waitTime;
             }
-                        // wanderWaypoint = new Vector3(transform.position.x + Random.Range(-wanderDistance, wanderDistance), 0,
-                        //     transform.position.z + Random.Range(-wanderDistance, wanderDistance));
-                        // agent.SetDestination(wanderWaypoint);
-            //     }
-            // }
         }
         
         if (distance < lookRadius)
         {
+            FaceTarget();
             // If within attacking distance
             if (distance < agent.stoppingDistance)
             {
+                // FaceTarget(); 
                 Idle();
                 if (Time.time > nextAttack)
                 {
@@ -79,7 +77,7 @@ public class AIMovement : MonoBehaviour
             {
                 // Move towards the target
                 agent.SetDestination(player.position);
-                FaceTarget(); 
+                // FaceTarget(); 
                 Run();
             }
         }
@@ -116,8 +114,26 @@ public class AIMovement : MonoBehaviour
     {
         agent.isStopped = true;
         animator.SetTrigger("Swing");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.85f);
+        Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
+
+        // yield return new WaitForSeconds(0.5f);
+        foreach (Collider player in hitPlayers)
+        {
+            player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
+            Debug.Log("Player hit!");
+        }
+
+        yield return new WaitForSeconds(1.15f);
         agent.isStopped = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+        
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
     // Rotate to face the target

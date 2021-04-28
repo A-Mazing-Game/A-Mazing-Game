@@ -32,6 +32,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1181549281959948076}
+  - {fileID: 4164742397575798261}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -69,10 +70,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b60d826481824f939dd933cff86d121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   agent: {fileID: 823155169055971739}
+  player: {fileID: 0}
+  attackPoint: {fileID: 4164742397575798261}
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 8
   lookRadius: 8
   wanderRadius: 5
+  attackRange: 0.77
+  attackDamage: 20
   maxHealth: 100
 --- !u!54 &823155169055971737
 Rigidbody:
@@ -104,6 +111,36 @@ CapsuleCollider:
   m_Height: 0.75
   m_Direction: 1
   m_Center: {x: 0, y: 0.375, z: 0}
+--- !u!1 &8583743784652886901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4164742397575798261}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4164742397575798261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583743784652886901}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.292, y: 0.544, z: 0.257}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 823155169055971740}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &823155167862330877
 PrefabInstance:
   m_ObjectHideFlags: 0
