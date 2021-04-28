@@ -37,8 +37,7 @@ public class GameController : MonoBehaviour
 
     public float z;
     //3
-    void Start()
-    {
+    void Start() {
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
     }
@@ -70,15 +69,15 @@ public class GameController : MonoBehaviour
     //5
     private void StartNewMaze()
     {
-        generator.GenerateNewMaze(7, 9, OnStartTrigger, reduceHealth, endGame);
+        generator.GenerateNewMaze(7, 9, OnStartTrigger, reduceHealth, endGame) ;
         x = generator.startCol * generator.hallWidth;
         y = 1;
         z = generator.startRow * generator.hallWidth;
-
+        
         // Thread.Sleep(10000);
         Debug.Log("start row " + x + " start col " + z);
         movePlayer();
-
+        
         goalReached = false;
         showingEnd = false;
         player.enabled = true;
@@ -95,34 +94,29 @@ public class GameController : MonoBehaviour
          * maze object is touched
          */
 
-        Debug.Log(other.tag);
-        if (other.tag == "Player")
-        {
-            healthLabel.text = "You have reached the end of the maze!";
-            player.enabled = false;
-            Destroy(trigger);
-            endTime = DateTime.Now;
-            elapsed = endTime - startTime;
+        healthLabel.text = "You have reached the end of the maze!";
+        player.enabled = false;
+        Destroy(trigger);
+        endTime = DateTime.Now;
+        elapsed = endTime - startTime;
 
-            GameOverScreen.Setup(score, elapsed);
-        }
-
+        GameOverScreen.Setup(score, elapsed);
     }
-
+    
     void reduceHealth(GameObject trigger, GameObject other)
     {
         /*
          * Reduces the player's health
          */
-
-
+        
+        
         health -= 5;
         // goalReached = true;  // todo remove
         healthLabel.text = health.ToString();
         Debug.Log("took 5 damage");
         Destroy(trigger);
         // Invoke("StartNewGame", 1);
-
+        
     }
 
     //6
@@ -147,7 +141,7 @@ public class GameController : MonoBehaviour
             // player.enabled = false;
         }
         // Invoke("StartNewGame", 4);
-
+        
     }
 
     //7
@@ -158,7 +152,7 @@ public class GameController : MonoBehaviour
 
         score += 1;
         scoreLabel.text = score.ToString();
-
+        
 
         Destroy(trigger);
     }
