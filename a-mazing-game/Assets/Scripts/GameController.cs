@@ -137,6 +137,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
+
         if (health <= 0)
         {
             healthLabel.text = "You have died!";
