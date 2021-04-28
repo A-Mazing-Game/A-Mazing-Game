@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
 
     private bool showingEnd;
     public GameOverScreen GameOverScreen;
-    public HealthBar healthBar;
+    //public HealthBar healthBar;
 
     private int score;
     private bool goalReached;
@@ -107,7 +107,7 @@ public class GameController : MonoBehaviour
             elapsed = endTime - startTime;
             score = player.GetComponent<PlayerCombat>().score;
 
-            //GameOverScreen.Setup(score, elapsed);
+            GameOverScreen.Setup(score, elapsed);
         }
         
     }

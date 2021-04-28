@@ -24,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
     private DateTime endTime;
     public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
-    //private GameController controller;
+    //public GameController controller;
 
     public int score;
 
@@ -87,6 +87,21 @@ public class PlayerCombat : MonoBehaviour
             PlayerDie();
             //controller.endGame(null, null);
         }
+    }
+
+    public void endGame(GameObject trigger, GameObject other)
+    {
+        /*
+         * This method will end the game when the end of the
+         * maze object is touched
+         */
+
+        Debug.Log(other.tag);
+        if (other.tag == "Player")
+        {
+            PlayerDie();
+        }
+
     }
 
     private void PlayerDie()

@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 07a8199af4d0f05409f9ad3804c9e92e, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 8b9f3185c365b436d8f8c0e3aa98d1f6, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -668,7 +668,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 320, y: 227}
+  m_AnchoredPosition: {x: 358, y: -0}
   m_SizeDelta: {x: 120, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &581388290
@@ -712,7 +712,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 0
 --- !u!1 &603229156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,7 +1500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80, y: 227}
+  m_AnchoredPosition: {x: 15, y: 300}
   m_SizeDelta: {x: 100, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1260373547
@@ -1744,7 +1744,6 @@ MonoBehaviour:
   health: 0
   maxHealth: 10
   GameOverScreen: {fileID: 168113926}
-  healthBar: {fileID: 562815383}
   test: 1
   x: 0
   y: 0
