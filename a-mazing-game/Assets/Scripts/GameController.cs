@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     public int health;
     public int maxHealth;
     private DateTime endTime;
-    private TimeSpan elapsed;
+    public TimeSpan elapsed;
 
     private bool showingEnd;
     public GameOverScreen GameOverScreen;
@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
 
         score = 0;
         scoreLabel.text = score.ToString();
-        healthLabel.text = player.GetComponent<PlayerCombat>().maxHealth.ToString();
+        healthLabel.text = player.GetComponent<PlayerCombat>().maxHealth.ToString() + "/" + player.GetComponent<PlayerCombat>().maxHealth.ToString();
 
         StartNewMaze();
     }
@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
     }
 
-    void endGame(GameObject trigger, GameObject other)
+    public void endGame(GameObject trigger, GameObject other)
     {
         /*
          * This method will end the game when the end of the
@@ -107,7 +107,7 @@ public class GameController : MonoBehaviour
             elapsed = endTime - startTime;
             score = player.GetComponent<PlayerCombat>().score;
 
-            GameOverScreen.Setup(score, 5);
+            //GameOverScreen.Setup(score, elapsed);
         }
         
     }
@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
         }
         score = player.GetComponent<PlayerCombat>().score;
         scoreLabel.text = score.ToString();
-        healthLabel.text = player.GetComponent<PlayerCombat>().currentHealth.ToString();
+        healthLabel.text = player.GetComponent<PlayerCombat>().currentHealth.ToString() + "/" + player.GetComponent<PlayerCombat>().maxHealth.ToString();
 
         /*if (health <= 0)
         {

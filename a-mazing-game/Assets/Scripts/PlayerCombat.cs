@@ -20,16 +20,22 @@ public class PlayerCombat : MonoBehaviour
     private float nextAttack;
     public HealthBar healthBar;
     private bool showingEnd;
+    private DateTime startTime;
+    private DateTime endTime;
+    public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
+    //private GameController controller;
 
     public int score;
 
     void Start()
     {
-        Thread.Sleep(1000);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(maxHealth);
+        //controller = GetComponent<GameController>();
+        startTime = DateTime.Now;
+        endTime = DateTime.Now;
     }
     
     void Update()
@@ -79,6 +85,7 @@ public class PlayerCombat : MonoBehaviour
         if (currentHealth <= 0)
         {
             PlayerDie();
+            //controller.endGame(null, null);
         }
     }
 
@@ -89,8 +96,10 @@ public class PlayerCombat : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         GetComponent<CharacterController>().enabled = false;
         GetComponent<FpsMovement>().enabled = false;
-        //score = player.GetComponent<PlayerCombat>().score;
-        GameOverScreen.Setup(score, 5);
+        //TimeSpan time = GetComponent<GameController>().elapsed;
+        endTime = DateTime.Now;
+        elapsed = endTime - startTime;
+        GameOverScreen.Setup(score, elapsed);
         // this.enabled = false;
     }
 }
