@@ -33,6 +33,9 @@ public class MazeConstructor : MonoBehaviour
     public AIMovement ai;
     public NavMeshAgent agent;
     private MeshRenderer mr;
+    private MeshFilter tt;
+    private MeshRenderer ttt;
+    private MeshCollider tttt;
 
     public int[,] data
     {
@@ -124,6 +127,7 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
         PlaceEndTrigger(col[0], row[0], endGame);
+        PlaceStartTrigger(startCallback);
     }
 
     private void DisplayMaze()
