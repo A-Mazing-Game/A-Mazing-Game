@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
             Destroy(trigger);
             endTime = DateTime.Now;
             elapsed = endTime - startTime;
-
+            score = player.GetComponent<PlayerCombat>().score;
             GameOverScreen.Setup(score, elapsed);
         }
         
@@ -152,7 +152,6 @@ public class GameController : MonoBehaviour
             // player.enabled = false;
         }
         // Invoke("StartNewGame", 4);
-        
     }
 
     //7

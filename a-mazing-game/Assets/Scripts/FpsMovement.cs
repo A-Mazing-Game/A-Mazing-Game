@@ -98,6 +98,7 @@ public class FpsMovement : MonoBehaviour
     private void Walk()
     {
         moveSpeed = walkSpeed;
+        animator.speed = 1.33f;
         if (Input.GetKey(KeyCode.W))
         {
             animator.SetFloat("Speed", 0.5f, 0.2f, Time.deltaTime);
@@ -119,6 +120,7 @@ public class FpsMovement : MonoBehaviour
     private void Run()
     {
         moveSpeed = runSpeed;
+        animator.speed = 1.2f;
         animator.SetFloat("Speed", 2.5f, 0.2f, Time.deltaTime);
     }
 

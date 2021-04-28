@@ -9,25 +9,30 @@ public class AIMovement : MonoBehaviour
     public NavMeshAgent agent;
     
     public float lookRadius;
-    public float wanderDistance;
- 
+    public float wanderRadius;
+
+    public int maxHealth = 100;
+    private int currentHealth;
     
     private Animator animator;
+    private Rigidbody rb;
     
     private Vector3 wanderWaypoint;
  
-    private float wanderSpeed = 1.5f;
-    private float runSpeed = 3f;
+    private float wanderSpeed = 1.25f;
+    private float runSpeed = 2.25f;
     
     private float attackRate = 3f;
     private float nextAttack;
-    private float stopTime;
+    private float waitTime = 3f;
+    private float wanderTimer;
 
     void Start()
     {
          agent = GetComponent<NavMeshAgent>();
          animator = GetComponentInChildren<Animator>();
-         // combat = GetComponent<CharacterCombat>();
+         rb = GetComponent<Rigidbody>();
+         currentHealth = maxHealth;
     }
 
     void FixedUpdate()
@@ -35,22 +40,27 @@ public class AIMovement : MonoBehaviour
         // Distance to the target
         float distance = Vector3.Distance(player.position, transform.position);
         
-        //if not inside the lookRadius
+        // If not inside the lookRadius
         if (distance >= lookRadius)
         {
-            if (!agent.pathPending)
+            // if (!agent.pathPending)
+            // {
+            //     if (agent.remainingDistance <= agent.stoppingDistance)
+            //     {
+            //         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            //         {
+            if (Time.time > wanderTimer) 
             {
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                    {
-                        Wander();
-                        wanderWaypoint = new Vector3(transform.position.x + Random.Range(-wanderDistance, wanderDistance), 0,
-                            transform.position.z + Random.Range(-wanderDistance, wanderDistance));
-                        agent.SetDestination(wanderWaypoint);
-                    }
-                }
+                Wander();
+                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                agent.SetDestination(newPos);
+                wanderTimer = Time.time + waitTime;
             }
+                        // wanderWaypoint = new Vector3(transform.position.x + Random.Range(-wanderDistance, wanderDistance), 0,
+                        //     transform.position.z + Random.Range(-wanderDistance, wanderDistance));
+                        // agent.SetDestination(wanderWaypoint);
+            //     }
+            // }
         }
         
         if (distance < lookRadius)
@@ -58,11 +68,6 @@ public class AIMovement : MonoBehaviour
             // If within attacking distance
             if (distance < agent.stoppingDistance)
             {
-                // CharacterStats targetStats = target.GetComponent<CharacterStats>();
-                // if (targetStats != null)
-                // {
-                // combat.Attack(targetStats);
-                // }
                 Idle();
                 if (Time.time > nextAttack)
                 {
@@ -80,6 +85,16 @@ public class AIMovement : MonoBehaviour
         }
     }
 
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask) 
+    {
+        Vector3 randDirection = Random.insideUnitSphere * dist;
+        randDirection += origin;
+        NavMeshHit navHit;
+        NavMesh.SamplePosition (randDirection, out navHit, dist, layermask);
+     
+        return navHit.position;
+    }
+    
     private void Idle()
     {
         animator.SetFloat("Speed", 0f, 0.2f, Time.deltaTime);
@@ -111,5 +126,32 @@ public class AIMovement : MonoBehaviour
         Vector3 direction = (player.transform.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    public bool TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        
+        // Play hurt animation
+        animator.SetTrigger("Hurt");
+        
+        if (currentHealth <= 0)
+        {
+            Die();
+            return true;
+        }
+        return false;
+    }
+
+    void Die()
+    {
+        Debug.Log("Enemy died!");
+        
+        animator.SetBool("IsDead", true);
+
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        agent.isStopped = true;
+        GetComponent<Collider>().enabled = false;
+        this.enabled = false;
     }
 }
