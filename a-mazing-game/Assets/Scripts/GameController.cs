@@ -94,13 +94,18 @@ public class GameController : MonoBehaviour
          * maze object is touched
          */
 
-        healthLabel.text = "You have reached the end of the maze!";
-        player.enabled = false;
-        Destroy(trigger);
-        endTime = DateTime.Now;
-        elapsed = endTime - startTime;
+        Debug.Log(other.tag);
+        if (other.tag == "Player")
+        {
+            healthLabel.text = "You have reached the end of the maze!";
+            player.enabled = false;
+            Destroy(trigger);
+            endTime = DateTime.Now;
+            elapsed = endTime - startTime;
 
-        GameOverScreen.Setup(score, elapsed);
+            GameOverScreen.Setup(score, elapsed);
+        }
+        
     }
     
     void reduceHealth(GameObject trigger, GameObject other)

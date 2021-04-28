@@ -127,7 +127,6 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
         PlaceEndTrigger(col[0], row[0], endGame);
-        PlaceStartTrigger(startCallback);
     }
 
     private void DisplayMaze()
