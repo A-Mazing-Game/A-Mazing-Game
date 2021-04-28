@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -12,16 +14,22 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange;
     public int attackDamage = 40;
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
     
     private float attackRate = 1f;
     private float nextAttack;
+    public HealthBar healthBar;
+    private bool showingEnd;
+    public GameOverScreen GameOverScreen;
 
     public int score;
 
     void Start()
     {
+        Thread.Sleep(1000);
         currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetHealth(maxHealth);
     }
     
     void Update()
@@ -64,6 +72,8 @@ public class PlayerCombat : MonoBehaviour
     {
         currentHealth -= damage;
         animator.SetTrigger("Hurt");
+        healthBar.SetHealth(currentHealth);
+        print(healthBar.slider.value);
 
         if (currentHealth <= 0)
         {
@@ -78,6 +88,8 @@ public class PlayerCombat : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         GetComponent<CharacterController>().enabled = false;
         GetComponent<FpsMovement>().enabled = false;
+        //score = player.GetComponent<PlayerCombat>().score;
+        GameOverScreen.Setup(score, 5);
         // this.enabled = false;
     }
 }

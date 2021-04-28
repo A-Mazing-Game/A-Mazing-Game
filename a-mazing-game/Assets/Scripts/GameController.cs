@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
     public float z;
     //3
     void Start() {
-        maxHealth = 10;
+        //maxHealth = 10;
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
     }
@@ -51,12 +51,11 @@ public class GameController : MonoBehaviour
         timeLimit = 10;
         reduceLimitBy = 5;
         startTime = DateTime.Now;
-        health = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        //healthBar.SetMaxHealth(maxHealth);
 
         score = 0;
         scoreLabel.text = score.ToString();
-        healthLabel.text = health.ToString();
+        healthLabel.text = player.GetComponent<PlayerCombat>().maxHealth.ToString();
 
         StartNewMaze();
     }
@@ -107,7 +106,8 @@ public class GameController : MonoBehaviour
             endTime = DateTime.Now;
             elapsed = endTime - startTime;
             score = player.GetComponent<PlayerCombat>().score;
-            GameOverScreen.Setup(score, elapsed);
+
+            GameOverScreen.Setup(score, 5);
         }
         
     }
@@ -119,10 +119,10 @@ public class GameController : MonoBehaviour
          */
         
         
-        health -= 5;
-        healthBar.SetHealth(health);
+        //health -= 5;
+        //healthBar.SetHealth(health);
         // goalReached = true;  // todo remove
-        healthLabel.text = health.ToString();
+        //healthLabel.text = health.ToString();
         Debug.Log("took 5 damage");
         Destroy(trigger);
         // Invoke("StartNewGame", 1);
@@ -136,9 +136,11 @@ public class GameController : MonoBehaviour
         {
             return;
         }
+        score = player.GetComponent<PlayerCombat>().score;
+        scoreLabel.text = score.ToString();
+        healthLabel.text = player.GetComponent<PlayerCombat>().currentHealth.ToString();
 
-
-        if (health <= 0)
+        /*if (health <= 0)
         {
             healthLabel.text = "You have died!";
             endTime = DateTime.Now;
@@ -146,11 +148,11 @@ public class GameController : MonoBehaviour
 
             if (!showingEnd)
             {
-                GameOverScreen.Setup(score, elapsed);
+                GameOverScreen.Setup(score, 5);
                 showingEnd = true;
             }
             // player.enabled = false;
-        }
+        }*/
         // Invoke("StartNewGame", 4);
     }
 
