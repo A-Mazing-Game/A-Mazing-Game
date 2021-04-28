@@ -21,6 +21,11 @@ public class GameController : MonoBehaviour
     private int timeLimit;
     private int reduceLimitBy;
     private int health;
+    private DateTime endTime;
+    private TimeSpan elapsed;
+
+    private bool showingEnd;
+    public GameOverScreen GameOverScreen;
 
     private int score;
     private bool goalReached;
@@ -47,6 +52,7 @@ public class GameController : MonoBehaviour
 
         score = 0;
         scoreLabel.text = score.ToString();
+        healthLabel.text = health.ToString();
 
         StartNewMaze();
     }
@@ -73,6 +79,7 @@ public class GameController : MonoBehaviour
         movePlayer();
         
         goalReached = false;
+        showingEnd = false;
         player.enabled = true;
 
         // restart timer
@@ -86,14 +93,14 @@ public class GameController : MonoBehaviour
          * This method will end the game when the end of the
          * maze object is touched
          */
-        Debug.Log(other.tag);
-        if (other.tag == "Player")
-        {
-            healthLabel.text = "You have reached the end of the maze!";
-            player.enabled = false;
-            Destroy(trigger);
-        }
-        
+
+        healthLabel.text = "You have reached the end of the maze!";
+        player.enabled = false;
+        Destroy(trigger);
+        endTime = DateTime.Now;
+        elapsed = endTime - startTime;
+
+        GameOverScreen.Setup(score, elapsed);
     }
     
     void reduceHealth(GameObject trigger, GameObject other)
@@ -123,6 +130,14 @@ public class GameController : MonoBehaviour
         if (health <= 0)
         {
             healthLabel.text = "You have died!";
+            endTime = DateTime.Now;
+            elapsed = endTime - startTime;
+
+            if (!showingEnd)
+            {
+                GameOverScreen.Setup(score, elapsed);
+                showingEnd = true;
+            }
             // player.enabled = false;
         }
         // Invoke("StartNewGame", 4);
