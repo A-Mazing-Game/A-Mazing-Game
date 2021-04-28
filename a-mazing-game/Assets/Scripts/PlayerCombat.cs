@@ -37,11 +37,11 @@ public class PlayerCombat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
         {
             nextAttack = Time.time + attackRate;
-            Attack();
+            StartCoroutine(Attack());
         }
     }
     
-    private void Attack()
+    private IEnumerator Attack()
     {
         // Play attack animation
         animator.speed = 1;
@@ -55,6 +55,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (enemy.GetComponent<AIMovement>().TakeDamage(attackDamage))
             {
+                yield return new WaitForSeconds(1.0f);
                 score++;
             }
         }
