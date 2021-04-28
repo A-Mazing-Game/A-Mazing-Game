@@ -33,6 +33,9 @@ public class MazeConstructor : MonoBehaviour
     public GameObject start;
     public GameObject enemy;
     public GameObject skeleton;
+    public AIMovement ai;
+    public NavMeshAgent agent;
+    private MeshRenderer mr;
 
     public int[,] data
     {
@@ -75,6 +78,7 @@ public class MazeConstructor : MonoBehaviour
         meshGenerator = new MazeMeshGenerator();
         player = GetComponent<GameController>();
         length = 0;
+        agent = GetComponent<NavMeshAgent>();
 
         // default to walls surrounding a single empty cell
         data = new int[,]
@@ -110,7 +114,7 @@ public class MazeConstructor : MonoBehaviour
         
         // PlaceStartTrigger(startCallback);
         enemies = new int[length];
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 7; i++)
         {
             System.Random random = new System.Random();
             int temp = random.Next(0, length - 1);
@@ -132,6 +136,9 @@ public class MazeConstructor : MonoBehaviour
         go.transform.position = Vector3.zero;
         go.name = "Procedural Maze";
         go.tag = "Generated";
+        go.AddComponent<NavMeshAgent>();
+        // NavMeshAgent nv = go.GetComponent<NavMeshAgent>();
+        
 
         MeshFilter mf = go.AddComponent<MeshFilter>();
         mf.mesh = meshGenerator.FromData(data);
@@ -139,8 +146,9 @@ public class MazeConstructor : MonoBehaviour
         MeshCollider mc = go.AddComponent<MeshCollider>();
         mc.sharedMesh = mf.mesh;
 
-        MeshRenderer mr = go.AddComponent<MeshRenderer>();
+        mr = go.AddComponent<MeshRenderer>();
         mr.materials = new Material[2] {mazeMat1, mazeMat2};
+        // go.AddComponent<NavMeshMo>()
     }
 
     public void DisposeOldMaze()
@@ -234,6 +242,11 @@ public class MazeConstructor : MonoBehaviour
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
+        sk.AddComponent<MeshCollider>();
+        sk.SetActive(true);
+        MeshCollider t = sk.GetComponent<MeshCollider>();
+        // t.material = mr.materials[0];
+        
         // Instantiate(skeleton);
         sk.name = "Skeleton";
         sk.tag = "Generated";
