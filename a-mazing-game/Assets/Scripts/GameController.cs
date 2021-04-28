@@ -20,12 +20,14 @@ public class GameController : MonoBehaviour
     private DateTime startTime;
     private int timeLimit;
     private int reduceLimitBy;
-    private int health;
+    public int health;
+    public int maxHealth;
     private DateTime endTime;
     private TimeSpan elapsed;
 
     private bool showingEnd;
     public GameOverScreen GameOverScreen;
+    public HealthBar healthBar;
 
     private int score;
     private bool goalReached;
@@ -38,6 +40,7 @@ public class GameController : MonoBehaviour
     public float z;
     //3
     void Start() {
+        maxHealth = 10;
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
     }
@@ -48,7 +51,8 @@ public class GameController : MonoBehaviour
         timeLimit = 10;
         reduceLimitBy = 5;
         startTime = DateTime.Now;
-        health = 5;
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
 
         score = 0;
         scoreLabel.text = score.ToString();
@@ -116,6 +120,7 @@ public class GameController : MonoBehaviour
         
         
         health -= 5;
+        healthBar.SetHealth(health);
         // goalReached = true;  // todo remove
         healthLabel.text = health.ToString();
         Debug.Log("took 5 damage");
