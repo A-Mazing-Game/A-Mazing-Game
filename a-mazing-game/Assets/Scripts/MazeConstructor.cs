@@ -10,10 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = System.Random;
-using UnityEditor.AI;
 using UnityEngine.AI;
-using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -110,7 +107,6 @@ public class MazeConstructor : MonoBehaviour
         hallHeight = meshGenerator.height;
 
         DisplayMaze();
-        NavMeshBuilder.BuildNavMesh();
         
         // PlaceStartTrigger(startCallback);
         enemies = new int[length];
