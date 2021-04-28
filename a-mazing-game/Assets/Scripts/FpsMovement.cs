@@ -15,12 +15,9 @@ using UnityEngine;
 public class FpsMovement : MonoBehaviour
 {
     [SerializeField] private Camera headCam;
-    private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
-    private Animator animator;
 
-    // public float speed = 6.0f;
     public float gravity = -9.8f;
 
     public float sensitivityHor = 9.0f;
@@ -29,15 +26,13 @@ public class FpsMovement : MonoBehaviour
     public float minimumVert = -45.0f;
     public float maximumVert = 45.0f;
 
+    private float moveSpeed;
     private float rotationVert = 0;
-
-    private bool swordOut;
-    private float attackRate = 1.5f;
-    private float nextAttack;
-
+    
     AudioSource m_AudioSource;
 
     private CharacterController charController;
+    private Animator animator;
 
     private void Start()
     {
@@ -46,16 +41,11 @@ public class FpsMovement : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         MoveCharacter();
         RotateCharacter();
         RotateCamera();
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
-        {
-            nextAttack = Time.time + attackRate;
-            StartCoroutine(Slash());
-        }
     }
 
     private void MoveCharacter()
@@ -130,15 +120,6 @@ public class FpsMovement : MonoBehaviour
     {
         moveSpeed = runSpeed;
         animator.SetFloat("Speed", 2.5f, 0.2f, Time.deltaTime);
-    }
-
-    private IEnumerator Slash()
-    {
-        animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 1);
-        animator.SetTrigger("Slash");
-
-        yield return new WaitForSeconds(1.5f);
-        animator.SetLayerWeight(animator.GetLayerIndex("Attack Layer"), 0);
     }
 
     private void RotateCharacter()

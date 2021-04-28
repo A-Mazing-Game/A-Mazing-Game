@@ -5,25 +5,23 @@ using UnityEngine.AI;
 
 public class AIMovement : MonoBehaviour
 {
-    public float lookRadius;
-    // public float wakeRadius;
-    public float wanderDistance;
-    private Vector3 wanderWaypoint;
-
     public Transform player; 
     public NavMeshAgent agent;
-    // CharacterCombat combat;
+    
+    public float lookRadius;
+    public float wanderDistance;
  
+    
     private Animator animator;
+    
+    private Vector3 wanderWaypoint;
  
     private float wanderSpeed = 1.5f;
     private float runSpeed = 3f;
     
-    private float attackRate = 2.5f;
+    private float attackRate = 3f;
     private float nextAttack;
     private float stopTime;
-    private float attackDelay = 0.5f;
-
 
     void Start()
     {
@@ -57,11 +55,6 @@ public class AIMovement : MonoBehaviour
         
         if (distance < lookRadius)
         {
-            // Move towards the target
-            agent.SetDestination(player.position);
-            FaceTarget(); 
-            Run();
-
             // If within attacking distance
             if (distance < agent.stoppingDistance)
             {
@@ -70,37 +63,46 @@ public class AIMovement : MonoBehaviour
                 // {
                 // combat.Attack(targetStats);
                 // }
-                // Idle();
+                Idle();
                 if (Time.time > nextAttack)
                 {
                     nextAttack = Time.time + attackRate;
-                    Slash();
+                    StartCoroutine(Slash());
                 }
+            }
+            else
+            {
+                // Move towards the target
+                agent.SetDestination(player.position);
+                FaceTarget(); 
+                Run();
             }
         }
     }
 
     private void Idle()
     {
-        agent.speed = 0;
-        animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", 0f, 0.2f, Time.deltaTime);
     }
 
     private void Wander()
     {
         agent.speed = wanderSpeed;
-        animator.SetFloat("Speed", 0.5f, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", 0.5f, 0.2f, Time.deltaTime);
     }
     
     private void Run()
     {
         agent.speed = runSpeed;
-        animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", 1f, 0.2f, Time.deltaTime);
     }
 
-    private void Slash()
+    private IEnumerator Slash()
     {
+        agent.isStopped = true;
         animator.SetTrigger("Swing");
+        yield return new WaitForSeconds(2f);
+        agent.isStopped = false;
     }
 
     // Rotate to face the target

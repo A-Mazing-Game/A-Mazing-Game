@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: eaa4e86f71e704b63969420654159c17, type: 2}
---- !u!136 &514222495 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 3499996648956941907, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
-  m_PrefabInstance: {fileID: 823155168814952455}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &655494883
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,38 +312,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1500676794 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1302742030315319879, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
-  m_PrefabInstance: {fileID: 7004691641281115507}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &1500676799
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500676794}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.05
-  m_Height: 1.4
-  m_Direction: 2
-  m_Center: {x: 0.00000027464156, y: -0.019614728, z: -0.30114806}
---- !u!114 &1500676800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500676794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25dc184e2d3e044798c29277e00267b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 514222495}
 --- !u!1001 &823155168814952455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -416,7 +379,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 823155169055971741, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8474721183933595092, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
 --- !u!1001 &7004691641281115507
 PrefabInstance:
