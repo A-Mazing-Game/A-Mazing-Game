@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private FpsMovement player;
     [FormerlySerializedAs("timeLabel")] [SerializeField] private Text healthLabel;
     [SerializeField] private Text scoreLabel;
+    public Text coinLabel;
 
     private MazeConstructor generator;
 
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour
     private int reduceLimitBy;
     public int health;
     public int maxHealth;
+    public int numCoins;
     private DateTime endTime;
     public TimeSpan elapsed;
 
@@ -43,6 +45,7 @@ public class GameController : MonoBehaviour
         //maxHealth = 10;
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
+        numCoins = 0;
     }
 
     //4
@@ -138,6 +141,7 @@ public class GameController : MonoBehaviour
         }
         score = player.GetComponent<PlayerCombat>().score;
         scoreLabel.text = score.ToString();
+        coinLabel.text = player.GetComponent<Inventory>().numCoins.ToString();
         healthLabel.text = player.GetComponent<PlayerCombat>().currentHealth.ToString() + "/" + player.GetComponent<PlayerCombat>().maxHealth.ToString();
 
         /*if (health <= 0)
@@ -156,6 +160,7 @@ public class GameController : MonoBehaviour
         // Invoke("StartNewGame", 4);
     }
 
+    
     //7
     private void OnGoalTrigger(GameObject trigger, GameObject other)
     {

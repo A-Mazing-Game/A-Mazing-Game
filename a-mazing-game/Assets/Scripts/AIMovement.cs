@@ -11,6 +11,7 @@ public class AIMovement : MonoBehaviour
     public Transform player;
     public Transform attackPoint;
     public LayerMask playerLayers;
+    public GameObject coins;
 
     public float lookRadius;
     public float wanderRadius;
@@ -169,5 +170,6 @@ public class AIMovement : MonoBehaviour
         agent.isStopped = true;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
+        Instantiate(coins, rb.position, Quaternion.identity);
     }
 }
