@@ -56,9 +56,7 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
 
-        score = 0;
-        scoreLabel.text = score.ToString();
-        healthLabel.text = player.GetComponent<PlayerCombat>().maxHealth.ToString() + "/" + player.GetComponent<PlayerCombat>().maxHealth.ToString();
+        healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
 
         StartNewMaze();
     }
@@ -93,6 +91,19 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
     }
 
+    public void StartFromLastPlay()
+    {
+        GameOverScreen.TakeDown();
+        startTime = DateTime.Now;
+        //healthBar.SetMaxHealth(maxHealth);
+        player.GetComponent<PlayerStats>().SetUp();
+        player.GetComponent<Inventory>().SetUp();
+        healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
+
+        StartNewMaze();
+
+    }
+
     public void endGame(GameObject trigger, GameObject other)
     {
         /*
@@ -108,9 +119,9 @@ public class GameController : MonoBehaviour
             Destroy(trigger);
             endTime = DateTime.Now;
             elapsed = endTime - startTime;
-            score = player.GetComponent<PlayerCombat>().score;
+            score = player.GetComponent<PlayerStats>().enemiesKilled;
 
-            GameOverScreen.Setup(score, elapsed);
+            GameOverScreen.Setup();
         }
         
     }
@@ -139,24 +150,9 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-        score = player.GetComponent<PlayerCombat>().score;
-        scoreLabel.text = score.ToString();
         coinLabel.text = player.GetComponent<Inventory>().numCoins.ToString();
-        healthLabel.text = player.GetComponent<PlayerCombat>().currentHealth.ToString() + "/" + player.GetComponent<PlayerCombat>().maxHealth.ToString();
+        healthLabel.text = player.GetComponent<PlayerStats>().currentHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
 
-        /*if (health <= 0)
-        {
-            healthLabel.text = "You have died!";
-            endTime = DateTime.Now;
-            elapsed = endTime - startTime;
-
-            if (!showingEnd)
-            {
-                GameOverScreen.Setup(score, 5);
-                showingEnd = true;
-            }
-            // player.enabled = false;
-        }*/
         // Invoke("StartNewGame", 4);
     }
 

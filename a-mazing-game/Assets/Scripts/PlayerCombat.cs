@@ -12,9 +12,9 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask enemyLayers;
     
     public float attackRange;
-    public int attackDamage = 40;
+    /*public int attackDamage = 40;
     public int maxHealth = 100;
-    public int currentHealth;
+    public int currentHealth;*/
     
     private float attackRate = 1f;
     private float nextAttack;
@@ -26,13 +26,8 @@ public class PlayerCombat : MonoBehaviour
     public GameOverScreen GameOverScreen;
     //public GameController controller;
 
-    public int score;
-
     void Start()
     {
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
-        healthBar.SetHealth(maxHealth);
         //controller = GetComponent<GameController>();
         startTime = DateTime.Now;
         endTime = DateTime.Now;
@@ -59,10 +54,10 @@ public class PlayerCombat : MonoBehaviour
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            if (enemy.GetComponent<AIMovement>().TakeDamage(attackDamage))
+            if (enemy.GetComponent<AIMovement>().TakeDamage(GetComponent<PlayerStats>().attackDamage))
             {
                 yield return new WaitForSeconds(1.0f);
-                score++;
+                GetComponent<PlayerStats>().enemiesKilled ++;
             }
         }
     }
@@ -77,12 +72,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakePlayerDamage(int damage)
     {
-        currentHealth -= damage;
+        GetComponent<PlayerStats>().SubtractHealth(damage);
         animator.SetTrigger("Hurt");
-        healthBar.SetHealth(currentHealth);
-        print(healthBar.slider.value);
 
-        if (currentHealth <= 0)
+        if (GetComponent<PlayerStats>().currentHealth <= 0)
         {
             PlayerDie();
             //controller.endGame(null, null);
@@ -107,14 +100,14 @@ public class PlayerCombat : MonoBehaviour
     private void PlayerDie()
     {
         Debug.Log("Player died!");
-        animator.SetBool("IsDead", true);
-        GetComponent<Collider>().enabled = false;
-        GetComponent<CharacterController>().enabled = false;
-        GetComponent<FpsMovement>().enabled = false;
+        //animator.SetBool("IsDead", true);
+        //GetComponent<Collider>().enabled = false;
+        //GetComponent<CharacterController>().enabled = false;
+        //GetComponent<FpsMovement>().enabled = false;
         //TimeSpan time = GetComponent<GameController>().elapsed;
         endTime = DateTime.Now;
         elapsed = endTime - startTime;
-        GameOverScreen.Setup(score, elapsed);
+        GameOverScreen.Setup();
         // this.enabled = false;
     }
 }
