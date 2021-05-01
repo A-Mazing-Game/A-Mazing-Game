@@ -45,6 +45,7 @@ public class GameOverScreen : MonoBehaviour
 
     public void TakeDown()
     {
+        controller.GetComponent<BaseStats>().maxHealth = maxHealth;
         gameObject.SetActive(false);
 
     }
@@ -57,11 +58,15 @@ public class GameOverScreen : MonoBehaviour
 
     public void increaseHealth()
     {
-        maxHealth++;
-        numCoins--;
-        remainingCoins.text = numCoins.ToString();
-        healthStat.text = maxHealth.ToString();
+        if (numCoins > 0)
+        {
+            maxHealth++;
+            numCoins--;
+            remainingCoins.text = numCoins.ToString();
+            healthStat.text = maxHealth.ToString();
+        }
 
     }
+
 
 }

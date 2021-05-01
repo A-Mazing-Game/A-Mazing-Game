@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
             Destroy(trigger);
             endTime = DateTime.Now;
             elapsed = endTime - startTime;
-            score = player.GetComponent<PlayerStats>().enemiesKilled;
+            //score = player.GetComponent<PlayerStats>().enemiesKilled;
 
             GameOverScreen.Setup();
         }

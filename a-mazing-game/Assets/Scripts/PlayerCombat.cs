@@ -101,9 +101,9 @@ public class PlayerCombat : MonoBehaviour
     {
         Debug.Log("Player died!");
         //animator.SetBool("IsDead", true);
-        //GetComponent<Collider>().enabled = false;
-        //GetComponent<CharacterController>().enabled = false;
-        //GetComponent<FpsMovement>().enabled = false;
+        GetComponent<Collider>().enabled = false;
+        GetComponent<CharacterController>().enabled = false;
+        GetComponent<FpsMovement>().enabled = false;
         //TimeSpan time = GetComponent<GameController>().elapsed;
         endTime = DateTime.Now;
         elapsed = endTime - startTime;
