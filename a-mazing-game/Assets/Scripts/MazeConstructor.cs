@@ -8,9 +8,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.AI;
+using UnityEditor.AI;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class MazeConstructor : MonoBehaviour
     public int[] row;
     private int[] enemies; // the spawn location of enemies
     public int length;
+
     
 
     [SerializeField] private Material mazeMat1;
@@ -80,6 +82,8 @@ public class MazeConstructor : MonoBehaviour
         length = 0;
         agent = GetComponent<NavMeshAgent>();
 
+        
+
         // default to walls surrounding a single empty cell
         data = new int[,]
         {
@@ -135,8 +139,11 @@ public class MazeConstructor : MonoBehaviour
         go.transform.position = Vector3.zero;
         go.name = "Procedural Maze";
         go.tag = "Generated";
-        go.AddComponent<NavMeshAgent>();
+        // go.AddComponent<NavMeshAgent>();
         // NavMeshAgent nv = go.GetComponent<NavMeshAgent>();
+        var flags = StaticEditorFlags.NavigationStatic;
+        GameObjectUtility.SetStaticEditorFlags(go, flags);
+        
         
 
         MeshFilter mf = go.AddComponent<MeshFilter>();

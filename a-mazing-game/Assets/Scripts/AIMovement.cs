@@ -166,7 +166,7 @@ public class AIMovement : MonoBehaviour
         
         animator.SetBool("IsDead", true);
 
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        // rb.constraints = RigidbodyConstraints.FreezeAll;
         agent.isStopped = true;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;

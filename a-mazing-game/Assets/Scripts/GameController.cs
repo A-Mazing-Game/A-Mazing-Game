@@ -2,8 +2,9 @@ using System;
 using System.Security.Cryptography;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(MazeConstructor))]
 
@@ -16,6 +17,8 @@ public class GameController : MonoBehaviour
     public Text coinLabel;
 
     private MazeConstructor generator;
+    
+    public NavMeshSurface surface;
 
     //2
     private DateTime startTime;
@@ -46,6 +49,7 @@ public class GameController : MonoBehaviour
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
         numCoins = 0;
+        surface.BuildNavMesh();
     }
 
     //4
