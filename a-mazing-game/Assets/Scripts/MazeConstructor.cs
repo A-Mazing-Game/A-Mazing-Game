@@ -11,7 +11,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-// using UnityEditor.AI;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -81,8 +80,6 @@ public class MazeConstructor : MonoBehaviour
         player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
-
-        
 
         // default to walls surrounding a single empty cell
         data = new int[,]

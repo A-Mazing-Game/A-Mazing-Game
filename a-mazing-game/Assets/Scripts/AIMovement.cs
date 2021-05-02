@@ -54,10 +54,12 @@ public class AIMovement : MonoBehaviour
         if (distance >= lookRadius)
         {
             Wander();
-            // if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance 
-            //                        && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-            if (agent.remainingDistance <= agent.stoppingDistance + 0.5f)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance 
+                                   && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            // if (agent.remainingDistance <= agent.stoppingDistance + 0.5f)
             {
+                // agent.isStopped = true;
+                agent.ResetPath();
                 NavMeshPath path = new NavMeshPath();
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
                 agent.CalculatePath(newPos, path);

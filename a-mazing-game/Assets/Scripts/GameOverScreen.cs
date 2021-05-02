@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
 using System.Threading;
@@ -23,6 +24,9 @@ public class GameOverScreen : MonoBehaviour
     public BaseStats stats;
     private int maxHealth;
     private int numCoins;
+
+    // TODO
+    public NavMeshSurface surface;
 
     // Start is called before the first frame update
 

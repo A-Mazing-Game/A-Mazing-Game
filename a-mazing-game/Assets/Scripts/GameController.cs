@@ -2,8 +2,8 @@ using System;
 using System.Security.Cryptography;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(MazeConstructor))]
