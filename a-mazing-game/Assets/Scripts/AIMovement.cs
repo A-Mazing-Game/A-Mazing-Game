@@ -39,7 +39,7 @@ public class AIMovement : MonoBehaviour
     {
          agent = GetComponent<NavMeshAgent>();
          animator = GetComponentInChildren<Animator>();
-         rb = GetComponent<Rigidbody>();
+         // rb = GetComponent<Rigidbody>();
          currentHealth = maxHealth;
     }
 
@@ -47,17 +47,26 @@ public class AIMovement : MonoBehaviour
     {
         // Distance to the target
         float distance = Vector3.Distance(player.position, transform.position);
-        
+
+        float dist = agent.remainingDistance;
+
         // If not inside the lookRadius
         if (distance >= lookRadius)
         {
-            if (Time.time > wanderTimer) 
+            Wander();
+            // if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance 
+            //                        && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            if (agent.remainingDistance <= agent.stoppingDistance + 0.5f)
             {
-                Wander();
+                NavMeshPath path = new NavMeshPath();
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-                agent.SetDestination(newPos);
-                wanderTimer = Time.time + waitTime;
+                agent.CalculatePath(newPos, path);
+                if (agent.pathStatus != NavMeshPathStatus.PathPartial)
+                {
+                    agent.SetDestination(newPos);
+                }
             }
+            // wanderTimer = Time.time + waitTime;
         }
         
         if (distance < lookRadius)
@@ -170,6 +179,6 @@ public class AIMovement : MonoBehaviour
         agent.isStopped = true;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
-        Instantiate(coins, rb.position, Quaternion.identity);
+        Instantiate(coins, agent.transform.position, Quaternion.identity);
     }
 }
