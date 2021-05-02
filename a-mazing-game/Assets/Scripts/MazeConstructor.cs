@@ -11,7 +11,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEditor.AI;
+// using UnityEditor.AI;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -139,13 +139,7 @@ public class MazeConstructor : MonoBehaviour
         go.transform.position = Vector3.zero;
         go.name = "Procedural Maze";
         go.tag = "Generated";
-        // go.AddComponent<NavMeshAgent>();
-        // NavMeshAgent nv = go.GetComponent<NavMeshAgent>();
-        var flags = StaticEditorFlags.NavigationStatic;
-        GameObjectUtility.SetStaticEditorFlags(go, flags);
         
-        
-
         MeshFilter mf = go.AddComponent<MeshFilter>();
         mf.mesh = meshGenerator.FromData(data);
 

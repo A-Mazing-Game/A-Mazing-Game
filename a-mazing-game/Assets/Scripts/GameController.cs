@@ -9,6 +9,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(MazeConstructor))]
 
 public class GameController : MonoBehaviour
+
 {
     //1
     [SerializeField] private FpsMovement player;

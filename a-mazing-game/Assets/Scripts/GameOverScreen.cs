@@ -41,6 +41,7 @@ public class GameOverScreen : MonoBehaviour
         numCoins = player.GetComponent<Inventory>().numCoins;
         healthStat.text = maxHealth.ToString();
         remainingCoins.text = numCoins.ToString();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void TakeDown()
