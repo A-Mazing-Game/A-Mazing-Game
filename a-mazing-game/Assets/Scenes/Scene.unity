@@ -327,6 +327,7 @@ MonoBehaviour:
   remainingCoins: {fileID: 926885168}
   healthStat: {fileID: 545346640}
   stats: {fileID: 1944142329}
+  surface: {fileID: 0}
 --- !u!224 &168113927
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2177,6 +2178,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926885166}
   m_CullTransparentMesh: 1
+--- !u!1 &961892889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 961892892}
+  - component: {fileID: 961892891}
+  - component: {fileID: 961892890}
+  m_Layer: 3
+  m_Name: Standard Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!81 &961892890
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961892889}
+  m_Enabled: 1
+--- !u!20 &961892891
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961892889}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.1
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &961892892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961892889}
+  m_LocalRotation: {x: 0.10511479, y: -0, z: -0, w: 0.9944601}
+  m_LocalPosition: {x: 3.75, y: 1.656, z: 3.276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 12.068, y: 0, z: 0}
 --- !u!1 &974588508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4219,7 +4303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: avoidancePriority
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_AutoTraverseOffMeshLink
@@ -4291,6 +4375,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1702667608408647211, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2104202123972457328, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -4367,6 +4455,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4071956497146047979, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: healthBar
       value: 
@@ -4419,6 +4511,10 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7004691639459181276, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: standardCam
+      value: 
+      objectReference: {fileID: 961892891}
     - target: {fileID: 7004691639459181276, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: sensitivityHor
       value: 9

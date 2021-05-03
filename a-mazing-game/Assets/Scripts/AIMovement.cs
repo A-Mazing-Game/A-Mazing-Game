@@ -23,23 +23,19 @@ public class AIMovement : MonoBehaviour
     private int currentHealth;
     
     private Animator animator;
-    private Rigidbody rb;
     
-    private Vector3 wanderWaypoint;
+    // private Vector3 wanderWaypoint;
  
     private float wanderSpeed = 1.25f;
     private float runSpeed = 2.25f;
     
     private float attackRate = 3f;
     private float nextAttack;
-    private float waitTime = 3f;
-    private float wanderTimer;
 
     void Start()
     {
          agent = GetComponent<NavMeshAgent>();
          animator = GetComponentInChildren<Animator>();
-         // rb = GetComponent<Rigidbody>();
          currentHealth = maxHealth;
     }
 
@@ -47,18 +43,14 @@ public class AIMovement : MonoBehaviour
     {
         // Distance to the target
         float distance = Vector3.Distance(player.position, transform.position);
-
-        float dist = agent.remainingDistance;
-
+        
         // If not inside the lookRadius
         if (distance >= lookRadius)
         {
             Wander();
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance 
                                    && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-            // if (agent.remainingDistance <= agent.stoppingDistance + 0.5f)
             {
-                // agent.isStopped = true;
                 agent.ResetPath();
                 NavMeshPath path = new NavMeshPath();
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
@@ -68,7 +60,6 @@ public class AIMovement : MonoBehaviour
                     agent.SetDestination(newPos);
                 }
             }
-            // wanderTimer = Time.time + waitTime;
         }
         
         if (distance < lookRadius)
@@ -77,7 +68,6 @@ public class AIMovement : MonoBehaviour
             // If within attacking distance
             if (distance < agent.stoppingDistance)
             {
-                // FaceTarget(); 
                 Idle();
                 if (Time.time > nextAttack)
                 {
@@ -89,7 +79,6 @@ public class AIMovement : MonoBehaviour
             {
                 // Move towards the target
                 agent.SetDestination(player.position);
-                // FaceTarget(); 
                 Run();
             }
         }
@@ -175,9 +164,8 @@ public class AIMovement : MonoBehaviour
     {
         Debug.Log("Enemy died!");
         
+        // Play death animation
         animator.SetBool("IsDead", true);
-
-        // rb.constraints = RigidbodyConstraints.FreezeAll;
         agent.isStopped = true;
         GetComponent<Collider>().enabled = false;
         this.enabled = false;
