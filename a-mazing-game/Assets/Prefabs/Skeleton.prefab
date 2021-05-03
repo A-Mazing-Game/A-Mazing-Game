@@ -78,7 +78,7 @@ MonoBehaviour:
   coins: {fileID: 0}
   lookRadius: 8
   wanderRadius: 30
-  attackRange: 0.7
+  attackRange: 0.75
   attackDamage: 20
   maxHealth: 100
 --- !u!136 &3499996648956941907
