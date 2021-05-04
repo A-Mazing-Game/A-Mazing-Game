@@ -132,9 +132,9 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
         
-        int l = deadEndCol.Length;
-        Debug.Log("L " + l);
-        for(int i = 0; i < l; i++)
+        // int l = deadEndCol.Length;
+        // Debug.Log("L " + l);
+        // for(int i = 0; i < l; i++)
             // PlaceTestTrigger(deadEndCol[i], deadEndRow[i], null);
         PlaceEndTrigger(col[0], row[0], endGame);
     }
