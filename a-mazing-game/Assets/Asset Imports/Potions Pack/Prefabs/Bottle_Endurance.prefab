@@ -9674,7 +9674,7 @@ GameObject:
   - component: {fileID: 8095672430958784720}
   m_Layer: 0
   m_Name: Bottle_Endurance
-  m_TagString: Potion
+  m_TagString: Stamina Potion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

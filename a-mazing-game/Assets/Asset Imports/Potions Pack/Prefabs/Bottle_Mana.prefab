@@ -4925,7 +4925,7 @@ GameObject:
   - component: {fileID: 7319039184491344624}
   m_Layer: 0
   m_Name: Bottle_Mana
-  m_TagString: Potion
+  m_TagString: Overshield Potion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

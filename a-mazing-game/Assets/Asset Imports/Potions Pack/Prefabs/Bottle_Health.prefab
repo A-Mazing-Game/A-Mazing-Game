@@ -9705,7 +9705,7 @@ GameObject:
   - component: {fileID: 4706735445675201702}
   m_Layer: 0
   m_Name: Bottle_Health
-  m_TagString: Potion
+  m_TagString: Health Potion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
