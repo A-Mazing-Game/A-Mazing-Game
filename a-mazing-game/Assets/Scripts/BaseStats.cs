@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BaseStats : MonoBehaviour
 {
-    public int attackDamage = 10;
-    public int maxHealth = 50;
+    public int attackDamage = 40;
+    public int maxHealth = 100;
     public int currentHealth;
 
     //public IDictionary<string, int> baseStats = new Dictionary<string, int>();
@@ -25,11 +25,11 @@ public class BaseStats : MonoBehaviour
 
     public void IncreaseHealth()
     {
-        maxHealth++;
+        maxHealth+=5;
     }
 
     public void IncreaseAttack()
     {
-        attackDamage++;
+        attackDamage+=5;
     }
 }

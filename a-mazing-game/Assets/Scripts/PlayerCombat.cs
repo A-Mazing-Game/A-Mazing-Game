@@ -10,25 +10,20 @@ public class PlayerCombat : MonoBehaviour
     public Animator animator;
     public Transform attackPoint;
     public LayerMask enemyLayers;
-    
     public float attackRange;
-    /*public int attackDamage = 40;
-    public int maxHealth = 100;
-    public int currentHealth;*/
-    
+
     private float attackRate = 1f;
     private float nextAttack;
-    public HealthBar healthBar;
+    private int attackDamage;
     private bool showingEnd;
     private DateTime startTime;
     private DateTime endTime;
     public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
-    //public GameController controller;
 
     void Start()
     {
-        //controller = GetComponent<GameController>();
+        attackDamage = GetComponent<PlayerStats>().attackDamage;
         startTime = DateTime.Now;
         endTime = DateTime.Now;
     }
@@ -45,7 +40,6 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator Attack()
     {
         // Play attack animation
-        // animator.speed = 1.5f;
         animator.SetTrigger("Attack");
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -54,18 +48,19 @@ public class PlayerCombat : MonoBehaviour
         }
         else
             animator.SetFloat("AttackMode", 0);
-        // animator.SetBool("Attack 0", false);
 
         // Detect enemies in range of attack
+        yield return new WaitForSeconds(0.1f);
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            if (enemy.GetComponent<AIMovement>().TakeDamage(GetComponent<PlayerStats>().attackDamage))
+            enemy.GetComponent<AIMovement>().TakeDamage(attackDamage);
+            Debug.Log(enemy.name + " hit!");
+            if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
             {
-                yield return new WaitForSeconds(1.0f);
-                GetComponent<PlayerStats>().enemiesKilled ++;
+                GetComponent<PlayerStats>().enemiesKilled++;
             }
         }
     }
@@ -86,7 +81,6 @@ public class PlayerCombat : MonoBehaviour
         if (GetComponent<PlayerStats>().currentHealth <= 0)
         {
             PlayerDie();
-            //controller.endGame(null, null);
         }
     }
 
@@ -108,10 +102,10 @@ public class PlayerCombat : MonoBehaviour
     private void PlayerDie()
     {
         Debug.Log("Player died!");
-        //animator.SetBool("IsDead", true);
-        //GetComponent<Collider>().enabled = false;
-        //GetComponent<CharacterController>().enabled = false;
-        //GetComponent<FpsMovement>().enabled = false;
+        animator.SetBool("IsDead", true);
+        // GetComponent<Collider>().enabled = false;
+        // GetComponent<CharacterController>().enabled = false;
+        // GetComponent<FpsMovement>().enabled = false;
         //TimeSpan time = GetComponent<GameController>().elapsed;
         endTime = DateTime.Now;
         elapsed = endTime - startTime;

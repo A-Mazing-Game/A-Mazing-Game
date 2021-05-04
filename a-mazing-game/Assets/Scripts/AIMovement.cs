@@ -20,7 +20,7 @@ public class AIMovement : MonoBehaviour
     public int attackDamage = 20;
     
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
     
     private Animator animator;
     
@@ -29,7 +29,7 @@ public class AIMovement : MonoBehaviour
     private float wanderSpeed = 1.25f;
     private float runSpeed = 2.25f;
     
-    private float attackRate = 3f;
+    private float attackRate = 2.5f;
     private float nextAttack;
 
     void Start()
@@ -114,18 +114,22 @@ public class AIMovement : MonoBehaviour
     private IEnumerator Slash()
     {
         agent.isStopped = true;
+        int health = currentHealth;
         animator.SetTrigger("Swing");
-        yield return new WaitForSeconds(0.85f);
-        Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
-
-        // yield return new WaitForSeconds(0.5f);
-        foreach (Collider player in hitPlayers)
+        yield return new WaitForSeconds(0.9f);
+        if (health == currentHealth)
         {
-            player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
-            Debug.Log("Player hit!");
-        }
+            Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
 
-        yield return new WaitForSeconds(1.15f);
+            // yield return new WaitForSeconds(0.5f);
+            foreach (Collider player in hitPlayers)
+            {
+                player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
+                Debug.Log("Player hit!");
+            }
+        }
+        
+        yield return new WaitForSeconds(1f);
         agent.isStopped = false;
     }
 
@@ -145,19 +149,16 @@ public class AIMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    public bool TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        
         // Play hurt animation
+        nextAttack = Time.time + attackRate;
         animator.SetTrigger("Hurt");
-        
         if (currentHealth <= 0)
         {
             Die();
-            return true;
         }
-        return false;
     }
 
     void Die()

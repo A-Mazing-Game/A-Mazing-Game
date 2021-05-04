@@ -128,7 +128,7 @@ public class MazeConstructor : MonoBehaviour
             while(enemies.Contains(temp))
                 temp = random.Next(0, length - 1);
             // if(!(enemies.Contains(temp)))
-            // PlaceGoalTrigger(col[temp], row[temp], goalCallback);
+            PlaceGoalTrigger(col[temp], row[temp], goalCallback);
             enemies[i] = temp;
         }
         

@@ -4157,8 +4157,6 @@ MonoBehaviour:
   scoreLabel: {fileID: 1260373548}
   coinLabel: {fileID: 607526529}
   surface: {fileID: 21972634}
-  health: 0
-  maxHealth: 10
   numCoins: 0
   GameOverScreen: {fileID: 168113926}
   test: 1
@@ -4217,8 +4215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224ddff38b37d4e42b1e0dd26712a837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
-  maxHealth: 50
+  attackDamage: 40
+  maxHealth: 100
   currentHealth: 0
 --- !u!114 &1944142330
 MonoBehaviour:
@@ -4530,7 +4528,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3499996648956941907, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4164742397575798261, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4164742397575798261, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.351
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 823155169055971737, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
@@ -4628,7 +4634,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.056
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.831
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.62
       objectReference: {fileID: 0}
     - target: {fileID: 4071956497146047979, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
@@ -4648,7 +4666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: attackRange
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: GameOverScreen
@@ -4660,11 +4678,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6743243840842151319, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4694,10 +4712,10 @@ PrefabInstance:
       propertyPath: sensitivityVert
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 7004691639459181277, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 562815383}
     m_RemovedComponents:
     - {fileID: 4557683542480789147, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
@@ -4717,135 +4735,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a78d79ad419d444e8388e9143cd8bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &8936840687624926662
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936840687624926659}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b993df4a93c1d304ab19d8b2eb88c9a5, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.4
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &8936840687624926666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2104202123982331024, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
   m_PrefabInstance: {fileID: 7004691641281115507}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8936840687624926668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936840687624926659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c9ece33e874f394991b944bf50941cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numCoins: 0
---- !u!114 &8936840687624926669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936840687624926659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79efa59f16e2b3243b0135e41f289662, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackDamage: 40
-  maxHealth: 100
-  currentHealth: 0
-  enemiesKilled: 0
-  healthBar: {fileID: 562815383}
-  controller: {fileID: 0}

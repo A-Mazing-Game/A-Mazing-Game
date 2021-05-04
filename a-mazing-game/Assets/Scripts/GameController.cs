@@ -25,8 +25,8 @@ public class GameController : MonoBehaviour
     private DateTime startTime;
     private int timeLimit;
     private int reduceLimitBy;
-    public int health;
-    public int maxHealth;
+    // public int health;
+    // public int maxHealth;
     public int numCoins;
     private DateTime endTime;
     public TimeSpan elapsed;

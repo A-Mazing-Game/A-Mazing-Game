@@ -81,6 +81,7 @@ MonoBehaviour:
   attackRange: 0.75
   attackDamage: 20
   maxHealth: 100
+  currentHealth: 0
 --- !u!136 &3499996648956941907
 CapsuleCollider:
   m_ObjectHideFlags: 0
