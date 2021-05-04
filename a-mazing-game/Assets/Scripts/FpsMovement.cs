@@ -104,7 +104,7 @@ public class FpsMovement : MonoBehaviour
             m_AudioSource.Stop();
         }
         
-        if (Input.GetKeyDown(KeyCode.R) && Time.time > nextRoll && movement != Vector3.zero)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && Time.time > nextRoll && movement != Vector3.zero)
         {
             nextRoll = Time.time + rollRate;
             rotateCameraEnabled = false;

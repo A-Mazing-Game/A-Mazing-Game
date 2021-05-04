@@ -2236,7 +2236,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 127
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2256,11 +2256,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961892889}
   m_LocalRotation: {x: 0.10511479, y: -0, z: -0, w: 0.9944601}
-  m_LocalPosition: {x: 3.75, y: 1.656, z: 3.276}
+  m_LocalPosition: {x: 0, y: 1.656, z: -0.47399998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 8936840687624926666}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 12.068, y: 0, z: 0}
 --- !u!1 &974588508
 GameObject:
@@ -3630,7 +3630,7 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children: []
   m_Father: {fileID: 8936840687624926666}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1457528988
 SpriteRenderer:
@@ -4720,15 +4720,15 @@ PrefabInstance:
       objectReference: {fileID: 168113926}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.656
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.474
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559886, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalRotation.w
