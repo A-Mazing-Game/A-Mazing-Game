@@ -7,6 +7,7 @@ public class MazeMeshGenerator
     public float width;     // how wide are hallways
     public float height;    // how tall are hallways
 
+
     public MazeMeshGenerator()
     {
         width = 3.75f;

@@ -45,9 +45,17 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator Attack()
     {
         // Play attack animation
-        animator.speed = 1;
+        // animator.speed = 1.5f;
         animator.SetTrigger("Attack");
-        
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            animator.speed = 0.5f;
+            animator.SetFloat("AttackMode", 0.5f);
+        }
+        else
+            animator.SetFloat("AttackMode", 0);
+        // animator.SetBool("Attack 0", false);
+
         // Detect enemies in range of attack
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         
