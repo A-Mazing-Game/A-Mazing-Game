@@ -499,8 +499,7 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
-  attackRange: 1.5
-  healthBar: {fileID: 0}
+  attackRange: 1
   GameOverScreen: {fileID: 0}
 --- !u!114 &7544530994945066218
 MonoBehaviour:
@@ -517,8 +516,13 @@ MonoBehaviour:
   attackDamage: 40
   maxHealth: 100
   currentHealth: 0
+  maxOvershield: 100
+  currentOvershield: 0
+  maxStamina: 0
+  currentStamina: 0
   enemiesKilled: 0
   healthBar: {fileID: 0}
+  overshieldBar: {fileID: 0}
   controller: {fileID: 0}
 --- !u!114 &157496915772080653
 MonoBehaviour:

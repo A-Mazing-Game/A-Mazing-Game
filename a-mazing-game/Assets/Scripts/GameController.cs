@@ -13,7 +13,8 @@ public class GameController : MonoBehaviour
 {
     //1
     [SerializeField] private FpsMovement player;
-    [FormerlySerializedAs("timeLabel")] [SerializeField] private Text healthLabel;
+    [FormerlySerializedAs("timeLabel")] 
+    [SerializeField] private Text healthLabel;
     [SerializeField] private Text scoreLabel;
     public Text coinLabel;
 
@@ -60,9 +61,8 @@ public class GameController : MonoBehaviour
         reduceLimitBy = 5;
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
-
+        
         healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
-
         StartNewMaze();
     }
 
@@ -155,9 +155,9 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-        coinLabel.text = player.GetComponent<Inventory>().numCoins.ToString();
+        coinLabel.text = "Coins: " + player.GetComponent<Inventory>().numCoins.ToString();
+        // healthLabel.fontSize = 75;
         healthLabel.text = player.GetComponent<PlayerStats>().currentHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
-
         // Invoke("StartNewGame", 4);
     }
 
@@ -181,7 +181,7 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("Finish!");
             player.enabled = false;
-
+    
             Invoke("StartNewMaze", 4);
         }
     }

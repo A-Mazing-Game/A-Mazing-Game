@@ -23,7 +23,7 @@ public class FpsMovement : MonoBehaviour
     AudioSource m_AudioSource;
     private CharacterController charController;
     private Animator animator;
-    private Rigidbody rb;
+    // private Rigidbody rb;
 
     public float gravity = -9.8f;
     public float rollForce = 5.0f;
@@ -41,12 +41,15 @@ public class FpsMovement : MonoBehaviour
     private float rollRate = 1f;
     private float nextRoll;
     
+    private int potionHealth = 20;
+    private int potionOvershield = 10;
+
     private void Start()
     {
         m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -207,5 +210,40 @@ public class FpsMovement : MonoBehaviour
         if (dir.y < 0) 
             dir.y = -dir.y; // reflect down force on the ground
         impact += dir.normalized * force / mass;
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        int currentHealth = GetComponent<PlayerStats>().currentHealth;
+        int maxHealth = GetComponent<PlayerStats>().maxHealth;
+        int currentOvershield = GetComponent<PlayerStats>().currentOvershield;
+        int maxOvershield = GetComponent<PlayerStats>().maxOvershield;
+        
+        if (other.gameObject.CompareTag("Health Potion"))
+        {
+            if (currentHealth < maxHealth)
+            {
+                if (currentHealth + potionHealth >= maxHealth)
+                {
+                    GetComponent<PlayerStats>().AddHealth(maxHealth - currentHealth);
+                }
+                else 
+                    GetComponent<PlayerStats>().AddHealth(potionHealth);
+                // other.gameObject.SetActive(false);
+            }
+        }
+        if (other.gameObject.CompareTag("Overshield Potion"))
+        {
+            if (currentOvershield < maxOvershield)
+            {
+                if (currentOvershield + potionOvershield >= maxOvershield)
+                {
+                    GetComponent<PlayerStats>().AddOvershield(maxOvershield - currentOvershield);
+                }
+                else 
+                    GetComponent<PlayerStats>().AddOvershield(potionOvershield);
+                // other.gameObject.SetActive(false);
+            }
+        }
     }
 }

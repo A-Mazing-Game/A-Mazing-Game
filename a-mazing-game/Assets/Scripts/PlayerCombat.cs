@@ -75,10 +75,25 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakePlayerDamage(int damage)
     {
-        GetComponent<PlayerStats>().SubtractHealth(damage);
-        animator.SetTrigger("Hurt");
+        int currentOvershield = GetComponent<PlayerStats>().currentOvershield;
+        int currentHealth = GetComponent<PlayerStats>().currentHealth;
+        int remainder;
+        if (currentOvershield > 0)
+        {
+            GetComponent<PlayerStats>().SubtractOvershield(damage);
+            remainder = damage - currentOvershield;
+            if (remainder > 0)
+                currentHealth = GetComponent<PlayerStats>().SubtractHealth(remainder);
+        }
+        else
+        {
+            GetComponent<PlayerStats>().currentOvershield = 0;
+            currentHealth = GetComponent<PlayerStats>().SubtractHealth(damage);
+        }
 
-        if (GetComponent<PlayerStats>().currentHealth <= 0)
+        animator.SetTrigger("Hurt");
+        
+        if (currentHealth <= 0)
         {
             PlayerDie();
         }
