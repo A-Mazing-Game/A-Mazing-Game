@@ -27,6 +27,7 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material startMat;
     [SerializeField] private Material treasureMat;
     [SerializeField] private Material endGoal;
+    [SerializeField] private Material testSpawn;
     private GameController player;
     public GameObject start;
     public GameObject enemy;
@@ -37,6 +38,10 @@ public class MazeConstructor : MonoBehaviour
     private MeshFilter tt;
     private MeshRenderer ttt;
     private MeshCollider tttt;
+    private int testRow;
+    private int testCol;
+    private int[] deadEndCol;
+    private int[] deadEndRow;
 
     public int[,] data
     {
@@ -105,6 +110,8 @@ public class MazeConstructor : MonoBehaviour
 
         FindStartPosition();
         FindGoalPosition();
+        // FindDeadEnd();
+        printMaze();
 
         // store values used to generate this mesh
         hallWidth = meshGenerator.width;
@@ -118,15 +125,17 @@ public class MazeConstructor : MonoBehaviour
         {
             System.Random random = new System.Random();
             int temp = random.Next(0, length - 1);
-            Debug.Log("temp " + temp);
-            bool contains = enemies.Contains(temp);
-            Debug.Log("temp in contains " + contains);
             while(enemies.Contains(temp))
                 temp = random.Next(0, length - 1);
             // if(!(enemies.Contains(temp)))
-            PlaceGoalTrigger(col[temp], row[temp], goalCallback);
+            // PlaceGoalTrigger(col[temp], row[temp], goalCallback);
             enemies[i] = temp;
         }
+        
+        int l = deadEndCol.Length;
+        Debug.Log("L " + l);
+        for(int i = 0; i < l; i++)
+            PlaceTestTrigger(deadEndCol[i], deadEndRow[i], null);
         PlaceEndTrigger(col[0], row[0], endGame);
     }
 
@@ -146,6 +155,23 @@ public class MazeConstructor : MonoBehaviour
         mr = go.AddComponent<MeshRenderer>();
         mr.materials = new Material[2] {mazeMat1, mazeMat2};
         // go.AddComponent<NavMeshMo>()
+    }
+    
+    void printMaze()
+    {
+        int rMax = data.GetUpperBound(0);  // 1
+        int cMax = data.GetUpperBound(1);  // 2
+
+        for (int i = 0; i <= rMax; i++)
+        {
+            string str = "";
+            for (int j = 0; j <= cMax; j++)
+            {
+                str += data[i, j];
+                str += " ";
+            }   
+            Debug.Log(str);
+        }
     }
 
     public void DisposeOldMaze()
@@ -173,6 +199,68 @@ public class MazeConstructor : MonoBehaviour
                     return;
                 }
             }
+        }
+    }
+    
+    private void FindDeadEnd()
+    {
+        int[,] maze = data;
+        int rMax = maze.GetUpperBound(0);
+        int cMax = maze.GetUpperBound(1);
+        int length = 0;
+
+        for (int i = 1; i < rMax; i++)
+        {
+            for (int j = 1; j < cMax; j++)
+            {
+                if (maze[i, j] == 0)
+                {
+                    int left = maze[i, j - 1];
+                    int right = maze[i, j + 1];
+                    int front = maze[i + 1, j];
+                    int back = maze[i - 1, j];
+                    if(left == 1 && right == 1 && (front == 1 || back == 1))
+                    {
+                        length++;
+                        // testRow = i;
+                        // testCol = j;
+                        // return;
+                    }
+                    
+                }
+            }
+        }
+
+        deadEndCol = new int[length];
+        deadEndRow = new int[length];
+        int itter = 0;
+        
+        for (int i = 1; i < rMax; i++)
+        {
+            for (int j = 1; j < cMax; j++)
+            {
+                if (maze[i, j] == 0)
+                {
+                    int left = maze[i, j - 1];
+                    int right = maze[i, j + 1];
+                    int front = maze[i + 1, j];
+                    int back = maze[i - 1, j];
+                    if(left == 1 && right == 1 && (front == 1 || back == 1))
+                    {
+                        deadEndCol[itter] = j;
+                        deadEndRow[itter] = i;
+                        // testRow = i;
+                        // testCol = j;
+                        // return;
+                    }
+                    
+                }
+            }
+        }
+
+        for (int i = 0; i < length; i++)
+        {
+            Debug.Log(deadEndCol[i] + " " + deadEndRow[i]);
         }
     }
 
@@ -218,6 +306,22 @@ public class MazeConstructor : MonoBehaviour
             }
         }
     }
+    
+    private void PlaceTestTrigger(int column, int newRow, TriggerEventHandler callback)
+    {
+        Debug.Log("Test spawn " + column + " " + newRow);
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
+        go.name = "Test";
+        go.tag = "Generated";
+        
+        // go.GetComponent<BoxCollider>().isTrigger = true;
+        go.GetComponent<MeshRenderer>().sharedMaterial = testSpawn;
+        
+        // TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
+        // tc.callback = callback;
+        
+    }
 
     private void PlaceStartTrigger(TriggerEventHandler callback)
     {
@@ -258,6 +362,7 @@ public class MazeConstructor : MonoBehaviour
     
     private void PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
+        Debug.Log("End trigger: " + column + " " + newRow);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
         go.name = "End";
