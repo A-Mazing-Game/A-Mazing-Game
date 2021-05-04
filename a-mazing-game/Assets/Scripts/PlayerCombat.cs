@@ -117,7 +117,7 @@ public class PlayerCombat : MonoBehaviour
     private void PlayerDie()
     {
         Debug.Log("Player died!");
-        animator.SetBool("IsDead", true);
+        // animator.SetBool("IsDead", true);
         // GetComponent<Collider>().enabled = false;
         // GetComponent<CharacterController>().enabled = false;
         // GetComponent<FpsMovement>().enabled = false;
