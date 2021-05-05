@@ -344,6 +344,7 @@ public class MazeConstructor : MonoBehaviour
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
         sk.AddComponent<MeshCollider>();
+        // sk.enabled = true;
         sk.SetActive(true);
         MeshCollider t = sk.GetComponent<MeshCollider>();
         // t.material = mr.materials[0];

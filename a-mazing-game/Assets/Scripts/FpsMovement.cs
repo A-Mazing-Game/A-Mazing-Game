@@ -23,6 +23,7 @@ public class FpsMovement : MonoBehaviour
     AudioSource m_AudioSource;
     private CharacterController charController;
     private Animator animator;
+    private PlayerStats playerStats;
     // private Rigidbody rb;
 
     public float gravity = -9.8f;
@@ -49,6 +50,7 @@ public class FpsMovement : MonoBehaviour
         m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        playerStats = GetComponent<PlayerStats>();
         // rb = GetComponent<Rigidbody>();
     }
 
@@ -99,7 +101,14 @@ public class FpsMovement : MonoBehaviour
         else if (movement != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
             // Run
-            Run();
+            if (playerStats.UseStamina(10*Time.deltaTime))
+            {
+                Run();
+            }
+            else
+            {
+                Walk();
+            }
         }
         else if (movement == Vector3.zero)
         {
@@ -214,10 +223,10 @@ public class FpsMovement : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        int currentHealth = GetComponent<PlayerStats>().currentHealth;
-        int maxHealth = GetComponent<PlayerStats>().maxHealth;
-        int currentOvershield = GetComponent<PlayerStats>().currentOvershield;
-        int maxOvershield = GetComponent<PlayerStats>().maxOvershield;
+        int currentHealth = playerStats.currentHealth;
+        int maxHealth = playerStats.maxHealth;
+        int currentOvershield = playerStats.currentOvershield;
+        int maxOvershield = playerStats.maxOvershield;
         
         if (other.gameObject.CompareTag("Health Potion"))
         {
@@ -225,10 +234,12 @@ public class FpsMovement : MonoBehaviour
             {
                 if (currentHealth + potionHealth >= maxHealth)
                 {
-                    GetComponent<PlayerStats>().AddHealth(maxHealth - currentHealth);
+                    playerStats.AddHealth(maxHealth - currentHealth);
                 }
-                else 
-                    GetComponent<PlayerStats>().AddHealth(potionHealth);
+                else
+                {
+                    playerStats.AddHealth(potionHealth);
+                }
                 // other.gameObject.SetActive(false);
             }
         }
@@ -238,10 +249,12 @@ public class FpsMovement : MonoBehaviour
             {
                 if (currentOvershield + potionOvershield >= maxOvershield)
                 {
-                    GetComponent<PlayerStats>().AddOvershield(maxOvershield - currentOvershield);
+                    playerStats.AddOvershield(maxOvershield - currentOvershield);
                 }
-                else 
-                    GetComponent<PlayerStats>().AddOvershield(potionOvershield);
+                else
+                {
+                    playerStats.AddOvershield(potionOvershield);
+                }
                 // other.gameObject.SetActive(false);
             }
         }

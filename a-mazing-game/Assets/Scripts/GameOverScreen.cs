@@ -24,6 +24,9 @@ public class GameOverScreen : MonoBehaviour
     public BaseStats stats;
     private int maxHealth;
     private int numCoins;
+    private PlayerStats playerStats;
+    private Inventory inventory;
+    private BaseStats baseStats;
 
     // TODO
     public NavMeshSurface surface;
@@ -32,6 +35,9 @@ public class GameOverScreen : MonoBehaviour
 
     private void Awake()
     {
+        playerStats = player.GetComponent<PlayerStats>();
+        baseStats = controller.GetComponent<BaseStats>();
+        inventory = player.GetComponent<Inventory>();
         //player = GameObject.Find("Player");
         //controller = GameObject.Find("Controller");
 
@@ -39,10 +45,10 @@ public class GameOverScreen : MonoBehaviour
     public void Setup()
     {
         gameObject.SetActive(true);
-        pointsText.text = "Enemies Killed: " + player.GetComponent<PlayerStats>().enemiesKilled.ToString();
+        pointsText.text = "Enemies Killed: " + playerStats.enemiesKilled.ToString();
         timeText.text = "Time: ";
-        maxHealth = controller.GetComponent<BaseStats>().maxHealth;
-        numCoins = player.GetComponent<Inventory>().numCoins;
+        maxHealth = baseStats.maxHealth;
+        numCoins = inventory.numCoins;
         healthStat.text = maxHealth.ToString();
         remainingCoins.text = numCoins.ToString();
         Cursor.lockState = CursorLockMode.Confined;
@@ -50,7 +56,7 @@ public class GameOverScreen : MonoBehaviour
 
     public void TakeDown()
     {
-        controller.GetComponent<BaseStats>().maxHealth = maxHealth;
+        baseStats.maxHealth = maxHealth;
         gameObject.SetActive(false);
 
     }

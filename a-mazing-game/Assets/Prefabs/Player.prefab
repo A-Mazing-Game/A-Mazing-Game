@@ -518,10 +518,11 @@ MonoBehaviour:
   currentHealth: 0
   maxOvershield: 100
   currentOvershield: 0
-  maxStamina: 0
+  maxStamina: 100
   currentStamina: 0
   enemiesKilled: 0
   healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
   overshieldBar: {fileID: 0}
   controller: {fileID: 0}
 --- !u!114 &157496915772080653

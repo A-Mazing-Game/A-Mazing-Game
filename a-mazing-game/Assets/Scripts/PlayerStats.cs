@@ -9,15 +9,17 @@ public class PlayerStats : MonoBehaviour
     public int currentHealth;
     public int maxOvershield;
     public int currentOvershield;
-    public int maxStamina;
-    public int currentStamina;
+    public float maxStamina;
+    public float currentStamina;
     public int enemiesKilled = 0;
 
     public HealthBar healthBar;
-    // public StaminaBar staminaBar;
+    public StaminaBar staminaBar;
     public OvershieldBar overshieldBar;
     public GameObject controller;
-    
+
+    private WaitForSeconds regenTick = new WaitForSeconds(0.1f);
+    private Coroutine regen;
     
     private void Awake()
     {
@@ -28,6 +30,9 @@ public class PlayerStats : MonoBehaviour
         healthBar.SetHealth(maxHealth);
         overshieldBar.SetMaxOvershield(maxOvershield);
         overshieldBar.SetOvershield(0);
+        staminaBar.SetMaxStamina(maxStamina);
+        staminaBar.SetStamina(maxStamina);
+        currentStamina = maxStamina;
     }
 
     // Start is called before the first frame update
@@ -90,4 +95,39 @@ public class PlayerStats : MonoBehaviour
         maxHealth = newHealth;
     }
 
+    public bool UseStamina(float amount)
+    {
+        if (currentStamina - amount >= 0)
+        {
+            currentStamina -= amount;
+            staminaBar.SetStamina(currentStamina);
+
+            if (regen != null)
+            {
+                StopCoroutine(regen);
+            }
+            
+            regen = StartCoroutine(RegenStamina());
+            return true;
+        }
+        else
+        {
+            // Debug.Log("Not enough stamina");
+            return false;
+        }
+    }
+
+    public IEnumerator RegenStamina()
+    {
+        yield return new WaitForSeconds(2);
+
+        while (currentStamina < maxStamina)
+        {
+            currentStamina += maxStamina / 100;
+            staminaBar.SetStamina(currentStamina);
+            yield return regenTick;
+        }
+
+        regen = null;
+    }
 }

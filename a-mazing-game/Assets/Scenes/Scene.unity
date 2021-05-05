@@ -296,9 +296,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1000010142024812, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011889971296, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012401693442, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012503029934, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: m_Name
       value: Bottle Health
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010690109084, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: m_RootOrder
@@ -799,9 +819,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1000011052568322, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012264061876, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012370421672, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: m_Name
       value: Bottle Overshield
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013970829164, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000011650569256, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: m_RootOrder
@@ -899,7 +939,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 312832577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d6acb223e11af40ada96efc5b03cc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 407ad28643fb8458ca492859b0dd6cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 312832580}
@@ -949,8 +989,8 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 10
-  m_WholeNumbers: 1
-  m_Value: 10
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3456,9 +3496,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1000010732739842, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011589038250, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013271405414, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000013846074356, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
       propertyPath: m_Name
       value: Bottle Stamina
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013846074356, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014110595150, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013828724138, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
       propertyPath: m_RootOrder
@@ -4019,7 +4079,7 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children: []
   m_Father: {fileID: 8936840687624926666}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1457528988
 SpriteRenderer:
@@ -4319,7 +4379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.11372546, g: 0.90588236, b: 0.314419, a: 1}
+  m_Color: {r: 0.90588236, g: 0.89764947, b: 0.11372546, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4428,22 +4488,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 823155169055971741, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
   m_PrefabInstance: {fileID: 823155168814952455}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1752636420
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!195 &1752636418 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+  m_PrefabInstance: {fileID: 823155168814952455}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1752636415}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1776718129
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,11 +5273,15 @@ PrefabInstance:
     - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: agent
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1752636418}
     - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: coins
       value: 
       objectReference: {fileID: 4884595962423361402, guid: 55bdd68304f27cd4b846165e5d836cf1, type: 3}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1752636415}
     - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: player
       value: 
@@ -5301,10 +5354,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3499996648956941907, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4164742397575798261, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.001
@@ -5315,6 +5364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 823155169055971737, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+    - {fileID: 8099010684804324388, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
 --- !u!1001 &7004691641281115507
 PrefabInstance:
@@ -5405,7 +5455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331026, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
@@ -5471,6 +5521,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 562815383}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: staminaBar
+      value: 
+      objectReference: {fileID: 312832579}
     - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: overshieldBar
       value: 
