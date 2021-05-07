@@ -45,9 +45,10 @@ public class GameOverScreen : MonoBehaviour
     public void Setup()
     {
         gameObject.SetActive(true);
+        Time.timeScale = 0;
         pointsText.text = "Enemies Killed: " + playerStats.enemiesKilled.ToString();
         timeText.text = "Time: ";
-        maxHealth = baseStats.maxHealth;
+        maxHealth = playerStats.maxHealth;
         numCoins = inventory.numCoins;
         healthStat.text = maxHealth.ToString();
         remainingCoins.text = numCoins.ToString();
@@ -56,15 +57,25 @@ public class GameOverScreen : MonoBehaviour
 
     public void TakeDown()
     {
-        baseStats.maxHealth = maxHealth;
+        setStats();
+        PlayerPrefs.SetInt("health", maxHealth);
         gameObject.SetActive(false);
 
     }
 
 
-    public void RestartButton()
+    public void ContinueButton()
     {
+        setStats();
+        Time.timeScale = 1;
         SceneManager.LoadScene("Scene");
+    }
+
+    public void MenuButton()
+    {
+        setStats();
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Menu");
     }
 
     public void increaseHealth()
@@ -77,6 +88,16 @@ public class GameOverScreen : MonoBehaviour
             healthStat.text = maxHealth.ToString();
         }
 
+    }
+
+    private void setInventory()
+    {
+        //gonna add later
+    }
+
+    private void setStats()
+    {
+        PlayerPrefs.SetInt("health", maxHealth);
     }
 
 

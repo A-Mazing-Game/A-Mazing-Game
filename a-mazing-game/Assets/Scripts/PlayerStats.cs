@@ -24,8 +24,8 @@ public class PlayerStats : MonoBehaviour
     private void Awake()
     {
         controller = GameObject.Find("Controller");
-        maxHealth = controller.GetComponent<BaseStats>().maxHealth;
-        currentHealth = controller.GetComponent<BaseStats>().maxHealth;
+        maxHealth = PlayerPrefs.GetInt("health", 100);
+        currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(maxHealth);
         overshieldBar.SetMaxOvershield(maxOvershield);
@@ -39,9 +39,9 @@ public class PlayerStats : MonoBehaviour
 
     public void SetUp()
     {
-        maxHealth = controller.GetComponent<BaseStats>().maxHealth;
-        currentHealth = controller.GetComponent<BaseStats>().maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        controller = GameObject.Find("Controller");
+        maxHealth = PlayerPrefs.GetInt("health", 100);
+        currentHealth = maxHealth;
         healthBar.SetHealth(maxHealth);
         overshieldBar.SetMaxOvershield(maxOvershield);
         overshieldBar.SetOvershield(0);
