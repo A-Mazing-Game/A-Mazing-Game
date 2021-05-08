@@ -21,6 +21,8 @@ public class PlayerCombat : MonoBehaviour
     public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
 
+    public GameObject torch;
+
     private PlayerStats playerStats;
     
     void Start()
@@ -38,6 +40,8 @@ public class PlayerCombat : MonoBehaviour
             nextAttack = Time.time + attackRate;
             StartCoroutine(Attack());
         }
+
+
     }
     
     private IEnumerator Attack()
