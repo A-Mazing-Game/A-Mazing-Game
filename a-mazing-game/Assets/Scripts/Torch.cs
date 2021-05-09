@@ -11,8 +11,8 @@ public class Torch : MonoBehaviour
 
     void Start()
     {
-        int layerMask = 3 << 8;
-        layerMask = ~layerMask;
+        //int layerMask = 3 << 8;
+        //layerMask = ~layerMask;
         offset = new Vector3 (0.0f, 1.5f, 0.0f);
     }
     void LateUpdate()
