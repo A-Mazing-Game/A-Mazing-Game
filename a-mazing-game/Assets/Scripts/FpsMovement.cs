@@ -258,5 +258,7 @@ public class FpsMovement : MonoBehaviour
                 // other.gameObject.SetActive(false);
             }
         }
+        Destroy(other);
+        other.gameObject.SetActive(false);
     }
 }

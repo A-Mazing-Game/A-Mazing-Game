@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16633828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000013846074356, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+  m_PrefabInstance: {fileID: 1242080586}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &21972633
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +325,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010690109084, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -464,6 +473,9 @@ MonoBehaviour:
   start: {fileID: 0}
   enemy: {fileID: 0}
   skeleton: {fileID: 0}
+  healthPotion: {fileID: 0}
+  staminaPotion: {fileID: 0}
+  shieldPotion: {fileID: 0}
   ai: {fileID: 0}
   agent: {fileID: 0}
 --- !u!114 &168113930
@@ -991,6 +1003,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1000013970829164, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
@@ -3832,6 +3848,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013846074356, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000014110595150, guid: 11e31a2ebb4e6e246bcf8c0ba034a031, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -4799,6 +4819,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687102767}
   m_CullTransparentMesh: 1
+--- !u!1 &1750009970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+  m_PrefabInstance: {fileID: 149037254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1752636415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 823155169055971741, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
@@ -4888,6 +4913,11 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Enemies Killed: 0'
+--- !u!1 &1814927571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+  m_PrefabInstance: {fileID: 303675684}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1832596066
 GameObject:
   m_ObjectHideFlags: 0
@@ -5184,6 +5214,9 @@ MonoBehaviour:
   start: {fileID: 0}
   enemy: {fileID: 0}
   skeleton: {fileID: 1752636415}
+  healthPotion: {fileID: 1750009970}
+  staminaPotion: {fileID: 16633828}
+  shieldPotion: {fileID: 1814927571}
   ai: {fileID: 0}
   agent: {fileID: 0}
 --- !u!4 &1944142328

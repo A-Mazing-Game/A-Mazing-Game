@@ -11,6 +11,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = System.Random;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class MazeConstructor : MonoBehaviour
     public GameObject start;
     public GameObject enemy;
     public GameObject skeleton;
+    public GameObject healthPotion;
+    public GameObject staminaPotion;
+    public GameObject shieldPotion;
     public AIMovement ai;
     public NavMeshAgent agent;
     private MeshRenderer mr;
@@ -77,11 +81,13 @@ public class MazeConstructor : MonoBehaviour
 
     private MazeDataGenerator dataGenerator;
     private MazeMeshGenerator meshGenerator;
+    private FpsMovement fpsMovement;
 
     void Awake()
     {
         dataGenerator = new MazeDataGenerator();
         meshGenerator = new MazeMeshGenerator();
+        fpsMovement = GetComponent<FpsMovement>();
         player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
@@ -118,10 +124,21 @@ public class MazeConstructor : MonoBehaviour
         hallHeight = meshGenerator.height;
 
         DisplayMaze();
+        // SpawnEnemy(6);
+
         
-        // PlaceStartTrigger(startCallback);
+        GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
+        SpawnPowerUp(endLocation);
+        
+    }
+
+    void SpawnEnemy(int numEnemies, TriggerEventHandler goalCallback=null)
+    {
+        /*
+         * Simple method that spawns enemies in the maze
+         */
         enemies = new int[length];
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < numEnemies; i++)
         {
             System.Random random = new System.Random();
             int temp = random.Next(0, length - 1);
@@ -131,15 +148,34 @@ public class MazeConstructor : MonoBehaviour
             PlaceEnemy(col[temp], row[temp], goalCallback);
             enemies[i] = temp;
         }
-        
+    }
+
+    void SpawnPowerUp(GameObject endLocation)
+    {
         int l = deadEndCol.Length;
-        Debug.Log("L " + l);
-        debugSpawn(l);
-        GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
+        System.Random random = new System.Random();
+        Debug.Log("L length is: " + l);
         for (int i = 0; i < l; i++)
         {
             // Debug.Log("Calling shit"); 
-            PlaceTestTrigger(deadEndCol[i], deadEndRow[i], null, endLocation);
+            
+            int temp = random.Next(0, 3);
+            if(temp == 0)  // health
+            {
+                Debug.Log("Random is 0");
+                SpawnStamina(deadEndCol[i], deadEndRow[i], endLocation);
+            }   
+            
+            else if (temp == 1)  // stamina
+            {
+                Debug.Log("Random is 1");
+                SpawnHealth(deadEndCol[i], deadEndRow[i], endLocation);
+            }
+            else if (temp == 2)  // shield
+            {
+                Debug.Log("Random is 2");
+                SpawnShield(deadEndCol[i], deadEndRow[i], endLocation);
+            }
         }
     }
 
@@ -248,28 +284,28 @@ public class MazeConstructor : MonoBehaviour
                     {
                         Debug.Log("Check case 1");
                         length++;
-                        break;
+                        // break;
                     }
 
                     if ((left == 0 && right == 1) && (front == 1 && back == 1))
                     {
                         Debug.Log("Check case 2");
                         length++;
-                        break;
+                        // break;
                     }
 
                     if ((left == 1 && right == 0) && (front == 1 && back == 1))
                     {
                         Debug.Log("Check case 3");
                         length++;
-                        break;
+                        // break;
                     }
 
                     if ((left == 1 && right == 1) && (front == 0 && back == 1))
                     {
                         Debug.Log("Check case 4");
                         length++;
-                        break;
+                        // break;
                     }
                 }
             }
@@ -298,7 +334,7 @@ public class MazeConstructor : MonoBehaviour
                         deadEndRow[itter] = i;
                         Debug.Log("Case 1");
                         itter++;
-                        break;
+                        // break;
                     }
 
                     if ((left == 0 && right == 1) && (front == 1 && back == 1))
@@ -307,7 +343,7 @@ public class MazeConstructor : MonoBehaviour
                         deadEndRow[itter] = i;
                         Debug.Log("Case 2");
                         itter++;
-                        break;
+                        // break;
                     }
 
                     if ((left == 1 && right == 0) && (front == 1 && back == 1))
@@ -316,7 +352,7 @@ public class MazeConstructor : MonoBehaviour
                         deadEndRow[itter] = i;
                         Debug.Log("Case 3");
                         itter++;
-                        break;
+                        // break;
                     }
                     
                     if ((left == 1 && right == 1) && (front == 0 && back == 1))
@@ -325,7 +361,7 @@ public class MazeConstructor : MonoBehaviour
                         deadEndRow[itter] = i;
                         Debug.Log("Case 4");
                         itter++;
-                        break;
+                        // break;
                     }
                 }
             }
@@ -375,25 +411,67 @@ public class MazeConstructor : MonoBehaviour
         }
     }
     
-    private void PlaceTestTrigger(int column, int newRow, TriggerEventHandler callback, GameObject end)
+    private void SpawnStamina(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
     {
-        Debug.Log("Test spawn " + newRow + " " + column);
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
-        if (end.transform.position == go.transform.position)
+        Debug.Log("Made it to spawnStamina");
+        GameObject stamina = Instantiate(staminaPotion);
+        stamina.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
+        if (end.transform.position == stamina.transform.position)
         {
-            Debug.Log("Dead end and spawn have same location. Not spawning anything");
+            Debug.Log("Stamina not spawning at end trigger");
             return;
         }
-        go.name = "Test";
-        go.tag = "Generated";
+        // health.AddComponent<SphereCollider>();
+        stamina.SetActive(true);
+        stamina.name = "Stamina Potion";
+        stamina.tag = "Stamina Potion";
         
-        // go.GetComponent<BoxCollider>().isTrigger = true;
-        go.GetComponent<MeshRenderer>().sharedMaterial = testSpawn;
+        stamina.GetComponent<SphereCollider>().isTrigger = true;
+        TriggerEventRouter tc = stamina.AddComponent<TriggerEventRouter>();
+        tc.callback = callback;
+
+    }
+
+    private void SpawnHealth(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    {
+        Debug.Log("Made it to SpawnHealth");
+        GameObject health = Instantiate(healthPotion);
+        health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         
-        // TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
-        // tc.callback = callback;
+        if (end.transform.position == health.transform.position)
+        {
+            Debug.Log("health not spawning at end trigger");
+            return;
+        }
+        // health.AddComponent<SphereCollider>();
+        health.SetActive(true);
+        health.name = "Health Potion";
+        health.tag = "Health Potion";
         
+        health.GetComponent<SphereCollider>().isTrigger = true;
+        TriggerEventRouter tc = health.AddComponent<TriggerEventRouter>();
+        tc.callback = callback;
+    }
+    
+    private void SpawnShield(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    {
+        Debug.Log("Made it to SpawnShield");
+        GameObject shield = Instantiate(shieldPotion);
+        shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
+        
+        if (end.transform.position == shield.transform.position)
+        {
+            Debug.Log("health not spawning at end trigger");
+            return;
+        }
+        shield.SetActive(true);
+        shield.name = "Overshield Potion";
+        shield.tag = "Overshield Potion";
+        
+        shield.GetComponent<SphereCollider>().isTrigger = true;
+
+        TriggerEventRouter tc = shield.AddComponent<TriggerEventRouter>();
+        tc.callback = callback;
     }
 
     private void PlaceStartTrigger(TriggerEventHandler callback)
@@ -434,7 +512,7 @@ public class MazeConstructor : MonoBehaviour
         
     }
     
-    GameObject  PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
+    private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         Debug.Log("End trigger: " + column + " " + newRow);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
