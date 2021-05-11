@@ -40,8 +40,8 @@ public class MazeConstructor : MonoBehaviour
     private MeshCollider tttt;
     private int testRow;
     private int testCol;
-    private int[] deadEndCol;
-    private int[] deadEndRow;
+    private int[] deadEndCol;  // stores dead column indices
+    private int[] deadEndRow;  // stores dead end row indicies
 
     public int[,] data
     {
@@ -110,7 +110,7 @@ public class MazeConstructor : MonoBehaviour
 
         FindStartPosition();
         FindGoalPosition();
-        // FindDeadEnd();
+        FindDeadEnd();
         printMaze();
 
         // store values used to generate this mesh
@@ -128,15 +128,19 @@ public class MazeConstructor : MonoBehaviour
             while(enemies.Contains(temp))
                 temp = random.Next(0, length - 1);
             // if(!(enemies.Contains(temp)))
-            PlaceGoalTrigger(col[temp], row[temp], goalCallback);
+            PlaceEnemy(col[temp], row[temp], goalCallback);
             enemies[i] = temp;
         }
         
-        // int l = deadEndCol.Length;
-        // Debug.Log("L " + l);
-        // for(int i = 0; i < l; i++)
-            // PlaceTestTrigger(deadEndCol[i], deadEndRow[i], null);
-        PlaceEndTrigger(col[0], row[0], endGame);
+        int l = deadEndCol.Length;
+        Debug.Log("L " + l);
+        debugSpawn(l);
+        GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
+        for (int i = 0; i < l; i++)
+        {
+            // Debug.Log("Calling shit"); 
+            PlaceTestTrigger(deadEndCol[i], deadEndRow[i], null, endLocation);
+        }
     }
 
     private void DisplayMaze()
@@ -156,21 +160,39 @@ public class MazeConstructor : MonoBehaviour
         mr.materials = new Material[2] {mazeMat1, mazeMat2};
         // go.AddComponent<NavMeshMo>()
     }
+
+    void debugSpawn(int length)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            Debug.Log("DeadEndCol: " + deadEndCol[i] + " eadEndRow: " + deadEndRow[i]);
+        }
+    }
     
     void printMaze()
     {
         int rMax = data.GetUpperBound(0);  // 1
         int cMax = data.GetUpperBound(1);  // 2
+        int[,] maze = data;
 
-        for (int i = 0; i <= rMax; i++)
+        
+
+        // loop top to bottom, left to right
+        for (int i = rMax; i >= 0; i--)
         {
-            string str = "";
+            string msg = "";
             for (int j = 0; j <= cMax; j++)
             {
-                str += data[i, j];
-                str += " ";
-            }   
-            Debug.Log(str);
+                if (maze[i, j] == 0)
+                {
+                    msg += " 0 ";
+                }
+                else
+                {
+                    msg += " 1 ";
+                }
+            }
+            Debug.Log(msg);
         }
     }
 
@@ -196,6 +218,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
+                    Debug.Log("Starting POS. Row: " + i + " " + "Col " + j);
                     return;
                 }
             }
@@ -208,25 +231,46 @@ public class MazeConstructor : MonoBehaviour
         int rMax = maze.GetUpperBound(0);
         int cMax = maze.GetUpperBound(1);
         int length = 0;
+        Debug.Log("rmax " + rMax + " cmax " + cMax);
 
-        for (int i = 1; i < rMax; i++)
+        for (int row = 1; row < rMax; row++)
         {
-            for (int j = 1; j < cMax; j++)
+            for (int col = 1; col < cMax; col++)
             {
-                if (maze[i, j] == 0)
+                if (maze[row, col] == 0)
                 {
-                    int left = maze[i, j - 1];
-                    int right = maze[i, j + 1];
-                    int front = maze[i + 1, j];
-                    int back = maze[i - 1, j];
-                    if(left == 1 && right == 1 && (front == 1 || back == 1))
-                    {
-                        length++;
-                        // testRow = i;
-                        // testCol = j;
-                        // return;
-                    }
+                    int left = maze[row, col - 1];
+                    int right = maze[row, col + 1];
+                    int front = maze[row + 1, col];
+                    int back = maze[row - 1, col];
                     
+                    if((left == 1 && right == 1) && (front == 1 && back == 0))
+                    {
+                        Debug.Log("Check case 1");
+                        length++;
+                        break;
+                    }
+
+                    if ((left == 0 && right == 1) && (front == 1 && back == 1))
+                    {
+                        Debug.Log("Check case 2");
+                        length++;
+                        break;
+                    }
+
+                    if ((left == 1 && right == 0) && (front == 1 && back == 1))
+                    {
+                        Debug.Log("Check case 3");
+                        length++;
+                        break;
+                    }
+
+                    if ((left == 1 && right == 1) && (front == 0 && back == 1))
+                    {
+                        Debug.Log("Check case 4");
+                        length++;
+                        break;
+                    }
                 }
             }
         }
@@ -234,6 +278,8 @@ public class MazeConstructor : MonoBehaviour
         deadEndCol = new int[length];
         deadEndRow = new int[length];
         int itter = 0;
+        
+        
         
         for (int i = 1; i < rMax; i++)
         {
@@ -245,22 +291,44 @@ public class MazeConstructor : MonoBehaviour
                     int right = maze[i, j + 1];
                     int front = maze[i + 1, j];
                     int back = maze[i - 1, j];
-                    if(left == 1 && right == 1 && (front == 1 || back == 1))
+
+                    if ((left == 1 && right == 1) && (front == 1 && back == 0))
                     {
                         deadEndCol[itter] = j;
                         deadEndRow[itter] = i;
-                        // testRow = i;
-                        // testCol = j;
-                        // return;
+                        Debug.Log("Case 1");
+                        itter++;
+                        break;
+                    }
+
+                    if ((left == 0 && right == 1) && (front == 1 && back == 1))
+                    {
+                        deadEndCol[itter] = j;
+                        deadEndRow[itter] = i;
+                        Debug.Log("Case 2");
+                        itter++;
+                        break;
+                    }
+
+                    if ((left == 1 && right == 0) && (front == 1 && back == 1))
+                    {
+                        deadEndCol[itter] = j;
+                        deadEndRow[itter] = i;
+                        Debug.Log("Case 3");
+                        itter++;
+                        break;
                     }
                     
+                    if ((left == 1 && right == 1) && (front == 0 && back == 1))
+                    {
+                        deadEndCol[itter] = j;
+                        deadEndRow[itter] = i;
+                        Debug.Log("Case 4");
+                        itter++;
+                        break;
+                    }
                 }
             }
-        }
-
-        for (int i = 0; i < length; i++)
-        {
-            Debug.Log(deadEndCol[i] + " " + deadEndRow[i]);
         }
     }
 
@@ -285,7 +353,7 @@ public class MazeConstructor : MonoBehaviour
                 }
             }
         }
-        Debug.Log("rmax " + rMax + " cmax " + cMax + " length " + length);
+        // Debug.Log("rmax " + rMax + " cmax " + cMax + " length " + length);
 
         col = new int[length];
         row = new int [length];
@@ -307,11 +375,16 @@ public class MazeConstructor : MonoBehaviour
         }
     }
     
-    private void PlaceTestTrigger(int column, int newRow, TriggerEventHandler callback)
+    private void PlaceTestTrigger(int column, int newRow, TriggerEventHandler callback, GameObject end)
     {
-        Debug.Log("Test spawn " + column + " " + newRow);
+        Debug.Log("Test spawn " + newRow + " " + column);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
+        if (end.transform.position == go.transform.position)
+        {
+            Debug.Log("Dead end and spawn have same location. Not spawning anything");
+            return;
+        }
         go.name = "Test";
         go.tag = "Generated";
         
@@ -337,7 +410,7 @@ public class MazeConstructor : MonoBehaviour
         tc.callback = callback;
     }
 
-    private void PlaceGoalTrigger(int column, int newRow, TriggerEventHandler callback)
+    private void PlaceEnemy(int column, int newRow, TriggerEventHandler callback)
     {
         // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         GameObject sk = Instantiate(skeleton) as GameObject;
@@ -360,7 +433,7 @@ public class MazeConstructor : MonoBehaviour
         
     }
     
-    private void PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
+    GameObject  PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         Debug.Log("End trigger: " + column + " " + newRow);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -373,7 +446,8 @@ public class MazeConstructor : MonoBehaviour
         
         TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
-        
+
+        return go;
     }
 
     // top-down debug display
@@ -397,12 +471,14 @@ public class MazeConstructor : MonoBehaviour
             {
                 if (maze[i, j] == 0)
                 {
-                    msg += "....";
+                    msg += "0";
                 }
                 else
                 {
-                    msg += "==";
+                    msg += "+";
                 }
+
+                msg += " ";
             }
             msg += "\n";
         }

@@ -3412,7 +3412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 353.8, y: -31.199997}
+  m_AnchoredPosition: {x: 353.80005, y: -31.199951}
   m_SizeDelta: {x: 149, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1221791039
@@ -4827,7 +4827,7 @@ MonoBehaviour:
   startMat: {fileID: 2100000, guid: c8296ee06001c4d39b0f615626264b85, type: 2}
   treasureMat: {fileID: 2100000, guid: c5b8154923bae4fedbbb1f1aca66fd98, type: 2}
   endGoal: {fileID: 2100000, guid: 509e26402678c4813854f7346702e9ec, type: 2}
-  testSpawn: {fileID: 0}
+  testSpawn: {fileID: 2100000, guid: 2d049825b0cc14e2db6fe01fe8475a65, type: 2}
   start: {fileID: 0}
   enemy: {fileID: 0}
   skeleton: {fileID: 1752636415}
