@@ -21,9 +21,12 @@ public class PlayerCombat : MonoBehaviour
     public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
 
+    private PlayerStats playerStats;
+    
     void Start()
     {
-        attackDamage = GetComponent<PlayerStats>().attackDamage;
+        playerStats = GetComponent<PlayerStats>();
+        // attackDamage = playerStats.attackDamage;
         startTime = DateTime.Now;
         endTime = DateTime.Now;
     }
@@ -35,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
             nextAttack = Time.time + attackRate;
             StartCoroutine(Attack());
         }
+
+
     }
     
     private IEnumerator Attack()
@@ -56,11 +61,11 @@ public class PlayerCombat : MonoBehaviour
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            enemy.GetComponent<AIMovement>().TakeDamage(attackDamage);
+            enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage);
             Debug.Log(enemy.name + " hit!");
             if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
             {
-                GetComponent<PlayerStats>().enemiesKilled++;
+                playerStats.enemiesKilled++;
             }
         }
     }
@@ -75,20 +80,20 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakePlayerDamage(int damage)
     {
-        int currentOvershield = GetComponent<PlayerStats>().currentOvershield;
-        int currentHealth = GetComponent<PlayerStats>().currentHealth;
+        int currentOvershield = playerStats.currentOvershield;
+        int currentHealth = playerStats.currentHealth;
         int remainder;
         if (currentOvershield > 0)
         {
-            GetComponent<PlayerStats>().SubtractOvershield(damage);
+            playerStats.SubtractOvershield(damage);
             remainder = damage - currentOvershield;
             if (remainder > 0)
-                currentHealth = GetComponent<PlayerStats>().SubtractHealth(remainder);
+                currentHealth = playerStats.SubtractHealth(remainder);
         }
         else
         {
-            GetComponent<PlayerStats>().currentOvershield = 0;
-            currentHealth = GetComponent<PlayerStats>().SubtractHealth(damage);
+            playerStats.currentOvershield = 0;
+            currentHealth = playerStats.SubtractHealth(damage);
         }
 
         animator.SetTrigger("Hurt");
@@ -116,7 +121,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void PlayerDie()
     {
-        Debug.Log("Player died!");
+        // Debug.Log("Player died!");
         // animator.SetBool("IsDead", true);
         // GetComponent<Collider>().enabled = false;
         // GetComponent<CharacterController>().enabled = false;

@@ -24,8 +24,6 @@ public class AIMovement : MonoBehaviour
     
     private Animator animator;
     
-    // private Vector3 wanderWaypoint;
- 
     private float wanderSpeed = 1.25f;
     private float runSpeed = 2.25f;
     
@@ -34,7 +32,6 @@ public class AIMovement : MonoBehaviour
 
     void Start()
     {
-         agent = GetComponent<NavMeshAgent>();
          animator = GetComponentInChildren<Animator>();
          currentHealth = maxHealth;
     }
@@ -168,8 +165,10 @@ public class AIMovement : MonoBehaviour
         // Play death animation
         animator.SetBool("IsDead", true);
         agent.isStopped = true;
-        GetComponent<Collider>().enabled = false;
-        this.enabled = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        GetComponent<MeshCollider>().enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+        enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
     }
 }
