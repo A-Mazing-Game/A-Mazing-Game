@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -46,6 +47,7 @@ public class MazeConstructor : MonoBehaviour
     private int testCol;
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
+    public int desiredEnemies = 6;
 
     public int[,] data
     {
@@ -91,6 +93,7 @@ public class MazeConstructor : MonoBehaviour
         player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
+        
 
         // default to walls surrounding a single empty cell
         data = new int[,]
@@ -124,12 +127,40 @@ public class MazeConstructor : MonoBehaviour
         hallHeight = meshGenerator.height;
 
         DisplayMaze();
-        // SpawnEnemy(6);
-
+        // SpawnEnemy(desiredEnemies);
+        Thread.Sleep(1000);
+        StartCoroutine(SpawnCoRoutine());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
         
+    }
+
+    private IEnumerator SpawnCoRoutine()
+    {
+        while (true)
+        {
+            int aliveEnemies = 0;
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            int numEnemies = enemies.Length;
+            for (int i = 0; i < numEnemies; i++)
+            {
+                AIMovement temp = enemies[i].GetComponent<AIMovement>();
+                if (temp.currentHealth > 0)
+                    aliveEnemies++;
+                
+            }
+            int enemiesToSpawn = desiredEnemies - aliveEnemies;
+            // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
+            // Debug.Log("Enemies alive: " + aliveEnemies);
+            if (aliveEnemies == 0)
+                desiredEnemies += 2;
+            SpawnEnemy(enemiesToSpawn);
+            yield return new WaitForSeconds(30);
+        }
+        
+
+        yield return null;
     }
 
     void SpawnEnemy(int numEnemies, TriggerEventHandler goalCallback=null)
@@ -413,7 +444,7 @@ public class MazeConstructor : MonoBehaviour
     
     private void SpawnStamina(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
     {
-        Debug.Log("Made it to spawnStamina");
+        // Debug.Log("Made it to spawnStamina");
         GameObject stamina = Instantiate(staminaPotion);
         stamina.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         if (end.transform.position == stamina.transform.position)
@@ -434,7 +465,7 @@ public class MazeConstructor : MonoBehaviour
 
     private void SpawnHealth(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
     {
-        Debug.Log("Made it to SpawnHealth");
+        // Debug.Log("Made it to SpawnHealth");
         GameObject health = Instantiate(healthPotion);
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         
@@ -455,7 +486,7 @@ public class MazeConstructor : MonoBehaviour
     
     private void SpawnShield(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
     {
-        Debug.Log("Made it to SpawnShield");
+        // Debug.Log("Made it to SpawnShield");
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         
@@ -502,7 +533,7 @@ public class MazeConstructor : MonoBehaviour
         
         // Instantiate(skeleton);
         sk.name = "Skeleton";
-        sk.tag = "Generated";
+        sk.tag = "Enemy";
         
         // sk.GetComponent<BoxCollider>().isTrigger = true;
         // skeleton.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
