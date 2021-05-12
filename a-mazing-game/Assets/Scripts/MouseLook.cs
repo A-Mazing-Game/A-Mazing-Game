@@ -17,7 +17,7 @@ public class MouseLook : MonoBehaviour
     void Update()
     {
         // Press C to toggle locking of the Cursor
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             if (cursorLocked)
             {
