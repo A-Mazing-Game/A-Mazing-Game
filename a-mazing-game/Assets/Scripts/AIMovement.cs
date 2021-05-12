@@ -154,11 +154,11 @@ public class AIMovement : MonoBehaviour
         animator.SetTrigger("Hurt");
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
-    void Die()
+    private IEnumerator Die()
     {
         Debug.Log("Enemy died!");
         
@@ -167,8 +167,10 @@ public class AIMovement : MonoBehaviour
         agent.isStopped = true;
         GetComponent<CapsuleCollider>().enabled = false;
         GetComponent<MeshCollider>().enabled = false;
-        GetComponent<NavMeshAgent>().enabled = false;
+        // GetComponent<NavMeshAgent>().enabled = false;
         enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(10);
+        Destroy(gameObject);
     }
 }

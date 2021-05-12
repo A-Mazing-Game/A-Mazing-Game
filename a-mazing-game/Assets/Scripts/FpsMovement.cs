@@ -15,8 +15,8 @@ using UnityEngine;
 // basic WASD-style movement control
 public class FpsMovement : MonoBehaviour
 {
-    [SerializeField] private Camera headCam;
-    [SerializeField] private Camera standardCam;
+    public Camera headCam;
+    public Camera standardCam;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     
@@ -33,7 +33,8 @@ public class FpsMovement : MonoBehaviour
     public float sensitivityVert = 9.0f;
     public float minimumVert = -45.0f;
     public float maximumVert = 45.0f;
-
+    public bool isSprintingForward;
+    
     private Vector3 impact = Vector3.zero;
     private float moveSpeed;
     private float rotationVert;
@@ -45,12 +46,16 @@ public class FpsMovement : MonoBehaviour
     private int potionHealth = 20;
     private int potionOvershield = 10;
 
+    private PlayerCombat combat;
+
     private void Start()
     {
         m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
+        combat = GetComponent<PlayerCombat>();
+        // isSprinting = false;
         // rb = GetComponent<Rigidbody>();
     }
 
@@ -60,10 +65,15 @@ public class FpsMovement : MonoBehaviour
             charController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
-        
-        MoveCharacter();
-        RotateCamera();
-        RotateCharacter();
+        if (combat.controlEnabled)
+        {
+            MoveCharacter();
+            if (!combat.heavyAttack)
+            {
+                RotateCamera();
+                RotateCharacter();
+            }
+        }
     }
     
     private void LateUpdate()
@@ -91,6 +101,7 @@ public class FpsMovement : MonoBehaviour
 
         if (movement != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
         {
+            isSprintingForward = false;
             // Walk
             Walk();
             if (!m_AudioSource.isPlaying)
@@ -103,15 +114,23 @@ public class FpsMovement : MonoBehaviour
             // Run
             if (playerStats.UseStamina(10*Time.deltaTime))
             {
+                if (Input.GetKey(KeyCode.W))
+                    isSprintingForward = true;
+                else
+                {
+                    isSprintingForward = false;
+                }
                 Run();
             }
             else
             {
+                isSprintingForward = false;
                 Walk();
             }
         }
         else if (movement == Vector3.zero)
         {
+            isSprintingForward = false;
             Idle();
             m_AudioSource.Stop();
         }

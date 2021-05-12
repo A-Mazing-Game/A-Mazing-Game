@@ -11,7 +11,9 @@ public class PlayerCombat : MonoBehaviour
     public Transform attackPoint;
     public LayerMask enemyLayers;
     public float attackRange;
-
+    public bool controlEnabled;
+    public bool heavyAttack;
+    
     private float attackRate = 1f;
     private float nextAttack;
     private int attackDamage;
@@ -22,13 +24,18 @@ public class PlayerCombat : MonoBehaviour
     public GameOverScreen GameOverScreen;
 
     private PlayerStats playerStats;
+    private FpsMovement movement;
+    private CharacterController cc;
     
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
+        movement = GetComponent<FpsMovement>();
+        cc = GetComponent<CharacterController>();
         // attackDamage = playerStats.attackDamage;
         startTime = DateTime.Now;
         endTime = DateTime.Now;
+        controlEnabled = true;
     }
     
     void Update()
@@ -38,36 +45,57 @@ public class PlayerCombat : MonoBehaviour
             nextAttack = Time.time + attackRate;
             StartCoroutine(Attack());
         }
-
-
     }
     
     private IEnumerator Attack()
     {
+        float attackType;
+        int damage = playerStats.attackDamage;
         // Play attack animation
         animator.SetTrigger("Attack");
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && movement.isSprintingForward)
         {
+            attackType = 0.5f;
             animator.speed = 0.5f;
             animator.SetFloat("AttackMode", 0.5f);
         }
         else
+        {
+            attackType = 0f;
             animator.SetFloat("AttackMode", 0);
+        }
 
         // Detect enemies in range of attack
-        yield return new WaitForSeconds(0.1f);
+        if (attackType == 0f)
+        {
+            // damage = playerStats.attackDamage;
+            yield return new WaitForSeconds(0.1f);
+            controlEnabled = true;
+        }
+        else if (attackType == 0.5f)
+        {
+            damage = 100;
+            heavyAttack = true;
+            yield return new WaitForSeconds(0.9f);
+            controlEnabled = false;
+        }
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
-        
+
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage);
+            enemy.GetComponent<AIMovement>().TakeDamage(damage);
             Debug.Log(enemy.name + " hit!");
             if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
             {
                 playerStats.enemiesKilled++;
             }
         }
+        // cc.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        heavyAttack = false;
+        // cc.enabled = true;
+        controlEnabled = true;
     }
 
     private void OnDrawGizmosSelected()

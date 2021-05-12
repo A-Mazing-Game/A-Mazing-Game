@@ -143,14 +143,14 @@ public class MazeConstructor : MonoBehaviour
             int aliveEnemies = 0;
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             int numEnemies = enemies.Length;
-            for (int i = 0; i < numEnemies; i++)
-            {
-                AIMovement temp = enemies[i].GetComponent<AIMovement>();
-                if (temp.currentHealth > 0)
-                    aliveEnemies++;
-                
-            }
-            int enemiesToSpawn = desiredEnemies - aliveEnemies;
+            // for (int i = 0; i < numEnemies; i++)
+            // {
+            //     AIMovement temp = enemies[i].GetComponent<AIMovement>();
+            //     if (temp.currentHealth > 0)
+            //         aliveEnemies++;
+            //     
+            // }
+            int enemiesToSpawn = desiredEnemies - numEnemies;
             // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
             // Debug.Log("Enemies alive: " + aliveEnemies);
             if (aliveEnemies == 0)
