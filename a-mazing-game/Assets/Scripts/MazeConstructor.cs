@@ -47,7 +47,7 @@ public class MazeConstructor : MonoBehaviour
     private int testCol;
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
-    public int desiredEnemies = 6;
+    public int desiredEnemies;
 
     public int[,] data
     {
@@ -93,6 +93,7 @@ public class MazeConstructor : MonoBehaviour
         player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
+        desiredEnemies = 12;
         
 
         // default to walls surrounding a single empty cell
@@ -151,11 +152,12 @@ public class MazeConstructor : MonoBehaviour
             //     
             // }
             int enemiesToSpawn = desiredEnemies - numEnemies;
-            // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
-            // Debug.Log("Enemies alive: " + aliveEnemies);
-            if (aliveEnemies == 0)
-                desiredEnemies += 2;
-            SpawnEnemy(enemiesToSpawn);
+            Debug.Log("NumEnemies: " + numEnemies);
+            Debug.Log("Enemies to spawn: " + enemiesToSpawn);
+            Debug.Log("Enemies alive: " + aliveEnemies);
+            // if (aliveEnemies == 0)
+            //     desiredEnemies += 2;
+            SpawnEnemy(enemiesToSpawn + 2);
             yield return new WaitForSeconds(30);
         }
         
