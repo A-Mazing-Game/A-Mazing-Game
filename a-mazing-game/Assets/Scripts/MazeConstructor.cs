@@ -30,7 +30,6 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material treasureMat;
     [SerializeField] private Material endGoal;
     [SerializeField] private Material testSpawn;
-    private GameController player;
     public GameObject start;
     public GameObject enemy;
     public GameObject skeleton;
@@ -48,7 +47,7 @@ public class MazeConstructor : MonoBehaviour
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
     public int desiredEnemies;
-
+    
     public int[,] data
     {
         get; private set;
@@ -90,7 +89,6 @@ public class MazeConstructor : MonoBehaviour
         dataGenerator = new MazeDataGenerator();
         meshGenerator = new MazeMeshGenerator();
         fpsMovement = GetComponent<FpsMovement>();
-        player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
         desiredEnemies = 24;
@@ -139,8 +137,10 @@ public class MazeConstructor : MonoBehaviour
 
     private IEnumerator SpawnCoRoutine()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         while (true)
         {
+            Debug.Log("Player pos: " + player.transform.position);
             int aliveEnemies = 0;
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             int numEnemies = enemies.Length;

@@ -10,7 +10,7 @@ public class MazeMeshGenerator
 
     public MazeMeshGenerator()
     {
-        width = 2.00f; // 3.75 originally
+        width = 2.75f; // 3.75 originally
         height = 3.5f;
     }
 
