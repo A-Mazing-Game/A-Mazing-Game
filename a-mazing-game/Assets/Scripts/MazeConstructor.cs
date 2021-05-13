@@ -93,7 +93,7 @@ public class MazeConstructor : MonoBehaviour
         player = GetComponent<GameController>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
-        desiredEnemies = 12;
+        desiredEnemies = 24;
         
 
         // default to walls surrounding a single empty cell
