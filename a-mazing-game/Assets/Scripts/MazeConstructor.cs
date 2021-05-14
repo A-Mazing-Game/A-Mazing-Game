@@ -37,6 +37,7 @@ public class MazeConstructor : MonoBehaviour
     public GameObject staminaPotion;
     public GameObject shieldPotion;
     public AIMovement ai;
+    public NavMeshAgent agent;
     private MeshRenderer mr;
     private MeshFilter tt;
     private MeshRenderer ttt;
