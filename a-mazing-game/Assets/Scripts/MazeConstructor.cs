@@ -49,7 +49,7 @@ public class MazeConstructor : MonoBehaviour
     public int desiredEnemies;
     
     public int[,] data
-    {
+    { //
         get; private set;
     }
 
