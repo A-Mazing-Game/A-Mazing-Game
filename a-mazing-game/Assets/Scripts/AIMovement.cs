@@ -12,7 +12,8 @@ public class AIMovement : MonoBehaviour
     public Transform attackPoint;
     public LayerMask playerLayers;
     public GameObject coins;
-
+    public EnemyHealthBar healthBar;
+    
     public float lookRadius;
     public float wanderRadius;
 
@@ -27,13 +28,15 @@ public class AIMovement : MonoBehaviour
     private float wanderSpeed = 1.25f;
     private float runSpeed = 2.25f;
     
-    private float attackRate = 2.5f;
+    private float attackRate = 2f;
     private float nextAttack;
 
     void Start()
     {
          animator = GetComponentInChildren<Animator>();
          currentHealth = maxHealth;
+         healthBar.SetMaxHealth(maxHealth);
+         healthBar.SetHealth(maxHealth);
     }
 
     void FixedUpdate()
@@ -81,6 +84,13 @@ public class AIMovement : MonoBehaviour
         }
     }
 
+    public int SubtractEnemyHealth(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+        return currentHealth;
+    }
+    
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask) 
     {
         Vector3 randDirection = Random.insideUnitSphere * dist;
@@ -112,8 +122,9 @@ public class AIMovement : MonoBehaviour
     {
         agent.isStopped = true;
         int health = currentHealth;
+        animator.speed = 1.5f;
         animator.SetTrigger("Swing");
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(0.6f);
         if (health == currentHealth)
         {
             Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
@@ -122,11 +133,12 @@ public class AIMovement : MonoBehaviour
             foreach (Collider player in hitPlayers)
             {
                 player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
-                Debug.Log("Player hit!");
+                // Debug.Log("Player hit!");
             }
         }
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
+        animator.speed = 1f;
         agent.isStopped = false;
     }
 
@@ -146,27 +158,33 @@ public class AIMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    public void TakeDamage(int damage)
+    public IEnumerator TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        agent.isStopped = true;
+        // currentHealth -= damage;
         // Play hurt animation
-        nextAttack = Time.time + attackRate;
+        nextAttack = Time.time + 0.75f;
         animator.SetTrigger("Hurt");
+        SubtractEnemyHealth(damage);
         if (currentHealth <= 0)
         {
             StartCoroutine(Die());
         }
+
+        yield return new WaitForSeconds(1.3f);
+        agent.isStopped = false;
     }
 
     private IEnumerator Die()
     {
-        Debug.Log("Enemy died!");
+        // Debug.Log("Enemy died!");
         
         // Play death animation
         animator.SetBool("IsDead", true);
         agent.isStopped = true;
         GetComponent<CapsuleCollider>().enabled = false;
         GetComponent<MeshCollider>().enabled = false;
+        transform.GetChild(2).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
         enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);

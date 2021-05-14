@@ -16,9 +16,8 @@ using UnityEngine;
 public class FpsMovement : MonoBehaviour
 {
     public Camera headCam;
-    public Camera standardCam;
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float runSpeed;
+    public float walkSpeed;
+    public float runSpeed;
     
     AudioSource m_AudioSource;
     private CharacterController charController;
@@ -36,15 +35,22 @@ public class FpsMovement : MonoBehaviour
     public bool isSprintingForward;
     
     private Vector3 impact = Vector3.zero;
+    private Vector3 rollPos;
+    private Vector3 fpsPos;
     private float moveSpeed;
     private float rotationVert;
     private bool rotateCameraEnabled = true;
     private Quaternion cameraRot;
     private float rollRate = 1f;
     private float nextRoll;
+    private bool isRolling;
     
     private int potionHealth = 20;
     private int potionOvershield = 10;
+    private float zoomSpeed = 10f;
+    private float startZoomSpeed = 2f;
+    private bool started;
+    private bool camAtPlayer;
 
     private PlayerCombat combat;
 
@@ -55,37 +61,55 @@ public class FpsMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
         combat = GetComponent<PlayerCombat>();
-        // isSprinting = false;
-        // rb = GetComponent<Rigidbody>();
+        fpsPos = new Vector3(0.3f, 1.6f, -1.05f);
+        rollPos = new Vector3 (0f, 1.4f, -2f);
+        StartCoroutine(LookAtPlayerFor(2.5f));
     }
 
     private void Update()
     {
+        // if (!started)
+        //     return;
+        //
+        // if (headCam.transform.localPosition != fpsPos && !isRolling)
+        // {
+        //     headCam.transform.localPosition = Vector3.Lerp(headCam.transform.localPosition, fpsPos, startZoomSpeed * Time.deltaTime);
+        //     // transform.LookAt(transform.parent);
+        //     return;
+        // }
+
+        // Ensure the camera always looks at the player
+        transform.LookAt(transform.parent);
+        
         if (impact.magnitude > 0.2) 
             charController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
+        
         if (combat.controlEnabled)
         {
             MoveCharacter();
             if (!combat.heavyAttack)
             {
-                RotateCamera();
-                RotateCharacter();
+                if (isRolling)
+                {
+                    headCam.transform.localPosition =
+                        Vector3.Lerp(headCam.transform.localPosition, rollPos, zoomSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    RotateCamera();
+                    RotateCharacter();
+                    if (fpsPos != headCam.transform.localPosition)
+                    {
+                        headCam.transform.localPosition = Vector3.Lerp(headCam.transform.localPosition, fpsPos,
+                            zoomSpeed * Time.deltaTime);
+                    }
+                }
             }
         }
     }
     
-    private void LateUpdate()
-    {
-        Vector3 pos = transform.position;
-        Quaternion rot = transform.rotation;
-        if (rotateCameraEnabled)
-        {
-            standardCam.transform.position = pos + transform.TransformDirection(new Vector3(0,1.5f,-1.75f));
-            standardCam.transform.rotation = rot;
-        }
-    }
 
     private void MoveCharacter()
     {
@@ -188,6 +212,7 @@ public class FpsMovement : MonoBehaviour
 
     private IEnumerator Roll()
     {
+        isRolling = true;
         animator.speed = 1f;
         animator.SetTrigger("Roll");
         if (Input.GetKey(KeyCode.W))
@@ -210,11 +235,8 @@ public class FpsMovement : MonoBehaviour
             animator.SetFloat("RollType", 0.5f);
             AddImpact(transform.right, rollForce);
         }
-        standardCam.gameObject.SetActive(true);
-        headCam.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.78f);
-        headCam.gameObject.SetActive(true);
-        standardCam.gameObject.SetActive(false);
+        isRolling = false;
     }
 
     private void RotateCharacter()
@@ -279,5 +301,11 @@ public class FpsMovement : MonoBehaviour
         }
         Destroy(other);
         other.gameObject.SetActive(false);
+    }
+
+    private IEnumerator LookAtPlayerFor(float time)
+    {
+        yield return new WaitForSeconds(time);
+        started = true;
     }
 }

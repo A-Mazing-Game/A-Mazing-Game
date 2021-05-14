@@ -25,7 +25,7 @@ public class GameOverScreen : MonoBehaviour
     private int maxHealth;
     private int numCoins;
     private PlayerStats playerStats;
-    private Inventory inventory;
+    private Inventory2 inventory;
     private BaseStats baseStats;
 
     // TODO
@@ -37,7 +37,7 @@ public class GameOverScreen : MonoBehaviour
     {
         playerStats = player.GetComponent<PlayerStats>();
         baseStats = controller.GetComponent<BaseStats>();
-        inventory = player.GetComponent<Inventory>();
+        inventory = player.GetComponent<Inventory2>();
         //player = GameObject.Find("Player");
         //controller = GameObject.Find("Controller");
 

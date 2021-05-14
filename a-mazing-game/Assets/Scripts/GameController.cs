@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
         player.GetComponent<PlayerStats>().SetUp();
-        player.GetComponent<Inventory>().SetUp();
+        player.GetComponent<Inventory2>().SetUp();
         healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
 
         StartNewMaze();
@@ -155,7 +155,7 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-        coinLabel.text = "Coins: " + player.GetComponent<Inventory>().numCoins.ToString();
+        coinLabel.text = "Coins: " + player.GetComponent<Inventory2>().numCoins.ToString();
         // healthLabel.fontSize = 75;
         healthLabel.text = player.GetComponent<PlayerStats>().currentHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
         // Invoke("StartNewGame", 4);

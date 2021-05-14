@@ -10,7 +10,7 @@ public class Coins : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<Inventory>().numCoins++;
+            other.GetComponent<Inventory2>().numCoins++;
             Destroy(gameObject);
         }
     }

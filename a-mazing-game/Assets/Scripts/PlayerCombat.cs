@@ -68,7 +68,7 @@ public class PlayerCombat : MonoBehaviour
         // Detect enemies in range of attack
         if (attackType == 0f)
         {
-            // damage = playerStats.attackDamage;
+            damage = playerStats.attackDamage;
             yield return new WaitForSeconds(0.1f);
             controlEnabled = true;
         }
@@ -76,6 +76,7 @@ public class PlayerCombat : MonoBehaviour
         {
             damage = 100;
             heavyAttack = true;
+            movement.runSpeed = 1.5f;
             yield return new WaitForSeconds(0.9f);
             controlEnabled = false;
         }
@@ -84,7 +85,7 @@ public class PlayerCombat : MonoBehaviour
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            enemy.GetComponent<AIMovement>().TakeDamage(damage);
+            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(damage));
             Debug.Log(enemy.name + " hit!");
             if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
             {
@@ -94,6 +95,7 @@ public class PlayerCombat : MonoBehaviour
         // cc.enabled = false;
         yield return new WaitForSeconds(0.5f);
         heavyAttack = false;
+        movement.runSpeed = 4f;
         // cc.enabled = true;
         controlEnabled = true;
     }
