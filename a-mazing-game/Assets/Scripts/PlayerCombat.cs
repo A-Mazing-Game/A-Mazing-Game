@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour
     private DateTime endTime;
     public TimeSpan elapsed;
     public GameOverScreen GameOverScreen;
+    public GameObject hud;
 
     private PlayerStats playerStats;
     private FpsMovement movement;
@@ -159,6 +160,7 @@ public class PlayerCombat : MonoBehaviour
         //TimeSpan time = GetComponent<GameController>().elapsed;
         endTime = DateTime.Now;
         elapsed = endTime - startTime;
+        hud.SetActive(false);
         GameOverScreen.Setup();
         // this.enabled = false;
     }

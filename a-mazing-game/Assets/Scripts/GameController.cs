@@ -35,6 +35,7 @@ public class GameController : MonoBehaviour
     private bool showingEnd;
     public GameOverScreen GameOverScreen;
     //public HealthBar healthBar;
+    public GameObject hud;
 
     private int score;
     private bool goalReached;
@@ -52,6 +53,7 @@ public class GameController : MonoBehaviour
         StartNewGame();
         numCoins = 0;
         surface.BuildNavMesh();
+        hud.SetActive(true);
     }
 
     //4
@@ -61,7 +63,7 @@ public class GameController : MonoBehaviour
         reduceLimitBy = 5;
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
-        
+        hud.SetActive(true);
         healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
         StartNewMaze();
     }
@@ -99,6 +101,7 @@ public class GameController : MonoBehaviour
     public void StartFromLastPlay()
     {
         GameOverScreen.TakeDown();
+        hud.SetActive(true);
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
         player.GetComponent<PlayerStats>().SetUp();
@@ -125,7 +128,7 @@ public class GameController : MonoBehaviour
             endTime = DateTime.Now;
             elapsed = endTime - startTime;
             //score = player.GetComponent<PlayerStats>().enemiesKilled;
-
+            hud.SetActive(false);
             GameOverScreen.Setup();
         }
         

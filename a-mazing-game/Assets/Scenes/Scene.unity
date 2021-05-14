@@ -1788,6 +1788,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607526527}
   m_CullTransparentMesh: 1
+--- !u!1 &626869723 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1082875561703164, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+  m_PrefabInstance: {fileID: 817019053}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &626869729 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224284725806146870, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
@@ -4762,7 +4767,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8936840687624926666}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1457528988
 SpriteRenderer:
@@ -5637,6 +5642,7 @@ MonoBehaviour:
   surface: {fileID: 21972634}
   numCoins: 0
   GameOverScreen: {fileID: 168113926}
+  hud: {fileID: 626869723}
   test: 1
   x: 0
   y: 0
@@ -6436,7 +6442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331026, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
@@ -6462,6 +6468,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: hud
+      value: 
+      objectReference: {fileID: 626869723}
     - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: torch
       value: 
