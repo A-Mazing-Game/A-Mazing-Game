@@ -47,6 +47,8 @@ public class MazeConstructor : MonoBehaviour
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
     public int desiredEnemies;
+    public LinkedList<GameObject> enemyList;  // holds all enemies 
+    public GameObject player;
     
     public int[,] data
     {
@@ -92,6 +94,8 @@ public class MazeConstructor : MonoBehaviour
         length = 0;
         agent = GetComponent<NavMeshAgent>();
         desiredEnemies = 24;
+        enemyList = new LinkedList<GameObject>();
+        player = GameObject.FindGameObjectWithTag("Player");
         
 
         // default to walls surrounding a single empty cell
@@ -129,15 +133,42 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
         StartCoroutine(SpawnCoRoutine());
+        StartCoroutine(UpdateActiveEnemy());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
         
     }
 
+    private IEnumerator UpdateActiveEnemy()
+    {
+        /*
+         * Enables / disables enemies based upon their location
+         */
+        while (true)
+        {
+            LinkedListNode<GameObject> enemyNode = enemyList.First;
+            while (enemyNode != null)
+            {
+                float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
+                if (distance > 50)
+                {
+                    enemyNode.Value.SetActive(false);
+                }
+                else
+                {
+                    enemyNode.Value.SetActive(true);
+                }
+                enemyNode = enemyNode.Next;
+            }
+            Debug.Log("Update enemy called");
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     private IEnumerator SpawnCoRoutine()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        
         while (true)
         {
             Debug.Log("Player pos: " + player.transform.position);
@@ -158,6 +189,17 @@ public class MazeConstructor : MonoBehaviour
             // if (aliveEnemies == 0)
             //     desiredEnemies += 2;
             SpawnEnemy(enemiesToSpawn + 2);
+            // foreach (GameObject e in enemyList)
+            // {
+            //     Debug.Log(player.transform.position - e.transform.position);   
+            // }
+            LinkedListNode<GameObject> enemyNode = enemyList.First;
+            while (enemyNode != null)
+            {
+                float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
+                Debug.Log("Distance: " + distance);
+                enemyNode = enemyNode.Next;
+            }
             yield return new WaitForSeconds(30);
         }
         
@@ -529,20 +571,24 @@ public class MazeConstructor : MonoBehaviour
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
         sk.AddComponent<MeshCollider>();
         // sk.enabled = true;
-        sk.SetActive(true);
+        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
+        sk.SetActive(false);
+        
         MeshCollider t = sk.GetComponent<MeshCollider>();
         // t.material = mr.materials[0];
         
         // Instantiate(skeleton);
         sk.name = "Skeleton";
         sk.tag = "Enemy";
+
+        enemyList.AddLast(sk);
         
         // sk.GetComponent<BoxCollider>().isTrigger = true;
         // skeleton.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
-        
+
         // TriggerEventRouter tc = skeleton.AddComponent<TriggerEventRouter>();
         // tc.callback = callback;
-        
+
     }
     
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)

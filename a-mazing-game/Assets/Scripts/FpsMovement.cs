@@ -53,6 +53,7 @@ public class FpsMovement : MonoBehaviour
     private bool camAtPlayer;
 
     private PlayerCombat combat;
+    private MazeConstructor maze;
 
     private void Start()
     {
@@ -60,6 +61,7 @@ public class FpsMovement : MonoBehaviour
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
+        maze = GetComponent<MazeConstructor>();
         combat = GetComponent<PlayerCombat>();
         fpsPos = new Vector3(0.3f, 1.6f, -1.05f);
         rollPos = new Vector3 (0f, 1.4f, -2f);
