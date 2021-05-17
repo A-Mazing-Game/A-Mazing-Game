@@ -188,7 +188,7 @@ public class AIMovement : MonoBehaviour
         // GetComponent<NavMeshAgent>().enabled = false;
         enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }
 }
