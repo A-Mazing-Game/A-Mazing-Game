@@ -130,7 +130,7 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
         StartCoroutine(SpawnCoRoutine());
-        StartCoroutine(UpdateGameObjects());
+        // StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
@@ -498,7 +498,7 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        stamina.SetActive(false);
+        stamina.SetActive(true);  // TODO
         stamina.name = "Stamina Potion";
         stamina.tag = "Stamina Potion";
         
@@ -521,7 +521,7 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        health.SetActive(false);
+        health.SetActive(true); // todo 
         health.name = "Health Potion";
         health.tag = "Health Potion";
         
@@ -542,7 +542,7 @@ public class MazeConstructor : MonoBehaviour
             Debug.Log("health not spawning at end trigger");
             return;
         }
-        shield.SetActive(false);
+        shield.SetActive(true);  // todo
         shield.name = "Overshield Potion";
         shield.tag = "Overshield Potion";
         
@@ -576,7 +576,7 @@ public class MazeConstructor : MonoBehaviour
         sk.AddComponent<MeshCollider>();
         // sk.enabled = true;
         float distance = Vector3.Distance(player.transform.position, sk.transform.position);
-        sk.SetActive(false);
+        sk.SetActive(true);  // todo
         
         MeshCollider t = sk.GetComponent<MeshCollider>();
         // t.material = mr.materials[0];
