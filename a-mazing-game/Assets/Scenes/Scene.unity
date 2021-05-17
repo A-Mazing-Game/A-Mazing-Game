@@ -391,7 +391,6 @@ GameObject:
   - component: {fileID: 168113927}
   - component: {fileID: 168113931}
   - component: {fileID: 168113930}
-  - component: {fileID: 168113928}
   - component: {fileID: 168113929}
   - component: {fileID: 168113926}
   m_Layer: 5
@@ -442,18 +441,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &168113928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168113925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c74fdf4cbed6304eb812b513d82c2fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &168113929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +471,7 @@ MonoBehaviour:
   ai: {fileID: 0}
   agent: {fileID: 0}
   desiredEnemies: 6
+  player: {fileID: 0}
 --- !u!114 &168113930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2235,6 +2223,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 114033457587256350, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.b
+      value: 0.37201852
+      objectReference: {fileID: 0}
+    - target: {fileID: 114033457587256350, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.g
+      value: 0.37201852
+      objectReference: {fileID: 0}
+    - target: {fileID: 114033457587256350, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.r
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 114033457587256350, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114542801398423212, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.b
+      value: 0.2924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 114542801398423212, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.g
+      value: 0.2924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 114542801398423212, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Color.r
+      value: 0.2924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 114542801398423212, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 117615431617608122, guid: d142c93fad35d4a3faad9b2dd7d73403, type: 3}
       propertyPath: Inventory
       value: 
@@ -3224,7 +3244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &974588509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5677,6 +5697,7 @@ MonoBehaviour:
   ai: {fileID: 0}
   agent: {fileID: 0}
   desiredEnemies: 6
+  player: {fileID: 0}
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0
@@ -6345,6 +6366,10 @@ PrefabInstance:
     - target: {fileID: 4722138694493825984, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318223405234223094, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: m_Camera
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9154607144354163351, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_Name
