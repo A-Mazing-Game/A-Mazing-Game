@@ -70,16 +70,6 @@ public class FpsMovement : MonoBehaviour
 
     private void Update()
     {
-        // if (!started)
-        //     return;
-        //
-        // if (headCam.transform.localPosition != fpsPos && !isRolling)
-        // {
-        //     headCam.transform.localPosition = Vector3.Lerp(headCam.transform.localPosition, fpsPos, startZoomSpeed * Time.deltaTime);
-        //     // transform.LookAt(transform.parent);
-        //     return;
-        // }
-
         // Ensure the camera always looks at the player
         transform.LookAt(transform.parent);
         
