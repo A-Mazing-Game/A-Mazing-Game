@@ -43,6 +43,7 @@ public class MazeConstructor : MonoBehaviour
     private int[] deadEndRow;  // stores dead end row indicies
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
     public LinkedList<GameObject> enemyList;  // holds all enemies 
+    public LinkedList<GameObject> powerUps;  // holds all spawned powerups
     public GameObject player;  // player gameobject
     
     public int[,] data
@@ -90,6 +91,7 @@ public class MazeConstructor : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         desiredEnemies = 24;
         enemyList = new LinkedList<GameObject>();
+        powerUps = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
         
 
@@ -128,26 +130,27 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
         StartCoroutine(SpawnCoRoutine());
-        StartCoroutine(UpdateActiveEnemy());
+        StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
         
     }
 
-    private IEnumerator UpdateActiveEnemy()
+    private IEnumerator UpdateGameObjects()
     {
         /*
-         * Enables / disables enemies based upon their location
+         * Enables / disables spawned game objects based upon their location
          */
         
         while (true)
         {
             LinkedListNode<GameObject> enemyNode = enemyList.First;
-            while (enemyNode != null)
+            LinkedListNode<GameObject> powerUpNode = powerUps.First;
+            while (enemyNode != null)  // enemies
             {
                 float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
-                if (distance > 50)
+                if (distance > 40)
                 {
                     enemyNode.Value.SetActive(false);
                 }
@@ -156,6 +159,20 @@ public class MazeConstructor : MonoBehaviour
                     enemyNode.Value.SetActive(true);
                 }
                 enemyNode = enemyNode.Next;
+            }
+
+            while (powerUpNode != null)  // power ups
+            {
+                float distance = Vector3.Distance(player.transform.position, powerUpNode.Value.transform.position);
+                if (distance > 40)
+                {
+                    powerUpNode.Value.SetActive(false);
+                }
+                else
+                {
+                    powerUpNode.Value.SetActive(true);
+                }
+                powerUpNode = powerUpNode.Next;
             }
             yield return new WaitForSeconds(1);
         }
@@ -481,13 +498,14 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        stamina.SetActive(true);
+        stamina.SetActive(false);
         stamina.name = "Stamina Potion";
         stamina.tag = "Stamina Potion";
         
         stamina.GetComponent<SphereCollider>().isTrigger = true;
         TriggerEventRouter tc = stamina.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
+        powerUps.AddLast(stamina);
 
     }
 
@@ -503,13 +521,14 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        health.SetActive(true);
+        health.SetActive(false);
         health.name = "Health Potion";
         health.tag = "Health Potion";
         
         health.GetComponent<SphereCollider>().isTrigger = true;
         TriggerEventRouter tc = health.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
+        powerUps.AddLast(health);
     }
     
     private void SpawnShield(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
@@ -523,7 +542,7 @@ public class MazeConstructor : MonoBehaviour
             Debug.Log("health not spawning at end trigger");
             return;
         }
-        shield.SetActive(true);
+        shield.SetActive(false);
         shield.name = "Overshield Potion";
         shield.tag = "Overshield Potion";
         
@@ -531,6 +550,7 @@ public class MazeConstructor : MonoBehaviour
 
         TriggerEventRouter tc = shield.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
+        powerUps.AddLast(shield);
     }
 
     private void PlaceStartTrigger(TriggerEventHandler callback)
