@@ -32,23 +32,18 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material testSpawn;
     public GameObject start;
     public GameObject enemy;
-    public GameObject skeleton;
-    public GameObject healthPotion;
-    public GameObject staminaPotion;
-    public GameObject shieldPotion;
+    public GameObject skeleton;  // Skeleton prefab
+    public GameObject healthPotion;  // health prefab
+    public GameObject staminaPotion;  // stamina prefab
+    public GameObject shieldPotion;  // shield prefab
     public AIMovement ai;
     public NavMeshAgent agent;
-    private MeshRenderer mr;
-    private MeshFilter tt;
-    private MeshRenderer ttt;
-    private MeshCollider tttt;
-    private int testRow;
-    private int testCol;
+    private MeshRenderer mr;  // mesh renderer
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
-    public int desiredEnemies;
+    public int desiredEnemies;  // number of enemies to initially spawn in the maze
     public LinkedList<GameObject> enemyList;  // holds all enemies 
-    public GameObject player;
+    public GameObject player;  // player gameobject
     
     public int[,] data
     {
@@ -145,6 +140,7 @@ public class MazeConstructor : MonoBehaviour
         /*
          * Enables / disables enemies based upon their location
          */
+        
         while (true)
         {
             LinkedListNode<GameObject> enemyNode = enemyList.First;
@@ -161,45 +157,28 @@ public class MazeConstructor : MonoBehaviour
                 }
                 enemyNode = enemyNode.Next;
             }
-            Debug.Log("Update enemy called");
             yield return new WaitForSeconds(1);
         }
     }
 
     private IEnumerator SpawnCoRoutine()
     {
+        /*
+         * Continually spawn enemies within the maze
+         */
         
         while (true)
         {
-            Debug.Log("Player pos: " + player.transform.position);
-            int aliveEnemies = 0;
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            int numEnemies = enemies.Length;
-            // for (int i = 0; i < numEnemies; i++)
-            // {
-            //     AIMovement temp = enemies[i].GetComponent<AIMovement>();
-            //     if (temp.currentHealth > 0)
-            //         aliveEnemies++;
-            //     
-            // }
+            // Debug.Log("Player pos: " + player.transform.position);
+            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            int numEnemies = allEnemies.Length;
             int enemiesToSpawn = desiredEnemies - numEnemies;
-            Debug.Log("NumEnemies: " + numEnemies);
-            Debug.Log("Enemies to spawn: " + enemiesToSpawn);
-            Debug.Log("Enemies alive: " + aliveEnemies);
-            // if (aliveEnemies == 0)
-            //     desiredEnemies += 2;
+            
+            // Debug.Log("NumEnemies: " + numEnemies);
+            // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
+            // Debug.Log("Enemies alive: " + aliveEnemies);
+            
             SpawnEnemy(enemiesToSpawn + 2);
-            // foreach (GameObject e in enemyList)
-            // {
-            //     Debug.Log(player.transform.position - e.transform.position);   
-            // }
-            LinkedListNode<GameObject> enemyNode = enemyList.First;
-            while (enemyNode != null)
-            {
-                float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
-                Debug.Log("Distance: " + distance);
-                enemyNode = enemyNode.Next;
-            }
             yield return new WaitForSeconds(30);
         }
         
@@ -212,6 +191,7 @@ public class MazeConstructor : MonoBehaviour
         /*
          * Simple method that spawns enemies in the maze
          */
+        
         enemies = new int[length];
         for (int i = 0; i < numEnemies; i++)
         {
@@ -227,6 +207,10 @@ public class MazeConstructor : MonoBehaviour
 
     void SpawnPowerUp(GameObject endLocation)
     {
+        /*
+         * Spawn power ups within the maze
+         */
+        
         int l = deadEndCol.Length;
         System.Random random = new System.Random();
         Debug.Log("L length is: " + l);
