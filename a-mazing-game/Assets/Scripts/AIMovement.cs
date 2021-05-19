@@ -30,6 +30,7 @@ public class AIMovement : MonoBehaviour
     
     private float attackRate = 2f;
     private float nextAttack;
+    public MazeConstructor mz;
 
     void Start()
     {
@@ -174,6 +175,8 @@ public class AIMovement : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
         agent.isStopped = false;
     }
+    
+    
 
     private IEnumerator Die()
     {
@@ -189,6 +192,7 @@ public class AIMovement : MonoBehaviour
         enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);
+        mz.RemoveEnemyNode(gameObject);
         Destroy(gameObject);
     }
 }

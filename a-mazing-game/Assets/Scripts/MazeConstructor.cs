@@ -42,8 +42,8 @@ public class MazeConstructor : MonoBehaviour
     private int[] deadEndCol;  // stores dead column indices
     private int[] deadEndRow;  // stores dead end row indicies
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
-    public LinkedList<GameObject> enemyList;  // holds all enemies 
-    public LinkedList<GameObject> powerUps;  // holds all spawned powerups
+    private LinkedList<GameObject> enemyList;  // holds all enemies 
+    private LinkedList<GameObject> powerUps;  // holds all spawned powerups
     public GameObject player;  // player gameobject
     
     public int[,] data
@@ -93,6 +93,7 @@ public class MazeConstructor : MonoBehaviour
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
+        ai = GetComponent<AIMovement>();
         
 
         // default to walls surrounding a single empty cell
@@ -130,13 +131,28 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
         StartCoroutine(SpawnCoRoutine());
-        // StartCoroutine(UpdateGameObjects());
+        StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
         
     }
-
+    
+    public void RemoveEnemyNode(GameObject go)
+    {
+        LinkedListNode<GameObject> enemyNode = enemyList.First;
+        while (true)
+        {
+            if (enemyNode.Value == go)
+            {
+                enemyList.Remove(enemyNode);
+                return;
+            }
+        
+            enemyNode = enemyNode.Next;
+        }
+    }
+    
     private IEnumerator UpdateGameObjects()
     {
         /*
@@ -498,7 +514,7 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        stamina.SetActive(true);  // TODO
+        stamina.SetActive(false);
         stamina.name = "Stamina Potion";
         stamina.tag = "Stamina Potion";
         
@@ -521,7 +537,7 @@ public class MazeConstructor : MonoBehaviour
             return;
         }
         // health.AddComponent<SphereCollider>();
-        health.SetActive(true); // todo 
+        health.SetActive(false);
         health.name = "Health Potion";
         health.tag = "Health Potion";
         
@@ -542,7 +558,7 @@ public class MazeConstructor : MonoBehaviour
             Debug.Log("health not spawning at end trigger");
             return;
         }
-        shield.SetActive(true);  // todo
+        shield.SetActive(false);
         shield.name = "Overshield Potion";
         shield.tag = "Overshield Potion";
         
@@ -576,7 +592,7 @@ public class MazeConstructor : MonoBehaviour
         sk.AddComponent<MeshCollider>();
         // sk.enabled = true;
         float distance = Vector3.Distance(player.transform.position, sk.transform.position);
-        sk.SetActive(true);  // todo
+        sk.SetActive(true);
         
         MeshCollider t = sk.GetComponent<MeshCollider>();
         // t.material = mr.materials[0];
