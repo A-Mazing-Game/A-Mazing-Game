@@ -16,7 +16,7 @@ public class InteractableItemBase : MonoBehaviour
 
     public Sprite Image;
 
-    public string InteractText = "Press F to pickup the item";
+    public string InteractText = "Press F to pickup";
 
     public EItemType ItemType;
 
@@ -63,6 +63,7 @@ public class InventoryItemBase : InteractableItemBase
     public virtual void OnPickup()
     {
         Destroy(gameObject.GetComponent<Rigidbody>());
+        Destroy(gameObject.GetComponent<BoxCollider>());
         gameObject.SetActive(false);
         
     }

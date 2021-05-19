@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading;
+using UnityEngine.EventSystems;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange;
     public bool controlEnabled;
     public bool heavyAttack;
+    public bool isDead;
+    // public InventoryItemBase currentItem;
     
     private float attackRate = 1f;
     private float nextAttack;
@@ -33,6 +36,7 @@ public class PlayerCombat : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         movement = GetComponent<FpsMovement>();
         cc = GetComponent<CharacterController>();
+        // currentItem = GetComponent<PlayerController>().mCurrentItem;
         // attackDamage = playerStats.attackDamage;
         startTime = DateTime.Now;
         endTime = DateTime.Now;
@@ -41,10 +45,30 @@ public class PlayerCombat : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
+        if (!isDead) // && mIsControlEnabled)
         {
-            nextAttack = Time.time + attackRate;
-            StartCoroutine(Attack());
+            // Interact with the item
+            // if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
+            // {
+            //     // Interact animation
+            //     mInteractItem.OnInteractAnimation(_animator);
+            // }
+
+            // Execute action with item
+            // if (currentItem != null && Input.GetMouseButtonDown(0))
+            // {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
+            {
+                nextAttack = Time.time + attackRate;
+                StartCoroutine(Attack());
+            }
+                // // Dont execute click if mouse pointer is over uGUI element
+                // if (!EventSystem.current.IsPointerOverGameObject())
+                // {
+                //     // TODO: Logic which action to execute has to come from the particular item
+                //     _animator.SetTrigger("attack_1");
+                // }
+            // }
         }
     }
     
@@ -158,6 +182,7 @@ public class PlayerCombat : MonoBehaviour
         // GetComponent<CharacterController>().enabled = false;
         // GetComponent<FpsMovement>().enabled = false;
         //TimeSpan time = GetComponent<GameController>().elapsed;
+        isDead = true;
         endTime = DateTime.Now;
         elapsed = endTime - startTime;
         hud.SetActive(false);
