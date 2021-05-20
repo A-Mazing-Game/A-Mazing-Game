@@ -4923,6 +4923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011650569256}
   - component: {fileID: 7319039184491344624}
+  - component: {fileID: 8106001508260537355}
   m_Layer: 0
   m_Name: Bottle_Mana
   m_TagString: Overshield Potion
@@ -4960,6 +4961,27 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &8106001508260537355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013317980782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6840fd7f8d24465ab6271d9cdab52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Blue Potion
+  Image: {fileID: 21300000, guid: fe6739ef6ea2a4afca70b7ee98422c7f, type: 3}
+  InteractText: Press F to pickup overshield potion
+  ItemType: 0
+  PickPosition: {x: 4.462, y: 1.075, z: 2.49}
+  PickRotation: {x: 87.723, y: 0, z: 0}
+  DropRotation: {x: 0, y: 0, z: 0}
+  UseItemAfterPickup: 0
+  player: {fileID: 0}
 --- !u!1 &1000013970829164
 GameObject:
   m_ObjectHideFlags: 0

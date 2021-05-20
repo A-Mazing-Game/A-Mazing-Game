@@ -65,7 +65,6 @@ public class InventoryItemBase : InteractableItemBase
         Destroy(gameObject.GetComponent<Rigidbody>());
         Destroy(gameObject.GetComponent<BoxCollider>());
         gameObject.SetActive(false);
-        
     }
 
     public Vector3 PickPosition;

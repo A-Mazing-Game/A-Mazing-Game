@@ -24,6 +24,7 @@ public class ItemClickHandler : MonoBehaviour
 
             // Click the button
             _button.onClick.Invoke();
+            OnItemClicked();
         }
         else if(Input.GetKeyUp(_Key))
         {
@@ -54,6 +55,7 @@ public class ItemClickHandler : MonoBehaviour
 
         if (item != null)
         {
+            Debug.Log("using " + item.Name);
             _Inventory.UseItem(item);
         }
     }

@@ -5,10 +5,12 @@ using UnityEngine;
 public class Minimap : MonoBehaviour
 {
     public Transform player;
-    // Start is called before the first frame update
+    
     void LateUpdate()
     {
         Vector3 newPosition = player.position;
+        Vector3 playerRotation = player.eulerAngles;
+        transform.eulerAngles = new Vector3(90f,0f,-playerRotation.y);
         newPosition.y = transform.position.y;
         transform.position = newPosition;
     }

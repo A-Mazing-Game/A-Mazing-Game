@@ -9703,6 +9703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010690109084}
   - component: {fileID: 4706735445675201702}
+  - component: {fileID: 4363554312079953821}
   m_Layer: 0
   m_Name: Bottle_Health
   m_TagString: Health Potion
@@ -9740,6 +9741,27 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4363554312079953821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012970591572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29b98f6b0ed74c2ab9d945e373db34a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Red Potion
+  Image: {fileID: 21300000, guid: e06d2f59f06424c338ec3ad95edb1be8, type: 3}
+  InteractText: Press F to pickup health potion
+  ItemType: 0
+  PickPosition: {x: 4.462, y: 1.075, z: 2.49}
+  PickRotation: {x: 87.723, y: 0, z: 0}
+  DropRotation: {x: 0, y: 0, z: 0}
+  UseItemAfterPickup: 0
+  player: {fileID: 0}
 --- !u!1 &1784011218779512902
 GameObject:
   m_ObjectHideFlags: 0

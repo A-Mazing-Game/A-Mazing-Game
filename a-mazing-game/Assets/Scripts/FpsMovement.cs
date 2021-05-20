@@ -17,26 +17,11 @@ using UnityEngine.EventSystems;
 // basic WASD-style movement control
 public class FpsMovement : MonoBehaviour
 {
-    public Camera headCam;
-    public float walkSpeed;
-    public float runSpeed;
-    public GameObject Hand;
-    
-    AudioSource m_AudioSource;
+    #region Private Members
     private CharacterController charController;
     private Animator animator;
     private PlayerStats playerStats;
     // private Rigidbody rb;
-
-    public float gravity = -9.8f;
-    public float rollForce = 5.0f;
-    public float mass;
-    public float sensitivityHor = 9.0f;
-    public float sensitivityVert = 9.0f;
-    public float minimumVert = -45.0f;
-    public float maximumVert = 45.0f;
-    public bool isSprintingForward;
-    
     private Vector3 impact = Vector3.zero;
     private Vector3 rollPos;
     private Vector3 fpsPos;
@@ -47,35 +32,35 @@ public class FpsMovement : MonoBehaviour
     private float rollRate = 1f;
     private float nextRoll;
     private bool isRolling;
-    
     private int potionHealth = 20;
     private int potionOvershield = 10;
     private float zoomSpeed = 10f;
     private float startZoomSpeed = 2f;
     private bool started;
     private bool camAtPlayer;
-
+    private bool mCanTakeDamage = true;
     private PlayerCombat combat;
     private MazeConstructor maze;
-    
-    #region Private Members
-    
-    private bool mCanTakeDamage = true;
-
+    AudioSource m_AudioSource;
     #endregion
 
     #region Public Members
-
     public Inventory inventory;
-
-    // public GameObject Hand;
-
     public HUD Hud;
-    
-    private InventoryItemBase mCurrentItem;
-
+    public InventoryItemBase mCurrentItem;
+    public Camera headCam;
+    public float walkSpeed;
+    public float runSpeed;
+    public GameObject Hand;
+    public float gravity = -9.8f;
+    public float rollForce = 5.0f;
+    public float mass;
+    public float sensitivityHor = 9.0f;
+    public float sensitivityVert = 9.0f;
+    public float minimumVert = -45.0f;
+    public float maximumVert = 45.0f;
+    public bool isSprintingForward;
     public bool isDead;
-
     #endregion
 
     private void Start()
@@ -91,7 +76,6 @@ public class FpsMovement : MonoBehaviour
         isDead = GetComponent<PlayerCombat>().isDead;
         inventory.ItemUsed += Inventory_ItemUsed;
         inventory.ItemRemoved += Inventory_ItemRemoved;
-        // StartCoroutine(LookAtPlayerFor(2.5f));
     }
 
     private void Update()
@@ -100,6 +84,7 @@ public class FpsMovement : MonoBehaviour
         {
             InteractWithItem();
         }
+        
         // Ensure the camera always looks at the player
         transform.LookAt(transform.parent);
         
@@ -284,47 +269,6 @@ public class FpsMovement : MonoBehaviour
         impact += dir.normalized * force / mass;
     }
     
-    private void OnTriggerEnter(Collider other)
-    {
-        TryInteraction(other);
-        int currentHealth = playerStats.currentHealth;
-        int maxHealth = playerStats.maxHealth;
-        int currentOvershield = playerStats.currentOvershield;
-        int maxOvershield = playerStats.maxOvershield;
-        
-        if (other.gameObject.CompareTag("Health Potion"))
-        {
-            if (currentHealth < maxHealth)
-            {
-                if (currentHealth + potionHealth >= maxHealth)
-                {
-                    playerStats.AddHealth(maxHealth - currentHealth);
-                }
-                else
-                {
-                    playerStats.AddHealth(potionHealth);
-                }
-                // other.gameObject.SetActive(false);
-            }
-        }
-        if (other.gameObject.CompareTag("Overshield Potion"))
-        {
-            if (currentOvershield < maxOvershield)
-            {
-                if (currentOvershield + potionOvershield >= maxOvershield)
-                {
-                    playerStats.AddOvershield(maxOvershield - currentOvershield);
-                }
-                else
-                {
-                    playerStats.AddOvershield(potionOvershield);
-                }
-                // other.gameObject.SetActive(false);
-            }
-        }
-        // Destroy(other);
-        // other.gameObject.SetActive(false);
-    }
     
     #region Inventory
 
@@ -473,10 +417,15 @@ public class FpsMovement : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         TryInteraction(other);
     }
+    
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     TryInteraction(other);
+    // }
 
     private void OnTriggerExit(Collider other)
     {

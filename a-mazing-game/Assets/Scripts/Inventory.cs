@@ -56,7 +56,6 @@ public class Inventory : MonoBehaviour
             {
                 ItemAdded(this, new InventoryEventArgs(item));
             }
-
         }
     }
 

@@ -27,6 +27,7 @@ public class PlayerCombat : MonoBehaviour
     public GameOverScreen GameOverScreen;
     public GameObject hud;
 
+    private FpsMovement fps;
     private PlayerStats playerStats;
     private FpsMovement movement;
     private CharacterController cc;
@@ -36,6 +37,7 @@ public class PlayerCombat : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         movement = GetComponent<FpsMovement>();
         cc = GetComponent<CharacterController>();
+        fps = GetComponent<FpsMovement>();
         // currentItem = GetComponent<PlayerController>().mCurrentItem;
         // attackDamage = playerStats.attackDamage;
         startTime = DateTime.Now;
@@ -45,7 +47,7 @@ public class PlayerCombat : MonoBehaviour
     
     void Update()
     {
-        if (!isDead) // && mIsControlEnabled)
+        if (!isDead && fps.IsArmed)// && mIsControlEnabled)
         {
             // Interact with the item
             // if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
@@ -187,6 +189,5 @@ public class PlayerCombat : MonoBehaviour
         elapsed = endTime - startTime;
         hud.SetActive(false);
         GameOverScreen.Setup();
-        // this.enabled = false;
     }
 }

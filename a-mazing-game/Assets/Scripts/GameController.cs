@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour
         startTime = DateTime.Now;
         //healthBar.SetMaxHealth(maxHealth);
         hud.SetActive(true);
+        // gameObject.Find("EventSystem").SetActive(false);
         healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
         StartNewMaze();
     }
