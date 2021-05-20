@@ -161,10 +161,11 @@ public class AIMovement : MonoBehaviour
 
     public IEnumerator TakeDamage(int damage)
     {
+        animator.speed = 1.75f;
         agent.isStopped = true;
         // currentHealth -= damage;
         // Play hurt animation
-        nextAttack = Time.time + 0.75f;
+        nextAttack = Time.time + 0.6f;
         animator.SetTrigger("Hurt");
         SubtractEnemyHealth(damage);
         if (currentHealth <= 0)
@@ -172,7 +173,8 @@ public class AIMovement : MonoBehaviour
             StartCoroutine(Die());
         }
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.6f);
+        animator.speed = 1f;
         agent.isStopped = false;
     }
     

@@ -422,11 +422,6 @@ public class FpsMovement : MonoBehaviour
         TryInteraction(other);
     }
     
-    // private void OnTriggerStay(Collider other)
-    // {
-    //     TryInteraction(other);
-    // }
-
     private void OnTriggerExit(Collider other)
     {
         InteractableItemBase item = other.GetComponent<InteractableItemBase>();
