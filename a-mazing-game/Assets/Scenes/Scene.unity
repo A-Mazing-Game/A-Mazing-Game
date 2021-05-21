@@ -5258,7 +5258,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8936840687624926666}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1457528988
 SpriteRenderer:
@@ -6743,6 +6743,10 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: m_Radius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_AutoBraking
       value: 1
       objectReference: {fileID: 0}
@@ -6850,8 +6854,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Canvas
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8099010684804324388, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
 --- !u!1001 &7004691641281115507
 PrefabInstance:
@@ -6942,7 +6945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331026, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
@@ -7065,6 +7068,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7004691639439559887, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004691639439559887, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 127
       objectReference: {fileID: 0}
@@ -7088,6 +7095,10 @@ PrefabInstance:
       propertyPath: Hand
       value: 
       objectReference: {fileID: 748772259}
+    - target: {fileID: 7004691639459181276, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 8936840687624926666}
     - target: {fileID: 7004691639459181276, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: Inventory
       value: 

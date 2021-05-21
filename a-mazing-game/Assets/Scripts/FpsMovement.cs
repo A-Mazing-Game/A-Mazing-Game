@@ -21,10 +21,16 @@ public class FpsMovement : MonoBehaviour
     private CharacterController charController;
     private Animator animator;
     private PlayerStats playerStats;
+
+    public Transform player;
+    
     // private Rigidbody rb;
     private Vector3 impact = Vector3.zero;
     private Vector3 rollPos;
     private Vector3 fpsPos;
+    private Vector3 relativePos;
+    private float distanceOffset;
+    private float distance = 0.5f;
     private float moveSpeed;
     private float rotationVert;
     private bool rotateCameraEnabled = true;
@@ -41,6 +47,7 @@ public class FpsMovement : MonoBehaviour
     private bool mCanTakeDamage = true;
     private PlayerCombat combat;
     private MazeConstructor maze;
+    private RaycastHit camHit;
     AudioSource m_AudioSource;
     #endregion
 
@@ -71,8 +78,8 @@ public class FpsMovement : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         maze = GetComponent<MazeConstructor>();
         combat = GetComponent<PlayerCombat>();
-        fpsPos = new Vector3(0.3f, 1.6f, -1.05f);
-        rollPos = new Vector3 (0f, 1.4f, -2f);
+        fpsPos = headCam.transform.localPosition;
+        rollPos = new Vector3(0f, 1.4f, -2f);
         isDead = GetComponent<PlayerCombat>().isDead;
         inventory.ItemUsed += Inventory_ItemUsed;
         inventory.ItemRemoved += Inventory_ItemRemoved;
@@ -80,19 +87,46 @@ public class FpsMovement : MonoBehaviour
 
     private void Update()
     {
+        // RaycastHit ray;
+        float clipOffset = 0.2f;
+        Vector3 playerCenter = new Vector3 (0, 0.5f, 0);
+        if (Physics.Linecast(transform.position + playerCenter, (transform.position + playerCenter) + (transform.localRotation * fpsPos), out camHit))
+        {
+            Vector3 moveTo = new Vector3 (fpsPos.x, fpsPos.y,-Mathf.Abs(transform.position.z - camHit.point.z) + clipOffset);
+            headCam.transform.localPosition =
+                Vector3.Lerp(headCam.transform.localPosition, moveTo, 10 * Time.deltaTime);
+        }
+        else 
+            headCam.transform.localPosition =
+                Vector3.Lerp(headCam.transform.localPosition, fpsPos, 10 * Time.deltaTime);
+            // headCam.transform.localPosition = fpsPos;
+        // relativePos = headCam.transform.position - player.position;
+        // RaycastHit hit;
+        // if (Physics.Raycast(player.position, relativePos, out hit, distance))
+        // {
+        //     Debug.DrawLine(headCam.transform.position, hit.point);
+        //     distanceOffset = distance - hit.distance + 0.8f;
+        //     distanceOffset = Mathf.Clamp(distanceOffset, 0, distance);
+        //     Debug.Log("Hit something");
+        // }
+        // else
+        // {
+        //     distanceOffset = 0;
+        // }
+        
         if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
         {
             InteractWithItem();
         }
-        
+
         // Ensure the camera always looks at the player
-        transform.LookAt(transform.parent);
-        
-        if (impact.magnitude > 0.2) 
+        // headCam.transform.LookAt(headCam.transform.parent);
+
+        if (impact.magnitude > 0.2)
             charController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
-        impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
-        
+        impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+
         if (combat.controlEnabled)
         {
             MoveCharacter();
@@ -107,16 +141,11 @@ public class FpsMovement : MonoBehaviour
                 {
                     RotateCamera();
                     RotateCharacter();
-                    if (fpsPos != headCam.transform.localPosition)
-                    {
-                        headCam.transform.localPosition = Vector3.Lerp(headCam.transform.localPosition, fpsPos,
-                            zoomSpeed * Time.deltaTime);
-                    }
                 }
             }
         }
     }
-    
+
 
     private void MoveCharacter()
     {

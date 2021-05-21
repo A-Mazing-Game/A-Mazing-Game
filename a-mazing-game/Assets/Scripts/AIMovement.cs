@@ -30,6 +30,7 @@ public class AIMovement : MonoBehaviour
     
     private float attackRate = 2f;
     private float nextAttack;
+    private bool isDead;
     public MazeConstructor mz;
 
     void Start()
@@ -42,45 +43,48 @@ public class AIMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Distance to the target
-        float distance = Vector3.Distance(player.position, transform.position);
-        
-        // If not inside the lookRadius
-        if (distance >= lookRadius)
+        if (!isDead)
         {
-            Wander();
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance 
-                                   && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            // Distance to the target
+            float distance = Vector3.Distance(player.position, transform.position);
+
+            // If not inside the lookRadius
+            if (distance >= lookRadius)
             {
-                agent.ResetPath();
-                NavMeshPath path = new NavMeshPath();
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-                agent.CalculatePath(newPos, path);
-                if (agent.pathStatus != NavMeshPathStatus.PathPartial)
+                Wander();
+                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance
+                                       && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                 {
-                    agent.SetDestination(newPos);
+                    agent.ResetPath();
+                    NavMeshPath path = new NavMeshPath();
+                    Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                    agent.CalculatePath(newPos, path);
+                    if (agent.pathStatus != NavMeshPathStatus.PathPartial)
+                    {
+                        agent.SetDestination(newPos);
+                    }
                 }
             }
-        }
-        
-        if (distance < lookRadius)
-        {
-            FaceTarget();
-            // If within attacking distance
-            if (distance < agent.stoppingDistance)
+
+            if (distance < lookRadius)
             {
-                Idle();
-                if (Time.time > nextAttack)
+                FaceTarget();
+                // If within attacking distance
+                if (distance < agent.stoppingDistance)
                 {
-                    nextAttack = Time.time + attackRate;
-                    StartCoroutine(Slash());
+                    Idle();
+                    if (Time.time > nextAttack)
+                    {
+                        nextAttack = Time.time + attackRate;
+                        StartCoroutine(Slash());
+                    }
                 }
-            }
-            else
-            {
-                // Move towards the target
-                agent.SetDestination(player.position);
-                Run();
+                else
+                {
+                    // Move towards the target
+                    agent.SetDestination(player.position);
+                    Run();
+                }
             }
         }
     }
@@ -121,26 +125,29 @@ public class AIMovement : MonoBehaviour
 
     private IEnumerator Slash()
     {
-        agent.isStopped = true;
-        int health = currentHealth;
-        animator.speed = 1.5f;
-        animator.SetTrigger("Swing");
-        yield return new WaitForSeconds(0.6f);
-        if (health == currentHealth)
+        if (!isDead)
         {
-            Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
-
-            // yield return new WaitForSeconds(0.5f);
-            foreach (Collider player in hitPlayers)
+            agent.isStopped = true;
+            int health = currentHealth;
+            animator.speed = 1.5f;
+            animator.SetTrigger("Swing");
+            yield return new WaitForSeconds(0.6f);
+            if (health == currentHealth)
             {
-                player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
-                // Debug.Log("Player hit!");
+                Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
+
+                // yield return new WaitForSeconds(0.5f);
+                foreach (Collider player in hitPlayers)
+                {
+                    player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
+                    // Debug.Log("Player hit!");
+                }
             }
+
+            yield return new WaitForSeconds(0.7f);
+            animator.speed = 1f;
+            agent.isStopped = false;
         }
-        
-        yield return new WaitForSeconds(0.7f);
-        animator.speed = 1f;
-        agent.isStopped = false;
     }
 
     private void OnDrawGizmosSelected()
@@ -161,21 +168,25 @@ public class AIMovement : MonoBehaviour
 
     public IEnumerator TakeDamage(int damage)
     {
-        animator.speed = 1.75f;
-        agent.isStopped = true;
-        // currentHealth -= damage;
-        // Play hurt animation
-        nextAttack = Time.time + 0.6f;
-        animator.SetTrigger("Hurt");
-        SubtractEnemyHealth(damage);
-        if (currentHealth <= 0)
+        if (!isDead)
         {
-            StartCoroutine(Die());
-        }
+            animator.speed = 1.75f;
+            agent.isStopped = true;
+            // currentHealth -= damage;
+            // Play hurt animation
+            nextAttack = Time.time + 0.6f;
+            animator.SetTrigger("Hurt");
+            SubtractEnemyHealth(damage);
+            if (currentHealth <= 0)
+            {
+                isDead = true;
+                StartCoroutine(Die());
+            }
 
-        yield return new WaitForSeconds(0.6f);
-        animator.speed = 1f;
-        agent.isStopped = false;
+            yield return new WaitForSeconds(0.6f);
+            animator.speed = 1f;
+            agent.isStopped = false;
+        }
     }
     
     
@@ -185,16 +196,17 @@ public class AIMovement : MonoBehaviour
         // Debug.Log("Enemy died!");
         
         // Play death animation
+        animator.speed = 1f;
         animator.SetBool("IsDead", true);
-        agent.isStopped = true;
+        // agent.isStopped = true;
         GetComponent<CapsuleCollider>().enabled = false;
         GetComponent<MeshCollider>().enabled = false;
         transform.GetChild(2).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
-        enabled = false;
+        mz.RemoveEnemyNode(gameObject);
+        // enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);
-        mz.RemoveEnemyNode(gameObject);
         Destroy(gameObject);
     }
 }
