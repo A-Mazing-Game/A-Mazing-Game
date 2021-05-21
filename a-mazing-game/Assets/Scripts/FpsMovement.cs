@@ -87,9 +87,9 @@ public class FpsMovement : MonoBehaviour
 
     private void Update()
     {
-        // RaycastHit ray;
+        // Prevent the camera from clipping through walls
         float clipOffset = 0.2f;
-        Vector3 playerCenter = new Vector3 (0, 0.5f, 0);
+        Vector3 playerCenter = new Vector3 (0, 0.7f, 0);
         if (Physics.Linecast(transform.position + playerCenter, (transform.position + playerCenter) + (transform.localRotation * fpsPos), out camHit))
         {
             Vector3 moveTo = new Vector3 (fpsPos.x, fpsPos.y,-Mathf.Abs(transform.position.z - camHit.point.z) + clipOffset);
@@ -99,21 +99,8 @@ public class FpsMovement : MonoBehaviour
         else 
             headCam.transform.localPosition =
                 Vector3.Lerp(headCam.transform.localPosition, fpsPos, 10 * Time.deltaTime);
-            // headCam.transform.localPosition = fpsPos;
-        // relativePos = headCam.transform.position - player.position;
-        // RaycastHit hit;
-        // if (Physics.Raycast(player.position, relativePos, out hit, distance))
-        // {
-        //     Debug.DrawLine(headCam.transform.position, hit.point);
-        //     distanceOffset = distance - hit.distance + 0.8f;
-        //     distanceOffset = Mathf.Clamp(distanceOffset, 0, distance);
-        //     Debug.Log("Hit something");
-        // }
-        // else
-        // {
-        //     distanceOffset = 0;
-        // }
-        
+       
+        // Handle player interaction with items
         if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
         {
             InteractWithItem();
