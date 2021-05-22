@@ -123,63 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &455212484
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3980.6
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3998.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1124.8
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8578529
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.0038927335
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.5138394
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.006498901
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.765
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -61.839
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.41
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
-      propertyPath: m_Name
-      value: ducklowpolblend5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5773d852aa09c7147ba305bf4f16442c, type: 3}
 --- !u!1 &509433105
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +297,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1797082205
 PrefabInstance:

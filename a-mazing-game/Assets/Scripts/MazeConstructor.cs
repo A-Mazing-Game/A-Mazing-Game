@@ -110,6 +110,10 @@ public class MazeConstructor : MonoBehaviour
     public void GenerateNewMaze(int sizeRows, int sizeCols,
         TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null, TriggerEventHandler endGame=null)
     {
+        //DELETE THESE 2 LINES LATER
+        //sizeRows = 3;
+        //sizeCols = 5;
+
         if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
         {
             Debug.LogError("Odd numbers work better for dungeon size.");
