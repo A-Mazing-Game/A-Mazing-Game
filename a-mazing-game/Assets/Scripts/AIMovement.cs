@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class AIMovement : MonoBehaviour
@@ -41,50 +42,47 @@ public class AIMovement : MonoBehaviour
          healthBar.SetHealth(maxHealth);
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (!isDead)
-        {
-            // Distance to the target
-            float distance = Vector3.Distance(player.position, transform.position);
+        // Distance to the target
+        float distance = Vector3.Distance(player.position, transform.position);
 
-            // If not inside the lookRadius
-            if (distance >= lookRadius)
+        // If not inside the lookRadius
+        if (distance >= lookRadius)
+        {
+            Wander();
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance
+                                   && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
             {
-                Wander();
-                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance
-                                       && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                agent.ResetPath();
+                NavMeshPath path = new NavMeshPath();
+                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                agent.CalculatePath(newPos, path);
+                if (agent.pathStatus != NavMeshPathStatus.PathPartial)
                 {
-                    agent.ResetPath();
-                    NavMeshPath path = new NavMeshPath();
-                    Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-                    agent.CalculatePath(newPos, path);
-                    if (agent.pathStatus != NavMeshPathStatus.PathPartial)
-                    {
-                        agent.SetDestination(newPos);
-                    }
+                    agent.SetDestination(newPos);
                 }
             }
+        }
 
-            if (distance < lookRadius)
+        if (distance < lookRadius)
+        {
+            FaceTarget();
+            // If within attacking distance
+            if (distance < agent.stoppingDistance)
             {
-                FaceTarget();
-                // If within attacking distance
-                if (distance < agent.stoppingDistance)
+                Idle();
+                if (Time.time > nextAttack)
                 {
-                    Idle();
-                    if (Time.time > nextAttack)
-                    {
-                        nextAttack = Time.time + attackRate;
-                        StartCoroutine(Slash());
-                    }
+                    nextAttack = Time.time + attackRate;
+                    StartCoroutine(Slash());
                 }
-                else
-                {
-                    // Move towards the target
-                    agent.SetDestination(player.position);
-                    Run();
-                }
+            }
+            else
+            {
+                // Move towards the target
+                agent.SetDestination(player.position);
+                Run();
             }
         }
     }
@@ -135,13 +133,9 @@ public class AIMovement : MonoBehaviour
             if (health == currentHealth)
             {
                 Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
-
-                // yield return new WaitForSeconds(0.5f);
-                foreach (Collider player in hitPlayers)
-                {
-                    player.GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
-                    // Debug.Log("Player hit!");
-                }
+                
+                if (hitPlayers.Length > 0)
+                    hitPlayers[0].GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
             }
 
             yield return new WaitForSeconds(0.7f);
@@ -174,16 +168,16 @@ public class AIMovement : MonoBehaviour
             agent.isStopped = true;
             // currentHealth -= damage;
             // Play hurt animation
-            nextAttack = Time.time + 0.6f;
+            nextAttack = Time.time + 1f;
             animator.SetTrigger("Hurt");
-            SubtractEnemyHealth(damage);
+            currentHealth = SubtractEnemyHealth(damage);
             if (currentHealth <= 0)
             {
                 isDead = true;
                 StartCoroutine(Die());
             }
 
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(1f);
             animator.speed = 1f;
             agent.isStopped = false;
         }

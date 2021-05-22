@@ -11,6 +11,8 @@ public class ItemClickHandler : MonoBehaviour
 
     private Button _button;
 
+    public FpsMovement fps;
+
     void Awake()
     {
         _button = GetComponent<Button>();
@@ -57,6 +59,14 @@ public class ItemClickHandler : MonoBehaviour
         {
             Debug.Log("using " + item.Name);
             _Inventory.UseItem(item);
+        }
+        else
+        {
+            if (fps.mCurrentItem != null)
+            {
+                fps.SetItemActive(fps.mCurrentItem, false);
+                fps.mCurrentItem = null;
+            }
         }
     }
 

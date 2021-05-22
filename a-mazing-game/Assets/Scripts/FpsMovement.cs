@@ -131,6 +131,12 @@ public class FpsMovement : MonoBehaviour
                 }
             }
         }
+        if (IsArmed)
+            animator.SetBool("isArmed", true);
+        else
+        {
+            animator.SetBool("isArmed", false);
+        }
     }
 
 
@@ -300,7 +306,7 @@ public class FpsMovement : MonoBehaviour
             mCurrentItem = null;
     }
 
-    private void SetItemActive(InventoryItemBase item, bool active)
+    public void SetItemActive(InventoryItemBase item, bool active)
     {
         GameObject currentItem = (item as MonoBehaviour).gameObject;
         currentItem.SetActive(active);

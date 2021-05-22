@@ -167,7 +167,7 @@ public class MazeConstructor : MonoBehaviour
             while (enemyNode != null)  // enemies
             {
                 float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
-                if (distance > 40)
+                if (distance > 30)
                 {
                     enemyNode.Value.SetActive(false);
                 }
@@ -181,7 +181,7 @@ public class MazeConstructor : MonoBehaviour
             while (powerUpNode != null)  // power ups
             {
                 float distance = Vector3.Distance(player.transform.position, powerUpNode.Value.transform.position);
-                if (distance > 40)
+                if (distance > 30)
                 {
                     powerUpNode.Value.SetActive(false);
                 }

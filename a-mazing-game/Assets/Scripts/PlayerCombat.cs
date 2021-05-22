@@ -18,6 +18,8 @@ public class PlayerCombat : MonoBehaviour
     // public InventoryItemBase currentItem;
     
     private float attackRate = 1f;
+    private float punchRate = 0.6f;
+    private float nextPunch;
     private float nextAttack;
     private int attackDamage;
     private bool showingEnd;
@@ -31,6 +33,9 @@ public class PlayerCombat : MonoBehaviour
     private PlayerStats playerStats;
     private FpsMovement movement;
     private CharacterController cc;
+
+    private bool canHook;
+    private float attackChainCounter;
     
     void Start()
     {
@@ -72,8 +77,62 @@ public class PlayerCombat : MonoBehaviour
                 // }
             // }
         }
+        else if (!isDead && !fps.IsArmed)
+        {
+            if (!canHook && Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextPunch)
+            {
+                animator.speed = 1.5f;
+                animator.SetTrigger("Punch");
+                nextPunch = Time.time + punchRate;
+                StartCoroutine(Punch());
+            }
+            
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
+            {
+                canHook = true;
+                attackChainCounter = Time.time;
+            }
+            else if (Time.time - attackChainCounter > 0.5f)
+            {
+                canHook = false;
+            }
+            
+            if (canHook && Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextPunch)
+            {
+                animator.speed = 1.5f;
+                animator.SetTrigger("Right Hook");
+                nextPunch = Time.time + punchRate;
+                StartCoroutine(Punch());
+            }
+        }
     }
-    
+
+    private IEnumerator Punch()
+    {
+        int damage = 20;
+        // Play attack animation
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Right Hook"))
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        // Detect enemies in range of attack
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
+
+        // Damage them
+        foreach (Collider enemy in hitEnemies)
+        {
+            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(damage));
+            Debug.Log(enemy.name + " hit!");
+            if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+            {
+                playerStats.enemiesKilled++;
+            }
+        }
+    }
     private IEnumerator Attack()
     {
         float attackType;
@@ -152,7 +211,6 @@ public class PlayerCombat : MonoBehaviour
             playerStats.currentOvershield = 0;
             currentHealth = playerStats.SubtractHealth(damage);
         }
-
         animator.SetTrigger("Hurt");
         
         if (currentHealth <= 0)
