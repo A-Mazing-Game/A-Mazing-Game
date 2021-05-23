@@ -222,7 +222,6 @@ public class MazeConstructor : MonoBehaviour
                         powerUpNode.Value.SetActive(true);
                     }
                 }
-                
                 powerUpNode = powerUpNode.Next;
             }
             yield return new WaitForSeconds(1);
