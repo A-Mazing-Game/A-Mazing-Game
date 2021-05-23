@@ -37,6 +37,8 @@ public class InteractableItemBase : MonoBehaviour
 
 public class InventoryItemBase : InteractableItemBase
 {
+    public MazeConstructor mz;
+    public bool pickedUp = false;
     public InventorySlot Slot
     {
         get; set;

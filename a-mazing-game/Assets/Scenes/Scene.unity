@@ -149,6 +149,8 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: b6ef0586b12944791bdb57fa2a286602, type: 3}
   InteractText: Press F to pickup katana
   ItemType: 2
+  mz: {fileID: 0}
+  pickedUp: 0
   PickPosition: {x: -0.116, y: -0.069, z: -0.019}
   PickRotation: {x: -183.241, y: -97.53299, z: -4.35199}
   DropRotation: {x: 0, y: 0, z: 90}
@@ -433,6 +435,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: mz
+      value: 
+      objectReference: {fileID: 1944142327}
+    - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 8936840687624926659}
@@ -566,6 +572,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   desiredEnemies: 6
   player: {fileID: 0}
+  bottles: {fileID: 0}
 --- !u!114 &168113930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,6 +1157,10 @@ PrefabInstance:
       value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: mz
+      value: 
+      objectReference: {fileID: 1944142327}
+    - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 8936840687624926659}
@@ -1339,6 +1350,8 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 5de8f81c0769e4529ad9cbb67ebee31f, type: 3}
   InteractText: Press F to pickup Great Sword
   ItemType: 2
+  mz: {fileID: 0}
+  pickedUp: 0
   PickPosition: {x: -0.07, y: -0.072, z: -0.031}
   PickRotation: {x: -183.3, y: -97.8, z: -4.35}
   DropRotation: {x: 0, y: 0, z: 0}
@@ -6361,6 +6374,7 @@ MonoBehaviour:
   scoreLabel: {fileID: 1260373548}
   coinLabel: {fileID: 607526529}
   surface: {fileID: 21972634}
+  mz: {fileID: 1944142327}
   numCoins: 0
   GameOverScreen: {fileID: 168113926}
   hud: {fileID: 626869723}
@@ -6399,6 +6413,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   desiredEnemies: 6
   player: {fileID: 0}
+  bottles: {fileID: 0}
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0

@@ -197,7 +197,7 @@ public class AIMovement : MonoBehaviour
         GetComponent<MeshCollider>().enabled = false;
         transform.GetChild(2).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
-        mz.RemoveEnemyNode(gameObject);
+        mz.RemoveEnemyNode(gameObject, 0);
         // enabled = false;
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);

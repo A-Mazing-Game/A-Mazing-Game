@@ -18,7 +18,10 @@ public class BluePotion : InventoryItemBase
     
     public override void OnUse()
     {
+        gameObject.SetActive(true);
         inventory.RemoveItem(this);
+        mz.RemoveEnemyNode(gameObject, 1);
+        Destroy(gameObject);
         int currentOvershield = playerStats.currentOvershield;
         int maxOvershield = playerStats.maxOvershield;
         if (currentOvershield < maxOvershield)
@@ -37,6 +40,7 @@ public class BluePotion : InventoryItemBase
     public override void OnPickup()
     {
         // Destroy(gameObject);
+        pickedUp = true;
         gameObject.SetActive(false);
     }
 }

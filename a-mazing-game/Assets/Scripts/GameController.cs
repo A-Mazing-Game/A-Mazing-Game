@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     private MazeConstructor generator;
     
     public NavMeshSurface surface;
+    public MazeConstructor mz;
 
     //2
     private DateTime startTime;
@@ -110,6 +111,14 @@ public class GameController : MonoBehaviour
         healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
 
         StartNewMaze();
+
+    }
+    
+    public void DestroyPowerUp(GameObject trigger, GameObject other)
+    {
+        mz.RemoveEnemyNode(trigger, 1);
+        Debug.Log(trigger.tag);
+        Destroy(trigger);
 
     }
 

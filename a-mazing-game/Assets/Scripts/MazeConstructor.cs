@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = System.Random;
@@ -45,6 +46,7 @@ public class MazeConstructor : MonoBehaviour
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
     public GameObject player;  // player gameobject
+    public InventoryItemBase bottles;
     
     public int[,] data
     {
@@ -143,19 +145,43 @@ public class MazeConstructor : MonoBehaviour
         
     }
     
-    public void RemoveEnemyNode(GameObject go)
+    public void RemoveEnemyNode(GameObject go, int type)
     {
-        LinkedListNode<GameObject> enemyNode = enemyList.First;
-        while (true)
-        {
-            if (enemyNode.Value == go)
-            {
-                enemyList.Remove(enemyNode);
-                return;
-            }
+        // 0 = enemy LL
+        // 1 = powerUp LL
+
+        LinkedListNode<GameObject> node;
         
-            enemyNode = enemyNode.Next;
+        if(type == 0)
+        {
+            node = enemyList.First;
+            while (true)
+            {
+                if (node.Value == go)
+                {
+                    enemyList.Remove(node);
+                    return;
+                }
+        
+                node = node.Next;
+            }
         }
+        else
+        {
+            node = powerUps.First;
+            while (true)
+            {
+                if (node.Value == go)
+                {
+                    powerUps.Remove(node);
+                    return;
+                }
+        
+                node = node.Next;
+            }
+        }
+            
+        
     }
     
     private IEnumerator UpdateGameObjects()
@@ -185,14 +211,18 @@ public class MazeConstructor : MonoBehaviour
             while (powerUpNode != null)  // power ups
             {
                 float distance = Vector3.Distance(player.transform.position, powerUpNode.Value.transform.position);
-                if (distance > 30)
+                if (!powerUpNode.Value.GetComponent<InventoryItemBase>().pickedUp)
                 {
-                    powerUpNode.Value.SetActive(false);
+                    if (distance > 30)
+                    {
+                        powerUpNode.Value.SetActive(false);
+                    }
+                    else
+                    {
+                        powerUpNode.Value.SetActive(true);
+                    }
                 }
-                else
-                {
-                    powerUpNode.Value.SetActive(true);
-                }
+                
                 powerUpNode = powerUpNode.Next;
             }
             yield return new WaitForSeconds(1);
@@ -256,14 +286,14 @@ public class MazeConstructor : MonoBehaviour
         {
             // Debug.Log("Calling shit"); 
             
-            int temp = random.Next(0, 3);
-            if(temp == 0)  // health
+            int temp = random.Next(1, 3);  // todo change from 0, 3
+            if(temp == 0)  // stamina
             {
                 // Debug.Log("Random is 0");
-                SpawnStamina(deadEndCol[i], deadEndRow[i], endLocation);
+                // SpawnStamina(deadEndCol[i], deadEndRow[i], endLocation);
             }   
             
-            else if (temp == 1)  // stamina
+            else if (temp == 1)  // health
             {
                 // Debug.Log("Random is 1");
                 SpawnHealth(deadEndCol[i], deadEndRow[i], endLocation);
