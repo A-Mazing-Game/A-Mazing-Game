@@ -126,7 +126,7 @@ public class MazeConstructor : MonoBehaviour
         FindStartPosition();
         FindGoalPosition();
         FindDeadEnd();
-        printMaze();
+        // printMaze();
 
         // store values used to generate this mesh
         hallWidth = meshGenerator.width;
@@ -251,7 +251,7 @@ public class MazeConstructor : MonoBehaviour
         
         int l = deadEndCol.Length;
         System.Random random = new System.Random();
-        Debug.Log("L length is: " + l);
+        // Debug.Log("L length is: " + l);
         for (int i = 0; i < l; i++)
         {
             // Debug.Log("Calling shit"); 
@@ -259,18 +259,18 @@ public class MazeConstructor : MonoBehaviour
             int temp = random.Next(0, 3);
             if(temp == 0)  // health
             {
-                Debug.Log("Random is 0");
+                // Debug.Log("Random is 0");
                 SpawnStamina(deadEndCol[i], deadEndRow[i], endLocation);
             }   
             
             else if (temp == 1)  // stamina
             {
-                Debug.Log("Random is 1");
+                // Debug.Log("Random is 1");
                 SpawnHealth(deadEndCol[i], deadEndRow[i], endLocation);
             }
             else if (temp == 2)  // shield
             {
-                Debug.Log("Random is 2");
+                // Debug.Log("Random is 2");
                 SpawnShield(deadEndCol[i], deadEndRow[i], endLocation);
             }
         }
@@ -351,7 +351,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
-                    Debug.Log("Starting POS. Row: " + i + " " + "Col " + j);
+                    // Debug.Log("Starting POS. Row: " + i + " " + "Col " + j);
                     return;
                 }
             }
@@ -364,7 +364,7 @@ public class MazeConstructor : MonoBehaviour
         int rMax = maze.GetUpperBound(0);
         int cMax = maze.GetUpperBound(1);
         int length = 0;
-        Debug.Log("rmax " + rMax + " cmax " + cMax);
+        // Debug.Log("rmax " + rMax + " cmax " + cMax);
 
         for (int row = 1; row < rMax; row++)
         {
@@ -379,28 +379,28 @@ public class MazeConstructor : MonoBehaviour
                     
                     if((left == 1 && right == 1) && (front == 1 && back == 0))
                     {
-                        Debug.Log("Check case 1");
+                        // Debug.Log("Check case 1");
                         length++;
                         // break;
                     }
 
                     if ((left == 0 && right == 1) && (front == 1 && back == 1))
                     {
-                        Debug.Log("Check case 2");
+                        // Debug.Log("Check case 2");
                         length++;
                         // break;
                     }
 
                     if ((left == 1 && right == 0) && (front == 1 && back == 1))
                     {
-                        Debug.Log("Check case 3");
+                        // Debug.Log("Check case 3");
                         length++;
                         // break;
                     }
 
                     if ((left == 1 && right == 1) && (front == 0 && back == 1))
                     {
-                        Debug.Log("Check case 4");
+                        // Debug.Log("Check case 4");
                         length++;
                         // break;
                     }
@@ -429,7 +429,7 @@ public class MazeConstructor : MonoBehaviour
                     {
                         deadEndCol[itter] = j;
                         deadEndRow[itter] = i;
-                        Debug.Log("Case 1");
+                        // Debug.Log("Case 1");
                         itter++;
                         // break;
                     }
@@ -438,7 +438,7 @@ public class MazeConstructor : MonoBehaviour
                     {
                         deadEndCol[itter] = j;
                         deadEndRow[itter] = i;
-                        Debug.Log("Case 2");
+                        // Debug.Log("Case 2");
                         itter++;
                         // break;
                     }
@@ -447,7 +447,7 @@ public class MazeConstructor : MonoBehaviour
                     {
                         deadEndCol[itter] = j;
                         deadEndRow[itter] = i;
-                        Debug.Log("Case 3");
+                        // Debug.Log("Case 3");
                         itter++;
                         // break;
                     }
@@ -456,7 +456,7 @@ public class MazeConstructor : MonoBehaviour
                     {
                         deadEndCol[itter] = j;
                         deadEndRow[itter] = i;
-                        Debug.Log("Case 4");
+                        // Debug.Log("Case 4");
                         itter++;
                         // break;
                     }
@@ -618,7 +618,7 @@ public class MazeConstructor : MonoBehaviour
     
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
-        Debug.Log("End trigger: " + column + " " + newRow);
+        // Debug.Log("End trigger: " + column + " " + newRow);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
         go.name = "End";

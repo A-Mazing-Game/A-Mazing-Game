@@ -87,7 +87,7 @@ public class GameController : MonoBehaviour
         z = generator.startRow * generator.hallWidth;
         
         // Thread.Sleep(10000);
-        Debug.Log("start row " + x + " start col " + z);
+        // Debug.Log("start row " + x + " start col " + z);
         movePlayer();
         
         goalReached = false;
