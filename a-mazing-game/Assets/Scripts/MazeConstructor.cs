@@ -37,6 +37,7 @@ public class MazeConstructor : MonoBehaviour
     public GameObject healthPotion;  // health prefab
     public GameObject staminaPotion;  // stamina prefab
     public GameObject shieldPotion;  // shield prefab
+    public GameObject gate;
     public AIMovement ai;
     public NavMeshAgent agent;
     private MeshRenderer mr;  // mesh renderer
@@ -112,9 +113,6 @@ public class MazeConstructor : MonoBehaviour
     public void GenerateNewMaze(int sizeRows, int sizeCols,
         TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null, TriggerEventHandler endGame=null)
     {
-        //DELETE THESE 2 LINES LATER
-        //sizeRows = 3;
-        //sizeCols = 5;
 
         if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
         {
@@ -137,7 +135,7 @@ public class MazeConstructor : MonoBehaviour
         DisplayMaze();
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
-        StartCoroutine(SpawnCoRoutine());
+        //StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
@@ -648,18 +646,19 @@ public class MazeConstructor : MonoBehaviour
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         // Debug.Log("End trigger: " + column + " " + newRow);
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position = new Vector3(column * hallWidth, .5f, newRow * hallWidth);
-        go.name = "End";
-        go.tag = "Generated";
-        
-        go.GetComponent<BoxCollider>().isTrigger = true;
-        go.GetComponent<MeshRenderer>().sharedMaterial = endGoal;
-        
-        TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
+        Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
 
-        return go;
+        Instantiate(gate, gatePos, Quaternion.Euler(-90, 90, 0));
+        gate.tag = "Generated";
+        gate.name = "MazePortal";
+
+        //go.GetComponent<BoxCollider>().isTrigger = true;
+        //go.GetComponent<MeshRenderer>().sharedMaterial = endGoal;
+
+        //TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
+        //tc.callback = callback;
+
+        return gate;
     }
 
     // top-down debug display
