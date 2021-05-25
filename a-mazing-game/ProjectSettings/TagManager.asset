@@ -11,6 +11,7 @@ TagManager:
   - Overshield Potion
   - Stamina Potion
   - Health Potion
+  - Cheercone
   layers:
   - Default
   - TransparentFX
@@ -21,9 +22,9 @@ TagManager:
   - Enemies
   - Minimap
   - Potion
-  - 
-  - 
-  - 
+  - Weapon
+  - Autzen
+  - Ground
   - 
   - 
   - 

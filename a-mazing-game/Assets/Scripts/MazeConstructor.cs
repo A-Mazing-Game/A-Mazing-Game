@@ -92,8 +92,8 @@ public class MazeConstructor : MonoBehaviour
         fpsMovement = GetComponent<FpsMovement>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
-        desiredEnemies = 24;
-        // desiredEnemies = 0;
+        // desiredEnemies = 24;
+        desiredEnemies = 0;
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -646,7 +646,8 @@ public class MazeConstructor : MonoBehaviour
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         // Debug.Log("End trigger: " + column + " " + newRow);
-        Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
+        // Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
+        Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 90, 0));
         gate.tag = "Generated";

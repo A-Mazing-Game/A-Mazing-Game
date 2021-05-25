@@ -109,15 +109,19 @@ public class PlayerCombat : MonoBehaviour
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
 
         // Damage them
-        foreach (Collider enemy in hitEnemies)
+        // foreach (Collider enemy in hitEnemies)
+        // {
+        int length = hitEnemies.Length;
+        if (length > 0)
         {
-            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+            StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
             // Debug.Log(enemy.name + " hit!");
-            if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+            if (hitEnemies[length - 1].GetComponent<AIMovement>().currentHealth <= 0)
             {
                 playerStats.enemiesKilled++;
             }
         }
+        // }
     }
     private IEnumerator Attack()
     {
