@@ -8,40 +8,42 @@ using UnityEngine.EventSystems;
 
 public class PlayerCombat : MonoBehaviour
 {
+    #region public members
     public Animator animator;
     public Transform attackPoint;
+    public GameOverScreen GameOverScreen;
+    public GameObject hud;
     public LayerMask enemyLayers;
+    public TimeSpan elapsed;
     public float attackRange;
     public bool controlEnabled;
     public bool heavyAttack;
     public bool isDead;
+    public float attackRate = 1f;
     // public InventoryItemBase currentItem;
+    #endregion
     
-    private float attackRate = 1f;
+    #region private members
+    private DateTime startTime;
+    private DateTime endTime;
+    private FpsMovement fps;
+    private PlayerStats playerStats;
+    private FpsMovement movement;
+    // private CharacterController cc;
     private float punchRate = 0.6f;
     private float nextPunch;
     private float nextAttack;
     private int attackDamage;
     private bool showingEnd;
-    private DateTime startTime;
-    private DateTime endTime;
-    public TimeSpan elapsed;
-    public GameOverScreen GameOverScreen;
-    public GameObject hud;
-
-    private FpsMovement fps;
-    private PlayerStats playerStats;
-    private FpsMovement movement;
-    private CharacterController cc;
-
     private bool canHook;
     private float attackChainCounter;
-    
+    #endregion
+
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
         movement = GetComponent<FpsMovement>();
-        cc = GetComponent<CharacterController>();
+        // cc = GetComponent<CharacterController>();
         fps = GetComponent<FpsMovement>();
         // currentItem = GetComponent<PlayerController>().mCurrentItem;
         // attackDamage = playerStats.attackDamage;
@@ -52,30 +54,13 @@ public class PlayerCombat : MonoBehaviour
     
     void Update()
     {
-        if (!isDead && fps.IsArmed)// && mIsControlEnabled)
+        if (!isDead && fps.IsArmed)
         {
-            // Interact with the item
-            // if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
-            // {
-            //     // Interact animation
-            //     mInteractItem.OnInteractAnimation(_animator);
-            // }
-
-            // Execute action with item
-            // if (currentItem != null && Input.GetMouseButtonDown(0))
-            // {
             if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
             {
                 nextAttack = Time.time + attackRate;
                 StartCoroutine(Attack());
             }
-                // // Dont execute click if mouse pointer is over uGUI element
-                // if (!EventSystem.current.IsPointerOverGameObject())
-                // {
-                //     // TODO: Logic which action to execute has to come from the particular item
-                //     _animator.SetTrigger("attack_1");
-                // }
-            // }
         }
         else if (!isDead && !fps.IsArmed)
         {
@@ -109,7 +94,8 @@ public class PlayerCombat : MonoBehaviour
 
     private IEnumerator Punch()
     {
-        int damage = 20;
+        // int damage = 20;
+        playerStats.attackDamage = 20;
         // Play attack animation
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
         {
@@ -125,8 +111,8 @@ public class PlayerCombat : MonoBehaviour
         // Damage them
         foreach (Collider enemy in hitEnemies)
         {
-            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(damage));
-            Debug.Log(enemy.name + " hit!");
+            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+            // Debug.Log(enemy.name + " hit!");
             if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
             {
                 playerStats.enemiesKilled++;
@@ -135,49 +121,88 @@ public class PlayerCombat : MonoBehaviour
     }
     private IEnumerator Attack()
     {
-        float attackType;
-        int damage = playerStats.attackDamage;
+        int attackType;
+        float currentHealth = playerStats.currentHealth;
+        float currentOvershield = playerStats.currentOvershield;
         // Play attack animation
         animator.SetTrigger("Attack");
         if (Input.GetKey(KeyCode.LeftShift) && movement.isSprintingForward)
         {
-            attackType = 0.5f;
-            animator.speed = 0.5f;
+            if (fps.CarriesItem("Sword Epic"))
+            {
+                animator.speed = 1f;
+                attackType = 3;
+            }
+            else
+            {
+                animator.speed = 0.75f;
+                attackType = 1;
+            }
             animator.SetFloat("AttackMode", 0.5f);
         }
         else
         {
-            attackType = 0f;
-            animator.SetFloat("AttackMode", 0);
+            if (fps.CarriesItem("Sword Epic"))
+            {
+                attackType = 2;
+            }
+            else
+            {
+                attackType = 0;
+            }
+            animator.SetFloat("AttackMode", 0f);
         }
-
-        // Detect enemies in range of attack
-        if (attackType == 0f)
+        
+        if (attackType == 0)
         {
-            damage = playerStats.attackDamage;
+            // Katana normal attack
+            playerStats.attackDamage = 40;
             yield return new WaitForSeconds(0.1f);
             controlEnabled = true;
         }
-        else if (attackType == 0.5f)
+        else if (attackType == 1)
         {
-            damage = 100;
+            // Katana special attack
+            playerStats.attackDamage = 80;
             heavyAttack = true;
-            movement.runSpeed = 1.5f;
+            movement.runSpeed = 4.0f;
             yield return new WaitForSeconds(0.9f);
             controlEnabled = false;
         }
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
-
-        // Damage them
-        foreach (Collider enemy in hitEnemies)
+        else if (attackType == 2)
         {
-            StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(damage));
-            Debug.Log(enemy.name + " hit!");
-            if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+            // Great sword normal attack
+            playerStats.attackDamage = 60;
+            yield return new WaitForSeconds(0.7f);
+            controlEnabled = true;
+        }
+        else if (attackType == 3)
+        {
+            // Great sword special attack
+            playerStats.attackDamage = 100;
+            heavyAttack = true;
+            movement.runSpeed = 4.0f;
+            yield return new WaitForSeconds(1.4f);
+            controlEnabled = false;
+        }
+
+        if (currentHealth == playerStats.currentHealth && currentOvershield == playerStats.currentOvershield)
+        {
+            // Detect enemies in range of attack
+            Collider[] hitEnemies =
+                Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers); // Damage them
+            
+            foreach (Collider enemy in hitEnemies)
             {
-                playerStats.enemiesKilled++;
+                StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+                // Debug.Log(enemy.name + " hit!");
+                if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+                {
+                    playerStats.enemiesKilled++;
+                }
             }
         }
+
         // cc.enabled = false;
         yield return new WaitForSeconds(0.5f);
         heavyAttack = false;

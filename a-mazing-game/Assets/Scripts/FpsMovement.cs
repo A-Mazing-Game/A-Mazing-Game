@@ -1,10 +1,4 @@
-﻿/*
- * written by Joseph Hocking 2017
- * released under MIT license
- * text of license https://opensource.org/licenses/MIT
- */
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,29 +6,49 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-// [RequireComponent(typeof(CharacterController))]
-
-// basic WASD-style movement control
 public class FpsMovement : MonoBehaviour
 {
+    #region Public Members
+    // public Transform player;
+    public Inventory inventory;
+    public HUD Hud;
+    public InventoryItemBase mCurrentItem;
+    public Camera headCam;
+    public GameObject Hand;
+    
+    public float walkSpeed;
+    public float runSpeed;
+    public float gravity = -9.8f;
+    public float rollForce = 5.0f;
+    public float mass;
+    public float sensitivityHor = 9.0f;
+    public float sensitivityVert = 9.0f;
+    public float minimumVert = -45.0f;
+    public float maximumVert = 45.0f;
+    public bool isSprintingForward;
+    public bool isDead;
+    #endregion
+    
     #region Private Members
     private CharacterController charController;
     private Animator animator;
     private PlayerStats playerStats;
-
-    public Transform player;
-    
     // private Rigidbody rb;
+    private PlayerCombat combat;
+    private MazeConstructor maze;
+    AudioSource m_AudioSource;
+    private InteractableItemBase mInteractItem;
+    private RaycastHit camHit;
     private Vector3 impact = Vector3.zero;
     private Vector3 rollPos;
     private Vector3 fpsPos;
     private Vector3 relativePos;
+    private Quaternion cameraRot;
     private float distanceOffset;
     private float distance = 0.5f;
     private float moveSpeed;
     private float rotationVert;
     private bool rotateCameraEnabled = true;
-    private Quaternion cameraRot;
     private float rollRate = 1f;
     private float nextRoll;
     private bool isRolling;
@@ -45,29 +59,7 @@ public class FpsMovement : MonoBehaviour
     private bool started;
     private bool camAtPlayer;
     private bool mCanTakeDamage = true;
-    private PlayerCombat combat;
-    private MazeConstructor maze;
-    private RaycastHit camHit;
-    AudioSource m_AudioSource;
-    #endregion
 
-    #region Public Members
-    public Inventory inventory;
-    public HUD Hud;
-    public InventoryItemBase mCurrentItem;
-    public Camera headCam;
-    public float walkSpeed;
-    public float runSpeed;
-    public GameObject Hand;
-    public float gravity = -9.8f;
-    public float rollForce = 5.0f;
-    public float mass;
-    public float sensitivityHor = 9.0f;
-    public float sensitivityVert = 9.0f;
-    public float minimumVert = -45.0f;
-    public float maximumVert = 45.0f;
-    public bool isSprintingForward;
-    public bool isDead;
     #endregion
 
     private void Start()
@@ -105,15 +97,14 @@ public class FpsMovement : MonoBehaviour
         {
             InteractWithItem();
         }
-
-        // Ensure the camera always looks at the player
-        // headCam.transform.LookAt(headCam.transform.parent);
-
+        
+        // Apply roll force
         if (impact.magnitude > 0.2)
             charController.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
 
+        // Control the character
         if (combat.controlEnabled)
         {
             MoveCharacter();
@@ -131,26 +122,51 @@ public class FpsMovement : MonoBehaviour
                 }
             }
         }
+
+        // Determine settings for currently equipped weapon
         if (IsArmed)
+        {
             animator.SetBool("isArmed", true);
+            if (CarriesItem("Sword Epic"))
+            {
+                animator.SetBool("greatSword", true);
+                animator.SetBool("katana", false);
+                combat.attackRange = 1.0f;
+                combat.attackRate = 1.5f;
+            }
+            else if (CarriesItem("Katana"))
+            {
+                animator.SetBool("greatSword", false);
+                animator.SetBool("katana", true);
+                combat.attackRange = 0.75f;
+                combat.attackRate = 1f;
+            }
+        }
         else
         {
             animator.SetBool("isArmed", false);
+            animator.SetBool("greatSword", false);
+            animator.SetBool("katana", false);
         }
     }
 
+    void FixedUpdate()
+    {
+        if (!isDead)
+        {
+            // Drop item
+            if (mCurrentItem != null && Input.GetKeyDown(KeyCode.R))
+            {
+                DropCurrentItem();
+            }
+        }
+    }
 
     private void MoveCharacter()
     {
-        // COMMENTED OUT FOR SPRINT IMPLEMENTATION
-        // float deltaX = Input.GetAxis("Horizontal") * moveSpeed;
-        // float deltaZ = Input.GetAxis("Vertical") * moveSpeed;
         float deltaX = Input.GetAxis("Horizontal");
         float deltaZ = Input.GetAxis("Vertical");
-
         Vector3 movement = new Vector3(deltaX, 0, deltaZ);
-        // COMMENTED OUT FOR SPRING IMPLEMENTATION
-        // movement = Vector3.ClampMagnitude(movement, moveSpeed);
 
         if (movement != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
         {
@@ -291,7 +307,7 @@ public class FpsMovement : MonoBehaviour
         impact += dir.normalized * force / mass;
     }
     
-    
+    // Following code taken from Jayanam on YouTube
     #region Inventory
 
     private void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
@@ -331,28 +347,11 @@ public class FpsMovement : MonoBehaviour
             mCurrentItem = e.Item;
         }
     }
-
-    // private int Attack_1_Hash = Animator.StringToHash("Base Layer.Attack_1");
-    //
-    // public bool IsAttacking
-    // {
-    //     get
-    //     {
-    //         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-    //         if (stateInfo.fullPathHash == Attack_1_Hash)
-    //         {
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-    // }
-
+    
     public void DropCurrentItem()
     {
         mCanTakeDamage = false;
-
-        // _animator.SetTrigger("tr_drop");
-
+        
         GameObject goItem = (mCurrentItem as MonoBehaviour).gameObject;
 
         inventory.RemoveItem(mCurrentItem);
@@ -389,18 +388,6 @@ public class FpsMovement : MonoBehaviour
         }
     }
     
-    void FixedUpdate()
-    {
-        if (!isDead)
-        {
-            // Drop item
-            if (mCurrentItem != null && Input.GetKeyDown(KeyCode.R))
-            {
-                DropCurrentItem();
-            }
-        }
-    }
-
     public void InteractWithItem()
     {
         if (mInteractItem != null)
@@ -423,8 +410,6 @@ public class FpsMovement : MonoBehaviour
         }
     }
 
-    private InteractableItemBase mInteractItem;
-    
     private void TryInteraction(Collider other)
     {
         InteractableItemBase item = other.GetComponent<InteractableItemBase>();
@@ -443,7 +428,12 @@ public class FpsMovement : MonoBehaviour
     {
         TryInteraction(other);
     }
-    
+
+    private void OnTriggerStay(Collider other)
+    {
+        TryInteraction(other);
+    }
+
     private void OnTriggerExit(Collider other)
     {
         InteractableItemBase item = other.GetComponent<InteractableItemBase>();
