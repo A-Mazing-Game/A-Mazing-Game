@@ -14,7 +14,8 @@ public class GameController : MonoBehaviour
     //1
     [SerializeField] private FpsMovement player;
     [FormerlySerializedAs("timeLabel")] 
-    [SerializeField] private Text healthLabel;
+    //[SerializeField] private Text healthLabel;
+    //[SerializeField] private Text staminaLabel;
     [SerializeField] private Text scoreLabel;
     public Text coinLabel;
 
@@ -66,7 +67,6 @@ public class GameController : MonoBehaviour
         //healthBar.SetMaxHealth(maxHealth);
         hud.SetActive(true);
         // gameObject.Find("EventSystem").SetActive(false);
-        healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
         StartNewMaze();
     }
 
@@ -108,7 +108,6 @@ public class GameController : MonoBehaviour
         //healthBar.SetMaxHealth(maxHealth);
         player.GetComponent<PlayerStats>().SetUp();
         player.GetComponent<Inventory2>().SetUp();
-        healthLabel.text = player.GetComponent<PlayerStats>().maxHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
 
         StartNewMaze();
 
@@ -132,7 +131,7 @@ public class GameController : MonoBehaviour
         Debug.Log(other.tag);
         if (other.tag == "Player")
         {
-            healthLabel.text = "You have reached the end of the maze!";
+            //healthLabel.text = "You have reached the end of the maze!";
             player.enabled = false;
             Destroy(trigger);
             endTime = DateTime.Now;
@@ -170,7 +169,6 @@ public class GameController : MonoBehaviour
         }
         coinLabel.text = "Coins: " + player.GetComponent<Inventory2>().numCoins.ToString();
         // healthLabel.fontSize = 75;
-        healthLabel.text = player.GetComponent<PlayerStats>().currentHealth.ToString() + "/" + player.GetComponent<PlayerStats>().maxHealth.ToString();
         // Invoke("StartNewGame", 4);
     }
 

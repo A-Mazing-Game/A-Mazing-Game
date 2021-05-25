@@ -21,8 +21,12 @@ public class GameOverScreen : MonoBehaviour
     public Text coinsCollected;
     public Text remainingCoins;
     public Text healthStat;
+    public Text damageStat;
+    public Text staminaStat;
     public BaseStats stats;
-    private int maxHealth;
+    private int maxHealth; //max health counter
+    private int maxDamage; //max damage counter
+    private float maxStamina; // max stamina counter
     private int numCoins;
     private PlayerStats playerStats;
     private Inventory2 inventory;
@@ -49,9 +53,13 @@ public class GameOverScreen : MonoBehaviour
         pointsText.text = "Enemies Killed: " + playerStats.enemiesKilled.ToString();
         timeText.text = "Time: ";
         maxHealth = playerStats.maxHealth;
+        maxDamage = playerStats.maxDamage;
+        maxStamina = playerStats.maxStamina;
         numCoins = inventory.numCoins;
         healthStat.text = maxHealth.ToString();
         remainingCoins.text = numCoins.ToString();
+        damageStat.text = maxDamage.ToString();
+        staminaStat.text = maxStamina.ToString();
         Cursor.lockState = CursorLockMode.Confined;
     }
 
@@ -59,6 +67,8 @@ public class GameOverScreen : MonoBehaviour
     {
         setStats();
         PlayerPrefs.SetInt("health", maxHealth);
+        PlayerPrefs.SetInt("damage", maxDamage);
+        PlayerPrefs.SetFloat("stamina", maxStamina);
         gameObject.SetActive(false);
 
     }
@@ -90,14 +100,36 @@ public class GameOverScreen : MonoBehaviour
 
     }
 
-    private void setInventory()
+    public void increaseDamage()
     {
-        //gonna add later
+        if (numCoins > 0)
+        {
+            maxDamage++;
+            numCoins--;
+            remainingCoins.text = numCoins.ToString();
+            damageStat.text = maxDamage.ToString();
+        }
+
     }
+
+    public void increaseStamina()
+    {
+        if (numCoins > 0)
+        {
+            maxStamina++;
+            numCoins--;
+            remainingCoins.text = numCoins.ToString();
+            staminaStat.text = maxStamina.ToString();
+        }
+
+    }
+
 
     private void setStats()
     {
         PlayerPrefs.SetInt("health", maxHealth);
+        PlayerPrefs.SetInt("damage", maxDamage);
+        PlayerPrefs.SetFloat("stamina", maxStamina);
     }
 
 

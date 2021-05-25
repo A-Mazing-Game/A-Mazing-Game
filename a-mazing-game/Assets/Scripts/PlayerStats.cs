@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
     public int attackDamage;
+    public int maxDamage;
     public int maxHealth;
     public int currentHealth;
     public int maxOvershield;
+    private int intStamina;
     public int currentOvershield;
     public float maxStamina;
     public float currentStamina;
@@ -18,6 +21,9 @@ public class PlayerStats : MonoBehaviour
     public OvershieldBar overshieldBar;
     public GameObject controller;
 
+    public Text healthLabel;
+    public Text staminaLabel;
+
     private WaitForSeconds regenTick = new WaitForSeconds(0.1f);
     private Coroutine regen;
     
@@ -25,7 +31,10 @@ public class PlayerStats : MonoBehaviour
     {
         controller = GameObject.Find("Controller");
         maxHealth = PlayerPrefs.GetInt("health", 100);
+        maxDamage = PlayerPrefs.GetInt("damage", 40);
+        maxStamina = PlayerPrefs.GetFloat("stamina", 100);
         currentHealth = maxHealth;
+        attackDamage = maxDamage;
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(maxHealth);
         overshieldBar.SetMaxOvershield(maxOvershield);
@@ -33,18 +42,32 @@ public class PlayerStats : MonoBehaviour
         staminaBar.SetMaxStamina(maxStamina);
         staminaBar.SetStamina(maxStamina);
         currentStamina = maxStamina;
+        healthLabel.text = maxHealth.ToString() + "/" + maxHealth.ToString();
+        staminaLabel.text = maxStamina.ToString() + "/" + maxStamina.ToString();
     }
 
-    // Start is called before the first frame update
 
     public void SetUp()
     {
         controller = GameObject.Find("Controller");
         maxHealth = PlayerPrefs.GetInt("health", 100);
+        maxDamage = PlayerPrefs.GetInt("damage", 40);
+        maxStamina = PlayerPrefs.GetFloat("stamina", 100);
         currentHealth = maxHealth;
+        attackDamage = maxDamage;
+        currentStamina = maxStamina;
         healthBar.SetHealth(maxHealth);
         overshieldBar.SetMaxOvershield(maxOvershield);
         overshieldBar.SetOvershield(0);
+        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetHealth(maxHealth);
+        overshieldBar.SetMaxOvershield(maxOvershield);
+        overshieldBar.SetOvershield(0);
+        staminaBar.SetMaxStamina(maxStamina);
+        staminaBar.SetStamina(maxStamina);
+        intStamina = (int) currentStamina;
+        staminaLabel.text = intStamina.ToString() + "/" + maxStamina.ToString();
+        healthLabel.text = currentHealth.ToString() + "/" + maxHealth.ToString();
     }
 
 
@@ -52,6 +75,7 @@ public class PlayerStats : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+        healthLabel.text = currentHealth.ToString() + "/" + maxHealth.ToString();
         return currentHealth;
     }
 
@@ -66,6 +90,7 @@ public class PlayerStats : MonoBehaviour
         {
             healthBar.SetHealth(currentHealth);
         }
+        healthLabel.text = currentHealth.ToString() + "/" + maxHealth.ToString();
     }
     
     public void AddOvershield(int overshield)
@@ -101,6 +126,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentStamina -= amount;
             staminaBar.SetStamina(currentStamina);
+            staminaLabel.text = intStamina.ToString() + "/" + maxStamina.ToString();
 
             if (regen != null)
             {
@@ -125,6 +151,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentStamina += maxStamina / 100;
             staminaBar.SetStamina(currentStamina);
+            staminaLabel.text = intStamina.ToString() + "/" + maxStamina.ToString();
             yield return regenTick;
         }
 

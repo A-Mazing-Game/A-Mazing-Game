@@ -519,6 +519,8 @@ MonoBehaviour:
   coinsCollected: {fileID: 0}
   remainingCoins: {fileID: 926885168}
   healthStat: {fileID: 545346640}
+  damageStat: {fileID: 1254042132}
+  staminaStat: {fileID: 258829557}
   stats: {fileID: 1944142329}
   surface: {fileID: 0}
 --- !u!224 &168113927
@@ -611,6 +613,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168113925}
+  m_CullTransparentMesh: 1
+--- !u!1 &178591444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 178591445}
+  - component: {fileID: 178591447}
+  - component: {fileID: 178591446}
+  m_Layer: 5
+  m_Name: Stamina
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &178591445
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178591444}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 312832578}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 392.84164, y: 36.545444}
+  m_SizeDelta: {x: 269.061, y: 139.9}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &178591446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178591444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 90
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0
+--- !u!222 &178591447
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178591444}
   m_CullTransparentMesh: 1
 --- !u!1 &180628416
 GameObject:
@@ -1065,7 +1146,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 0
 --- !u!222 &258829558
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1289,6 +1370,7 @@ RectTransform:
   m_Children:
   - {fileID: 1677785553}
   - {fileID: 230749283}
+  - {fileID: 178591445}
   m_Father: {fileID: 82114621}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2492,7 +2574,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 744237407}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 168113926}
+        m_TargetAssemblyTypeName: GameOverScreen, Assembly-CSharp
+        m_MethodName: increaseStamina
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &744237407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3577,7 +3671,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Damage
 --- !u!222 &850235153
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4365,7 +4459,7 @@ GameObject:
   - component: {fileID: 1159178852}
   - component: {fileID: 1159178851}
   m_Layer: 5
-  m_Name: Health (1)
+  m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5036,7 +5130,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 0
 --- !u!222 &1254042133
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5195,7 +5289,7 @@ GameObject:
   - component: {fileID: 1406467630}
   - component: {fileID: 1406467629}
   m_Layer: 5
-  m_Name: Health (2)
+  m_Name: Stamina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5389,7 +5483,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1408584375}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 168113926}
+        m_TargetAssemblyTypeName: GameOverScreen, Assembly-CSharp
+        m_MethodName: increaseDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1408584375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5689,7 +5795,7 @@ GameObject:
   - component: {fileID: 1648710900}
   - component: {fileID: 1648710899}
   m_Layer: 5
-  m_Name: HealthText
+  m_Name: StaminaText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5767,7 +5873,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Stamina
 --- !u!222 &1648710901
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6679,7 +6785,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8936840687624926661}
-  healthLabel: {fileID: 581388291}
   scoreLabel: {fileID: 1260373548}
   coinLabel: {fileID: 607526529}
   surface: {fileID: 21972634}
@@ -6752,7 +6857,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 40
   maxHealth: 100
+  maxStamina: 0
   currentHealth: 0
+  currentDamage: 0
+  currentStamina: 0
 --- !u!114 &1944142330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7782,9 +7890,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 562815383}
     - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: maxHealth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: maxStamina
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: staminaBar
       value: 
       objectReference: {fileID: 312832579}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: healthLabel
+      value: 
+      objectReference: {fileID: 581388291}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: attackDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: staminaLabel
+      value: 
+      objectReference: {fileID: 178591446}
+    - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: maxOvershield
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7544530994945066218, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: overshieldBar
       value: 
