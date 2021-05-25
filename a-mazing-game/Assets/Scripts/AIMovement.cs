@@ -198,13 +198,12 @@ public class AIMovement : MonoBehaviour
         transform.GetChild(2).gameObject.SetActive(false);
         transform.GetChild(3).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
-<<<<<<< Updated upstream
+
         mz.RemoveEnemyNode(gameObject, 0);
-        // enabled = false;
-=======
-        mz.RemoveEnemyNode(gameObject);
         enabled = false;
->>>>>>> Stashed changes
+        // mz.RemoveEnemyNode(gameObject);
+        // enabled = false;
+
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
