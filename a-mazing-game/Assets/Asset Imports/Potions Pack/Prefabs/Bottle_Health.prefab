@@ -9755,13 +9755,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Red Potion
   Image: {fileID: 21300000, guid: e06d2f59f06424c338ec3ad95edb1be8, type: 3}
-  InteractText: Press F to pickup health potion
-  ItemType: 0
-  PickPosition: {x: 4.462, y: 1.075, z: 2.49}
-  PickRotation: {x: 87.723, y: 0, z: 0}
+  InteractText: Press F to pickup Health Potion
+  ItemType: 1
+  mz: {fileID: 0}
+  pickedUp: 0
+  PickPosition: {x: 0.063, y: -1.044, z: -0.047}
+  PickRotation: {x: 17.601, y: -82.39, z: -90.205}
   DropRotation: {x: 0, y: 0, z: 0}
   UseItemAfterPickup: 0
   player: {fileID: 0}
+  inventory: {fileID: 0}
 --- !u!1 &1784011218779512902
 GameObject:
   m_ObjectHideFlags: 0

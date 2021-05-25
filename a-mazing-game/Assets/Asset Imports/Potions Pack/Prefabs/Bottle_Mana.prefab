@@ -4975,13 +4975,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Blue Potion
   Image: {fileID: 21300000, guid: fe6739ef6ea2a4afca70b7ee98422c7f, type: 3}
-  InteractText: Press F to pickup overshield potion
-  ItemType: 0
-  PickPosition: {x: 4.462, y: 1.075, z: 2.49}
+  InteractText: Press F to pickup Overshield Potion
+  ItemType: 1
+  mz: {fileID: 0}
+  pickedUp: 0
+  PickPosition: {x: -0.116, y: -0.069, z: -0.019}
   PickRotation: {x: 87.723, y: 0, z: 0}
   DropRotation: {x: 0, y: 0, z: 0}
   UseItemAfterPickup: 0
   player: {fileID: 0}
+  inventory: {fileID: 0}
 --- !u!1 &1000013970829164
 GameObject:
   m_ObjectHideFlags: 0
