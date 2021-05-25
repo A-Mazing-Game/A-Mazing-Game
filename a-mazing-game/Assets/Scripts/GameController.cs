@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
 
     private int score;
     private bool goalReached;
+    private bool isPaused;
     public int test = 1;
 
     public float x;
@@ -168,6 +169,19 @@ public class GameController : MonoBehaviour
             return;
         }
         coinLabel.text = "Coins: " + player.GetComponent<Inventory2>().numCoins.ToString();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (!isPaused)
+            {
+                isPaused = true;
+                Time.timeScale = 0;
+            }
+            else
+            {
+                isPaused = false;
+                Time.timeScale = 1;
+            }
+        }
         // healthLabel.fontSize = 75;
         // Invoke("StartNewGame", 4);
     }
