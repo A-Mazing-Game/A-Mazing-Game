@@ -92,8 +92,19 @@ public class MazeConstructor : MonoBehaviour
         fpsMovement = GetComponent<FpsMovement>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
-        // desiredEnemies = 24;
-        desiredEnemies = 0;
+        int mazeType = PlayerPrefs.GetInt("size", 0);
+        if (mazeType == 0) // small
+        {
+            desiredEnemies = 10;
+        }
+        else if (mazeType == 1)
+        {
+            desiredEnemies = 24;
+        }
+        else
+        {
+            desiredEnemies = 37;
+        }
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
