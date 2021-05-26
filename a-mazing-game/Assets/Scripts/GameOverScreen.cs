@@ -42,8 +42,6 @@ public class GameOverScreen : MonoBehaviour
         playerStats = player.GetComponent<PlayerStats>();
         baseStats = controller.GetComponent<BaseStats>();
         inventory = player.GetComponent<Inventory2>();
-        //player = GameObject.Find("Player");
-        //controller = GameObject.Find("Controller");
 
     }
     public void Setup()

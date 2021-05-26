@@ -64,6 +64,8 @@ public class FpsMovement : MonoBehaviour
 
     private void Start()
     {
+        sensitivityHor = PlayerPrefs.GetFloat("sensitivity", 9f);
+        sensitivityVert = PlayerPrefs.GetFloat("sensitivity", 9f);
         m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -75,7 +77,7 @@ public class FpsMovement : MonoBehaviour
         isDead = GetComponent<PlayerCombat>().isDead;
         inventory.ItemUsed += Inventory_ItemUsed;
         inventory.ItemRemoved += Inventory_ItemRemoved;
-    }
+}
 
     private void Update()
     {

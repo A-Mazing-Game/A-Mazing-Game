@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1306270802103185908}
   m_Layer: 0
   m_Name: Portal
-  m_TagString: Generated
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,7 +142,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 0379103c38a6641e7a84e37a52ab1cac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

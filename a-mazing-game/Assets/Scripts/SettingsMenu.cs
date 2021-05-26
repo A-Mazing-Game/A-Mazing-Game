@@ -8,48 +8,18 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
 
-    AsyncOperation asyncLoadLevel;
+    public Slider sensitivitySlider;
 
-
-    // Start is called before the first frame update
-    public void smallGame()
+    void Awake()
     {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("rows", 13);
-        PlayerPrefs.SetInt("cols", 13);
-        PlayerPrefs.SetInt("continue", 1);
-        StartCoroutine(LoadLevel());
-
-
+        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 9f);
     }
 
-    public void mediumGame()
+    public void ApplySensitivity()
     {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("rows", 25);
-        PlayerPrefs.SetInt("cols", 25);
-        PlayerPrefs.SetInt("continue", 1);
-        StartCoroutine(LoadLevel());
-
+        PlayerPrefs.SetFloat("sensitivity", sensitivitySlider.value);
     }
 
-    public void largeGame()
-    {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("rows", 37);
-        PlayerPrefs.SetInt("cols", 37);
-        PlayerPrefs.SetInt("continue", 1);
-        StartCoroutine(LoadLevel());
 
-    }
 
-    IEnumerator LoadLevel()
-    {
-        asyncLoadLevel = SceneManager.LoadSceneAsync("Scene");
-        while (!asyncLoadLevel.isDone)
-        {
-            print("Loading the Scene");
-            yield return null;
-        }
-    }
 }
