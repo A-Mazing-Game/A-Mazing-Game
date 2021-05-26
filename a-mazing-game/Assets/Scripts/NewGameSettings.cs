@@ -9,16 +9,19 @@ public class NewGameSettings : MonoBehaviour
 {
 
     AsyncOperation asyncLoadLevel;
+    float sliderSensitivity;
 
 
     // Start is called before the first frame update
     public void smallGame()
     {
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 13);
         PlayerPrefs.SetInt("cols", 13);
         PlayerPrefs.SetInt("size", 0);
         PlayerPrefs.SetInt("continue", 1);
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
         StartCoroutine(LoadLevel());
 
 
@@ -26,22 +29,26 @@ public class NewGameSettings : MonoBehaviour
 
     public void mediumGame()
     {
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 25);
         PlayerPrefs.SetInt("cols", 25);
         PlayerPrefs.SetInt("size", 1);
         PlayerPrefs.SetInt("continue", 1);
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
         StartCoroutine(LoadLevel());
 
     }
 
     public void largeGame()
     {
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 37);
         PlayerPrefs.SetInt("cols", 37);
         PlayerPrefs.SetInt("size", 2);
         PlayerPrefs.SetInt("continue", 1);
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
         StartCoroutine(LoadLevel());
 
     }
