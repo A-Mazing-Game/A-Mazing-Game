@@ -17,6 +17,7 @@ public class NewGameSettings : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 13);
         PlayerPrefs.SetInt("cols", 13);
+        PlayerPrefs.SetInt("size", 0);
         PlayerPrefs.SetInt("continue", 1);
         StartCoroutine(LoadLevel());
 
@@ -28,6 +29,7 @@ public class NewGameSettings : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 25);
         PlayerPrefs.SetInt("cols", 25);
+        PlayerPrefs.SetInt("size", 1);
         PlayerPrefs.SetInt("continue", 1);
         StartCoroutine(LoadLevel());
 
@@ -38,6 +40,7 @@ public class NewGameSettings : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 37);
         PlayerPrefs.SetInt("cols", 37);
+        PlayerPrefs.SetInt("size", 2);
         PlayerPrefs.SetInt("continue", 1);
         StartCoroutine(LoadLevel());
 
