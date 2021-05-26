@@ -95,7 +95,7 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         if (mazeType == 0) // small
         {
-            desiredEnemies = 15;
+            desiredEnemies = 8;
         }
         else if (mazeType == 1)  // medium
         {
