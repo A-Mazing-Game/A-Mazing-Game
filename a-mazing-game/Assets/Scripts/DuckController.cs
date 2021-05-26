@@ -24,6 +24,8 @@ public class DuckController : MonoBehaviour
     
     public int maxHealth = 500;
     public int currentHealth;
+
+    public GameOverScreen victoryScreen;
     
     private Animator animator;
     [SerializeField] private Transform football;
@@ -246,7 +248,8 @@ public class DuckController : MonoBehaviour
 
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);
-        
+
         // TODO: Call game over screen
+        victoryScreen.Setup();
     }
 }

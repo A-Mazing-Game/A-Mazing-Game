@@ -48,8 +48,8 @@ public class GameOverScreen : MonoBehaviour
     {
         gameObject.SetActive(true);
         Time.timeScale = 0;
-        pointsText.text = "Enemies Killed: " + playerStats.enemiesKilled.ToString();
-        timeText.text = "Time: ";
+        //pointsText.text = "Enemies Killed: " + playerStats.enemiesKilled.ToString();
+        //timeText.text = "Time: ";
         maxHealth = playerStats.maxHealth;
         maxDamage = playerStats.maxDamage;
         maxStamina = playerStats.maxStamina;

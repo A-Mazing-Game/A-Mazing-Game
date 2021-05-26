@@ -13,6 +13,8 @@ TagManager:
   - Health Potion
   - Cheercone
   - Portal
+  - Duck
+  - Autzen
   layers:
   - Default
   - TransparentFX

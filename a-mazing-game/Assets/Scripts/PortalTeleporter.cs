@@ -9,6 +9,7 @@ public class PortalTeleporter : MonoBehaviour
     public Transform receiver;
     private Vector3 AutzenLocation;
     public GameObject duck;
+    public AudioSource shout;
     public int test;
     public GameObject healthBar;
     private bool playerIsOverlapping = false;
@@ -18,6 +19,7 @@ public class PortalTeleporter : MonoBehaviour
     {
         healthBar = GameObject.Find("Duck Health").gameObject;
         duck = GameObject.Find("Duck").gameObject;
+        shout = GameObject.Find("AutzenModel").GetComponent<AudioSource>();
         player = GameObject.Find("Player").transform;
         AutzenLocation = new Vector3(-346f, 0.5f, 32f);
         healthBar.SetActive(false);
@@ -45,6 +47,7 @@ public class PortalTeleporter : MonoBehaviour
             duck.SetActive(true);
             healthBar.SetActive(true);
             player.position = AutzenLocation;
+            shout.Play();
             playerIsOverlapping = false;
         }
         
