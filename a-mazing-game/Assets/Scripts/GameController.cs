@@ -175,7 +175,7 @@ public class GameController : MonoBehaviour
         coinLabel.text = "Coins: " + player.GetComponent<Inventory2>().numCoins.ToString();
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (!isPaused)
+            if (!PauseScreen.isPaused)
             {
 
                 PauseScreen.pauseGame();
