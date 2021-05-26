@@ -42,7 +42,6 @@ public class GameController : MonoBehaviour
 
     private int score;
     private bool goalReached;
-    private bool isPaused;
     public int test = 1;
 
     public float x;

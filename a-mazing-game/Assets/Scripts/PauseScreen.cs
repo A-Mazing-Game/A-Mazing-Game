@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseScreen : MonoBehaviour
 {
-    public bool isPaused;
+    public bool isPaused = false;
     private PlayerStats playerStats;
 
 
