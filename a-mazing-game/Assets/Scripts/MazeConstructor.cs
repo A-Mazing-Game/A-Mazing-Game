@@ -651,7 +651,7 @@ public class MazeConstructor : MonoBehaviour
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 90, 0));
         gate.tag = "Generated";
-        gate.naxme = "MazePortal";
+        gate.name = "MazePortal";
 
         //go.GetComponent<BoxCollider>().isTrigger = true;
         //go.GetComponent<MeshRenderer>().sharedMaterial = endGoal;
