@@ -36,7 +36,8 @@ public class GameController : MonoBehaviour
 
     private bool showingEnd;
     public GameOverScreen GameOverScreen;
-    //public HealthBar healthBar;
+    public PauseScreen PauseScreen;
+
     public GameObject hud;
 
     private int score;
@@ -176,13 +177,12 @@ public class GameController : MonoBehaviour
         {
             if (!isPaused)
             {
-                isPaused = true;
-                Time.timeScale = 0;
+
+                PauseScreen.pauseGame();
             }
             else
             {
-                isPaused = false;
-                Time.timeScale = 1;
+                PauseScreen.resumeGame();
             }
         }
         // healthLabel.fontSize = 75;
