@@ -17,11 +17,11 @@ public class MainMenu : MonoBehaviour
         flag = PlayerPrefs.GetInt("continue", 0);
         if (flag == 1)
         {
-            continueGame.enabled = true;
+            continueGame.gameObject.SetActive(true);
         }
         else
         {
-            continueGame.enabled = false;
+            continueGame.gameObject.SetActive(false);
         }
     }
 
@@ -33,6 +33,11 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void resetGame()
+    {
+        PlayerPrefs.DeleteAll();
     }
 
     
