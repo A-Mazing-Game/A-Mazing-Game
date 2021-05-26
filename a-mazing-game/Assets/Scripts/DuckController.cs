@@ -225,6 +225,7 @@ public class DuckController : MonoBehaviour
             currentHealth = SubtractEnemyHealth(damage);
             if (currentHealth <= 0)
             {
+                animator.SetTrigger("Hurt");
                 isDead = true;
                 StartCoroutine(Die());
             }
@@ -237,8 +238,7 @@ public class DuckController : MonoBehaviour
         animator.speed = 1f;
         animator.SetBool("IsDead", true);
         GetComponent<CapsuleCollider>().enabled = false;
-        transform.GetChild(2).gameObject.SetActive(false);
-        // GetComponent<NavMeshAgent>().enabled = false;
+        healthBar.gameObject.SetActive(false);
 
         // mz.RemoveEnemyNode(gameObject, 0);
         enabled = false;

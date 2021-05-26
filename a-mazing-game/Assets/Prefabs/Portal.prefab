@@ -276,7 +276,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   receiver: {fileID: 0}
+  duck: {fileID: 0}
   test: 0
+  healthBar: {fileID: 0}
 --- !u!65 &7967285229728807987
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -120,7 +120,11 @@ public class PlayerCombat : MonoBehaviour
         {
             // Debug.Log(hitEnemies[length - 1].name + " hit!");
             if (hitEnemies[length - 1].CompareTag("Duck"))
-                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage/2);
+            {
+                Vector3 forceDir = Vector3.back;
+                hitEnemies[length - 1].GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
+                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage / 2);
+            }
             else
             {
                 StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
@@ -210,7 +214,11 @@ public class PlayerCombat : MonoBehaviour
             {
                 // Debug.Log(enemy.name + " hit!");
                 if (enemy.CompareTag("Duck"))
+                {
+                    Vector3 forceDir = Vector3.back;
+                    enemy.GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
                     enemy.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+                }
                 else
                 {
                     StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));

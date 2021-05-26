@@ -10,7 +10,9 @@ public class Football : MonoBehaviour
     public void Setup(Vector3 throwDir)
     {
         this.throwDir = throwDir;
-        transform.eulerAngles = new Vector3(0, GetAngleFromVectorFloat(throwDir), 0);
+        Transform player = GameObject.Find("Player").transform;
+        transform.LookAt(player);
+        transform.Rotate(Vector3.up, 90);
         Destroy(gameObject, 5f);
     }
 

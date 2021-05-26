@@ -8,15 +8,20 @@ public class PortalTeleporter : MonoBehaviour
     public Transform player;
     public Transform receiver;
     private Vector3 AutzenLocation;
+    public GameObject duck;
     public int test;
-
+    public GameObject healthBar;
     private bool playerIsOverlapping = false;
     // Update is called once per frame
 
     void Awake()
     {
+        healthBar = GameObject.Find("Duck Health").gameObject;
+        duck = GameObject.Find("Duck").gameObject;
         player = GameObject.Find("Player").transform;
         AutzenLocation = new Vector3(-346f, 0.5f, 32f);
+        healthBar.SetActive(false);
+        duck.SetActive(false);
     }
     void Update()
     {
@@ -37,6 +42,8 @@ public class PortalTeleporter : MonoBehaviour
                 player.position = receiver.position + positionOffset;
                 playerIsOverlapping = false;
             }*/
+            duck.SetActive(true);
+            healthBar.SetActive(true);
             player.position = AutzenLocation;
             playerIsOverlapping = false;
         }
