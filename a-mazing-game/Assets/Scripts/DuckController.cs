@@ -164,7 +164,7 @@ public class DuckController : MonoBehaviour
             Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
             if (hitPlayers.Length > 0)
             {
-                Debug.Log("Player hit");
+                // Debug.Log("Player hit");
                 hitPlayers[0].GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
             }
 

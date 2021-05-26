@@ -196,7 +196,7 @@ public class PlayerCombat : MonoBehaviour
             playerStats.attackDamage = 100;
             heavyAttack = true;
             movement.runSpeed = 4.0f;
-            yield return new WaitForSeconds(1.4f);
+            yield return new WaitForSeconds(1.3f);
             controlEnabled = false;
         }
 
@@ -208,7 +208,7 @@ public class PlayerCombat : MonoBehaviour
             
             foreach (Collider enemy in hitEnemies)
             {
-                Debug.Log(enemy.name + " hit!");
+                // Debug.Log(enemy.name + " hit!");
                 if (enemy.CompareTag("Duck"))
                     enemy.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
                 else
