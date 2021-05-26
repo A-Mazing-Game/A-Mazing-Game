@@ -95,13 +95,13 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         if (mazeType == 0) // small
         {
-            desiredEnemies = 10;
+            desiredEnemies = 15;
         }
-        else if (mazeType == 1)
+        else if (mazeType == 1)  // medium
         {
             desiredEnemies = 24;
         }
-        else
+        else  // large
         {
             desiredEnemies = 37;
         }
@@ -632,9 +632,18 @@ public class MazeConstructor : MonoBehaviour
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
+
+        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
+        // Debug.Log("distance: " + distance);
+        if (distance < 30)
+        {
+            // Debug.Log("Enemy too close, not spawning");
+            Destroy(sk);
+            return;
+        }
+        
         sk.AddComponent<MeshCollider>();
         // sk.enabled = true;
-        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
         sk.SetActive(true);
         
         MeshCollider t = sk.GetComponent<MeshCollider>();
@@ -661,7 +670,7 @@ public class MazeConstructor : MonoBehaviour
         // Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 90, 0));
-        gate.tag = "Generated";
+        gate.tag = "Portal";
         gate.name = "MazePortal";
 
         //go.GetComponent<BoxCollider>().isTrigger = true;
