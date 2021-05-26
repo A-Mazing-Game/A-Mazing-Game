@@ -126,6 +126,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentStamina -= amount;
             staminaBar.SetStamina(currentStamina);
+            intStamina = (int)currentStamina;
             staminaLabel.text = intStamina.ToString() + "/" + maxStamina.ToString();
 
             if (regen != null)
@@ -151,6 +152,7 @@ public class PlayerStats : MonoBehaviour
         {
             currentStamina += maxStamina / 100;
             staminaBar.SetStamina(currentStamina);
+            intStamina = (int)currentStamina;
             staminaLabel.text = intStamina.ToString() + "/" + maxStamina.ToString();
             yield return regenTick;
         }
