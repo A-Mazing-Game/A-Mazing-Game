@@ -12,6 +12,7 @@ TagManager:
   - Stamina Potion
   - Health Potion
   - Cheercone
+  - Portal
   layers:
   - Default
   - TransparentFX

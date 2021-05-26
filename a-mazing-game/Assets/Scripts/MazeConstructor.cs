@@ -95,7 +95,7 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         if (mazeType == 0) // small
         {
-            desiredEnemies = 10;
+            desiredEnemies = 15;
         }
         else if (mazeType == 1)  // medium
         {
@@ -632,9 +632,18 @@ public class MazeConstructor : MonoBehaviour
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
+
+        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
+        // Debug.Log("distance: " + distance);
+        if (distance < 30)
+        {
+            // Debug.Log("Enemy too close, not spawning");
+            Destroy(sk);
+            return;
+        }
+        
         sk.AddComponent<MeshCollider>();
         // sk.enabled = true;
-        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
         sk.SetActive(true);
         
         MeshCollider t = sk.GetComponent<MeshCollider>();
