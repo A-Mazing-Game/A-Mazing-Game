@@ -97,11 +97,11 @@ public class MazeConstructor : MonoBehaviour
         {
             desiredEnemies = 10;
         }
-        else if (mazeType == 1)
+        else if (mazeType == 1)  // medium
         {
             desiredEnemies = 24;
         }
-        else
+        else  // large
         {
             desiredEnemies = 37;
         }
@@ -661,7 +661,7 @@ public class MazeConstructor : MonoBehaviour
         // Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 90, 0));
-        gate.tag = "Generated";
+        gate.tag = "Portal";
         gate.name = "MazePortal";
 
         //go.GetComponent<BoxCollider>().isTrigger = true;
