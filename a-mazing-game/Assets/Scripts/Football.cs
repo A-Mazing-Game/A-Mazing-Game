@@ -10,7 +10,7 @@ public class Football : MonoBehaviour
     public void Setup(Vector3 throwDir)
     {
         this.throwDir = throwDir;
-        transform.eulerAngles = this.throwDir;
+        transform.eulerAngles = new Vector3(0, 0, GetAngleFromVectorFloat(throwDir));
         Destroy(gameObject, 5f);
     }
 
@@ -29,5 +29,14 @@ public class Football : MonoBehaviour
             target.TakePlayerDamage(30);
             Destroy(gameObject);
         }
+    }
+
+    public static float GetAngleFromVectorFloat(Vector3 dir)
+    {
+        dir = dir.normalized;
+        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if (n < 0) n += 360;
+
+        return n;
     }
 }

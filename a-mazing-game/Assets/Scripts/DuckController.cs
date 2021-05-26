@@ -160,12 +160,12 @@ public class DuckController : MonoBehaviour
             animator.speed = 1.5f;
             animator.SetTrigger("Swing");
             yield return new WaitForSeconds(0.6f);
-            if (health == currentHealth)
+            
+            Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
+            if (hitPlayers.Length > 0)
             {
-                Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
-                
-                if (hitPlayers.Length > 0)
-                    hitPlayers[0].GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
+                Debug.Log("Player hit");
+                hitPlayers[0].GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
             }
 
             yield return new WaitForSeconds(0.7f);
@@ -193,10 +193,6 @@ public class DuckController : MonoBehaviour
                 newFootball.gameObject.SetActive(true);
                 newFootball.localScale = new Vector3(12, 12, 12);
                 newFootball.GetComponent<Football>().Setup(throwDir);
-                // Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayers);
-                //
-                // if (hitPlayers.Length > 0)
-                //     hitPlayers[0].GetComponent<PlayerCombat>().TakePlayerDamage(attackDamage);
             }
 
             yield return new WaitForSeconds(0.7f);
@@ -222,50 +218,35 @@ public class DuckController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
-    public IEnumerator TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if (!isDead)
         {
-            animator.speed = 1.75f;
-            agent.isStopped = true;
-            // currentHealth -= damage;
-            // Play hurt animation
-            nextAttack = Time.time + 1f;
-            animator.SetTrigger("Hurt");
             currentHealth = SubtractEnemyHealth(damage);
             if (currentHealth <= 0)
             {
                 isDead = true;
                 StartCoroutine(Die());
             }
-
-            yield return new WaitForSeconds(1f);
-            animator.speed = 1f;
-            agent.isStopped = false;
         }
     }
     
     private IEnumerator Die()
     {
-        // Debug.Log("Enemy died!");
-        
         // Play death animation
         animator.speed = 1f;
         animator.SetBool("IsDead", true);
-        // agent.isStopped = true;
         GetComponent<CapsuleCollider>().enabled = false;
-        GetComponent<MeshCollider>().enabled = false;
         transform.GetChild(2).gameObject.SetActive(false);
-        transform.GetChild(3).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
 
-        mz.RemoveEnemyNode(gameObject, 0);
+        // mz.RemoveEnemyNode(gameObject, 0);
         enabled = false;
         // mz.RemoveEnemyNode(gameObject);
-        // enabled = false;
 
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(3f);
-        Destroy(gameObject);
+        
+        // TODO: Call game over screen
     }
 }

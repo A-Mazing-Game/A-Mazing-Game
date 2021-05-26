@@ -56,6 +56,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!isDead && fps.IsArmed)
         {
+            attackRange = 0.75f;
             if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
             {
                 nextAttack = Time.time + attackRate;
@@ -64,6 +65,7 @@ public class PlayerCombat : MonoBehaviour
         }
         else if (!isDead && !fps.IsArmed)
         {
+            attackRange = 0.6f;
             if (!canHook && Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextPunch)
             {
                 animator.speed = 1.5f;
@@ -96,6 +98,7 @@ public class PlayerCombat : MonoBehaviour
     {
         // int damage = 20;
         playerStats.attackDamage = 20;
+        // attackRange = 0.6f;
         // Play attack animation
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
         {
@@ -105,6 +108,7 @@ public class PlayerCombat : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
         }
+
         // Detect enemies in range of attack
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
 
@@ -114,17 +118,23 @@ public class PlayerCombat : MonoBehaviour
         int length = hitEnemies.Length;
         if (length > 0)
         {
-            StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
-            // Debug.Log(enemy.name + " hit!");
-            if (hitEnemies[length - 1].GetComponent<AIMovement>().currentHealth <= 0)
+            // Debug.Log(hitEnemies[length - 1].name + " hit!");
+            if (hitEnemies[length - 1].CompareTag("Duck"))
+                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage/2);
+            else
             {
-                playerStats.enemiesKilled++;
+                StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+                if (hitEnemies[length - 1].GetComponent<AIMovement>().currentHealth <= 0)
+                {
+                    playerStats.enemiesKilled++;
+                }
             }
         }
-        // }
     }
+
     private IEnumerator Attack()
     {
+        // attackRange = 0.75f;
         int attackType;
         float currentHealth = playerStats.currentHealth;
         float currentOvershield = playerStats.currentOvershield;
@@ -198,11 +208,17 @@ public class PlayerCombat : MonoBehaviour
             
             foreach (Collider enemy in hitEnemies)
             {
-                StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
-                // Debug.Log(enemy.name + " hit!");
-                if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+                Debug.Log(enemy.name + " hit!");
+                if (enemy.CompareTag("Duck"))
+                    enemy.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+                else
                 {
-                    playerStats.enemiesKilled++;
+                    StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+                    // Debug.Log(enemy.name + " hit!");
+                    if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
+                    {
+                        playerStats.enemiesKilled++;
+                    }  
                 }
             }
         }
