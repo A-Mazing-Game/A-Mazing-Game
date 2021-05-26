@@ -7744,9 +7744,9 @@ GameObject:
   - component: {fileID: 1694348516}
   - component: {fileID: 1694348515}
   - component: {fileID: 1694348519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Duck
-  m_TagString: Untagged
+  m_TagString: Duck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
