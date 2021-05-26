@@ -64,8 +64,8 @@ public class FpsMovement : MonoBehaviour
 
     private void Start()
     {
-        sensitivityHor = PlayerPrefs.GetFloat("sensitivity", 9f);
-        sensitivityVert = PlayerPrefs.GetFloat("sensitivity", 9f);
+        sensitivityHor = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sensitivityVert = PlayerPrefs.GetFloat("sensitivity", 4f);
         m_AudioSource = GetComponent<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
