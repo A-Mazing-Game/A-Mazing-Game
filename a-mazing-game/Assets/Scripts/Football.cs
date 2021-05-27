@@ -28,7 +28,7 @@ public class Football : MonoBehaviour
         PlayerCombat target = other.GetComponent<PlayerCombat>();
         if (target != null)
         {
-            target.TakePlayerDamage(30);
+            target.TakePlayerDamage(20);
             Destroy(gameObject);
         }
     }
