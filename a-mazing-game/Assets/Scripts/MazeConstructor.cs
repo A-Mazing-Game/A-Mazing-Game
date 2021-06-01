@@ -48,6 +48,10 @@ public class MazeConstructor : MonoBehaviour
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
     public GameObject player;  // player gameobject
     public InventoryItemBase bottles;
+    private bool loadTutorial;  // flag to load tutorial level or not
+
+    private int[,] tutorialMaze;
+    
     
     public int[,] data
     {
@@ -93,6 +97,7 @@ public class MazeConstructor : MonoBehaviour
         length = 0;
         agent = GetComponent<NavMeshAgent>();
         int mazeType = PlayerPrefs.GetInt("size", 0);
+        loadTutorial = false;
         if (mazeType == 0) // small
         {
             desiredEnemies = 5;
@@ -120,6 +125,29 @@ public class MazeConstructor : MonoBehaviour
             {1, 1, 1}
         };
         
+        /*
+         * This is the tutorial maze so it is not randomly generated each time
+         */
+        tutorialMaze = new int[,]  // use 11 for column and row
+        {
+            {1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {1,0,1,0,1,0,0,0,1,0,0,0,1},
+            {1,0,1,0,1,0,1,1,1,0,1,0,1},
+            {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            {1,0,1,0,1,0,1,0,1,1,1,0,1},
+            {1,0,1,0,0,0,0,0,1,0,0,0,1},
+            {1,0,0,0,1,0,1,1,1,0,1,0,1},
+            {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            {1,1,1,0,1,1,1,1,1,1,1,0,1},
+            {1,0,1,0,0,0,0,0,1,0,1,0,1},
+            {1,0,1,0,1,0,1,1,1,1,1,0,1},
+            {1,0,0,0,1,0,0,0,0,0,0,0,1},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            
+
+        };
+
+
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols,
@@ -133,12 +161,21 @@ public class MazeConstructor : MonoBehaviour
 
         DisposeOldMaze();
 
-        data = dataGenerator.FromDimensions(sizeRows, sizeCols);
+        if(!loadTutorial)
+        {
+            data = dataGenerator.FromDimensions(sizeRows, sizeCols);
+        }        
+        
+        else  // 11 for col and row
+        {
+            tutorialMaze = dataGenerator.FromDimensions(sizeRows, sizeCols);
+        }
 
         FindStartPosition();
         FindGoalPosition();
         FindDeadEnd();
-        // printMaze();
+        Debug.Log("For tut: col: " + col[0] + " row: " + row[0]);
+        printMaze();
 
         // store values used to generate this mesh
         hallWidth = meshGenerator.width;
@@ -353,11 +390,11 @@ public class MazeConstructor : MonoBehaviour
             {
                 if (maze[i, j] == 0)
                 {
-                    msg += " 0 ";
+                    msg += "0,";
                 }
                 else
                 {
-                    msg += " 1 ";
+                    msg += "1,";
                 }
             }
             Debug.Log(msg);
