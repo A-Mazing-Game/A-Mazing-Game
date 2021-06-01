@@ -1074,6 +1074,14 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 1827821328}
+    - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: potionAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: dc02ce061e0ed1244b5090d9d1ae9b4a, type: 3}
+    - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: playerAudioSource
+      value: 
+      objectReference: {fileID: 8936840687624926669}
     - target: {fileID: 4706735445675201702, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2306,6 +2314,14 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 1827821328}
+    - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: potionAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: dc02ce061e0ed1244b5090d9d1ae9b4a, type: 3}
+    - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: playerAudioSource
+      value: 
+      objectReference: {fileID: 8936840687624926669}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
 --- !u!1 &312832577
@@ -10911,7 +10927,7 @@ MonoBehaviour:
   throwRadius: 30
   attackRange: 1.25
   attackDamage: 40
-  maxHealth: 1
+  maxHealth: 500
   currentHealth: 0
   victoryScreen: {fileID: 1908193742}
   football: {fileID: 1042564162}
@@ -13567,6 +13583,34 @@ PrefabInstance:
       propertyPath: wanderRadius
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: skeletonHitAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: a39e9af7bb6d5f348b93bb019e60cff2, type: 3}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: playerAudioSource
+      value: 
+      objectReference: {fileID: 8936840687624926669}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: skeletonDeadAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 6372be268eb01ff4d9edc779fb9602c3, type: 3}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: playerAudioSource.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: playerAudioSource.Array.data[0]
+      value: 
+      objectReference: {fileID: 8936840687624926660}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: playerAudioSource.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: playerAudioSource.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 823155169055971739, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: m_Radius
       value: 0.1
@@ -14018,6 +14062,11 @@ PrefabInstance:
 --- !u!1 &8936840687624926659 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2104202123981963440, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+  m_PrefabInstance: {fileID: 7004691641281115507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &8936840687624926660 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4231552933159294730, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
   m_PrefabInstance: {fileID: 7004691641281115507}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8936840687624926661 stripped

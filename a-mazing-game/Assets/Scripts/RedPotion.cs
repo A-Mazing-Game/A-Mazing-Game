@@ -9,6 +9,8 @@ public class RedPotion : InventoryItemBase
     private PlayerStats playerStats;
     public Inventory inventory;
     private int potionHealth = 20;
+    public AudioSource playerAudioSource;
+    public AudioClip potionAudio;
     
     
     private void Start()
@@ -18,6 +20,7 @@ public class RedPotion : InventoryItemBase
 
     public override void OnUse()
     {
+        playerAudioSource.PlayOneShot(potionAudio, 0.7f);
         gameObject.SetActive(true);
         inventory.RemoveItem(this);
         mz.RemoveEnemyNode(gameObject, 1);

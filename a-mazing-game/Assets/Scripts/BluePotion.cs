@@ -10,6 +10,8 @@ public class BluePotion : InventoryItemBase
     private PlayerStats playerStats;
     public Inventory inventory;
     private int potionOvershield = 10;
+    public AudioSource playerAudioSource;
+    public AudioClip potionAudio;
 
     
     private void Start()
@@ -19,6 +21,8 @@ public class BluePotion : InventoryItemBase
     
     public override void OnUse()
     {
+        playerAudioSource.PlayOneShot(potionAudio, 0.7f);
+        
         gameObject.SetActive(true);
         inventory.RemoveItem(this);
         mz.RemoveEnemyNode(gameObject, 1);

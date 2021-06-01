@@ -15,6 +15,10 @@ public class AIMovement : MonoBehaviour
     public GameObject coins;
     public EnemyHealthBar healthBar;
     
+    public AudioSource playerAudioSource;
+    public AudioClip skeletonHitAudio;
+    public AudioClip skeletonDeadAudio;
+    
     public float lookRadius;
     public float wanderRadius;
 
@@ -164,6 +168,7 @@ public class AIMovement : MonoBehaviour
     {
         if (!isDead)
         {
+            playerAudioSource.PlayOneShot(skeletonHitAudio, 0.7f);
             animator.speed = 1.75f;
             agent.isStopped = true;
             // currentHealth -= damage;
@@ -174,6 +179,7 @@ public class AIMovement : MonoBehaviour
             if (currentHealth <= 0)
             {
                 isDead = true;
+                playerAudioSource.PlayOneShot(skeletonDeadAudio, 0.7f);
                 StartCoroutine(Die());
             }
 
