@@ -27,8 +27,11 @@ public class FpsMovement : MonoBehaviour
     public float maximumVert = 45.0f;
     public bool isSprintingForward;
     public bool isDead;
+
+    public AudioClip walkingAudio;
+    public AudioClip runningAudio;
     #endregion
-    
+
     #region Private Members
     private CharacterController charController;
     private Animator animator;
@@ -36,7 +39,7 @@ public class FpsMovement : MonoBehaviour
     // private Rigidbody rb;
     private PlayerCombat combat;
     private MazeConstructor maze;
-    AudioSource m_AudioSource;
+    AudioSource [] m_AudioSource;
     private InteractableItemBase mInteractItem;
     private RaycastHit camHit;
     private Vector3 impact = Vector3.zero;
@@ -66,7 +69,7 @@ public class FpsMovement : MonoBehaviour
     {
         sensitivityHor = PlayerPrefs.GetFloat("sensitivity", 4f);
         sensitivityVert = PlayerPrefs.GetFloat("sensitivity", 4f);
-        m_AudioSource = GetComponent<AudioSource>();
+        m_AudioSource = GetComponents<AudioSource>();
         charController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
@@ -175,10 +178,6 @@ public class FpsMovement : MonoBehaviour
             isSprintingForward = false;
             // Walk
             Walk();
-            if (!m_AudioSource.isPlaying)
-            {
-                m_AudioSource.Play();
-            }
         }
         else if (movement != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
@@ -203,7 +202,7 @@ public class FpsMovement : MonoBehaviour
         {
             isSprintingForward = false;
             Idle();
-            m_AudioSource.Stop();
+            m_AudioSource[0].Stop();
         }
         
         if (Input.GetKeyDown(KeyCode.Mouse1) && Time.time > nextRoll && movement != Vector3.zero)
@@ -232,6 +231,11 @@ public class FpsMovement : MonoBehaviour
     {
         moveSpeed = walkSpeed;
         animator.speed = 1.33f;
+        m_AudioSource[0].clip = walkingAudio;
+        if (!m_AudioSource[0].isPlaying)
+        {
+            m_AudioSource[0].Play();
+        }
         if (Input.GetKey(KeyCode.W))
         {
             animator.SetFloat("Speed", 0.5f, 0.2f, Time.deltaTime);
@@ -252,6 +256,11 @@ public class FpsMovement : MonoBehaviour
     
     private void Run()
     {
+        m_AudioSource[0].clip = runningAudio;
+        if (!m_AudioSource[0].isPlaying)
+        {
+            m_AudioSource[0].Play();
+        }
         moveSpeed = runSpeed;
         animator.speed = 1.2f;
         animator.SetFloat("Speed", 2.5f, 0.2f, Time.deltaTime);

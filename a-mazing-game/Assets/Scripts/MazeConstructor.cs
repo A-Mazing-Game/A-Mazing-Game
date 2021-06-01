@@ -146,7 +146,7 @@ public class MazeConstructor : MonoBehaviour
         DisplayMaze();
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
-        //StartCoroutine(SpawnCoRoutine());
+        StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
@@ -666,8 +666,8 @@ public class MazeConstructor : MonoBehaviour
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         // Debug.Log("End trigger: " + column + " " + newRow);
-        Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
-        //Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
+        //Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
+        Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 135, 0));
         gate.tag = "Portal";

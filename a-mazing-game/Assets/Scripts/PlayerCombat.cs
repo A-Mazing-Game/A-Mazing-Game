@@ -20,6 +20,8 @@ public class PlayerCombat : MonoBehaviour
     public bool heavyAttack;
     public bool isDead;
     public float attackRate = 1f;
+    private AudioSource[] playerAudioSource;
+    public AudioClip playerHurtAudio;
     // public InventoryItemBase currentItem;
     #endregion
     
@@ -41,6 +43,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
+        playerAudioSource = GetComponents<AudioSource>();
         playerStats = GetComponent<PlayerStats>();
         movement = GetComponent<FpsMovement>();
         // cc = GetComponent<CharacterController>();
@@ -249,6 +252,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakePlayerDamage(int damage)
     {
+        playerAudioSource[1].PlayOneShot(playerHurtAudio, 1.0f);
         int currentOvershield = playerStats.currentOvershield;
         int currentHealth = playerStats.currentHealth;
         int remainder;
@@ -257,7 +261,9 @@ public class PlayerCombat : MonoBehaviour
             playerStats.SubtractOvershield(damage);
             remainder = damage - currentOvershield;
             if (remainder > 0)
+            {
                 currentHealth = playerStats.SubtractHealth(remainder);
+            }
         }
         else
         {

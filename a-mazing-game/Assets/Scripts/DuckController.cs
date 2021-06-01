@@ -14,7 +14,10 @@ public class DuckController : MonoBehaviour
     public LayerMask playerLayers;
     public GameObject coins;
     public EnemyHealthBar healthBar;
-    
+    public AudioSource duckAudio;
+    public AudioClip duckHurtAudio;
+    public AudioClip duckDeadAudio;
+
     public float lookRadius;
     public float wanderRadius;
     public float throwRadius;
@@ -44,10 +47,12 @@ public class DuckController : MonoBehaviour
 
     void Start()
     {
-         animator = GetComponentInChildren<Animator>();
-         currentHealth = maxHealth;
-         healthBar.SetMaxHealth(maxHealth);
-         healthBar.SetHealth(maxHealth);
+        duckAudio = GetComponent<AudioSource>();
+        animator = GetComponentInChildren<Animator>();
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetHealth(maxHealth);
+        duckAudio.clip = duckHurtAudio;
     }
 
     void Update()
@@ -225,6 +230,7 @@ public class DuckController : MonoBehaviour
         if (!isDead)
         {
             currentHealth = SubtractEnemyHealth(damage);
+            duckAudio.Play();
             if (currentHealth <= 0)
             {
                 animator.SetTrigger("Hurt");
@@ -237,6 +243,8 @@ public class DuckController : MonoBehaviour
     private IEnumerator Die()
     {
         // Play death animation
+        duckAudio.clip = duckDeadAudio;
+        duckAudio.Play();
         animator.speed = 1f;
         animator.SetBool("IsDead", true);
         GetComponent<CapsuleCollider>().enabled = false;
