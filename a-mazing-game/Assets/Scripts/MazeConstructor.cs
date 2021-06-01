@@ -49,6 +49,7 @@ public class MazeConstructor : MonoBehaviour
     public GameObject player;  // player gameobject
     public InventoryItemBase bottles;
     private bool loadTutorial;  // flag to load tutorial level or not
+    public GameObject Arrows;
 
     private int[,] tutorialMaze;
     
@@ -328,7 +329,8 @@ public class MazeConstructor : MonoBehaviour
         {
             // Debug.Log("Calling shit"); 
             
-            int temp = random.Next(1, 3);  // todo change from 0, 3
+            int temp = random.Next(1, 4);  // todo change from 0, 4
+            Debug.Log(temp);
             if(temp == 0)  // stamina
             {
                 // Debug.Log("Random is 0");
@@ -344,6 +346,10 @@ public class MazeConstructor : MonoBehaviour
             {
                 // Debug.Log("Random is 2");
                 SpawnShield(deadEndCol[i], deadEndRow[i], endLocation);
+            }
+            else if (temp == 3) // arrow pile
+            {
+                SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
             }
         }
     }
@@ -644,6 +650,26 @@ public class MazeConstructor : MonoBehaviour
         TriggerEventRouter tc = shield.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
         powerUps.AddLast(shield);
+    }
+    
+    private void SpawnArrow(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    {
+        // Debug.Log("Made it to SpawnShield");
+        GameObject arrow = Instantiate(Arrows);
+        arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
+        
+        if (end.transform.position == arrow.transform.position)
+        {
+            Debug.Log("arrow not spawning at end trigger");
+            return;
+        }
+        arrow.SetActive(false);
+        arrow.name = "Arrow";
+        arrow.tag = "Arrow";
+
+        TriggerEventRouter tc = arrow.AddComponent<TriggerEventRouter>();
+        tc.callback = callback;
+        powerUps.AddLast(arrow);
     }
 
     private void PlaceStartTrigger(TriggerEventHandler callback)

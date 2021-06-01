@@ -15,6 +15,7 @@ TagManager:
   - Portal
   - Duck
   - Autzen
+  - Arrow
   layers:
   - Default
   - TransparentFX
