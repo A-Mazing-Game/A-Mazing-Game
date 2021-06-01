@@ -140,6 +140,7 @@ public class FpsMovement : MonoBehaviour
             {
                 animator.SetBool("greatSword", true);
                 animator.SetBool("katana", false);
+                animator.SetBool("bow", false);
                 combat.attackRange = 1.0f;
                 combat.attackRate = 1.5f;
             }
@@ -147,6 +148,15 @@ public class FpsMovement : MonoBehaviour
             {
                 animator.SetBool("greatSword", false);
                 animator.SetBool("katana", true);
+                animator.SetBool("bow", false);
+                combat.attackRange = 0.75f;
+                combat.attackRate = 1f;
+            }
+            else if (CarriesItem("Bow"))
+            {
+                animator.SetBool("greatSword", false);
+                animator.SetBool("katana", false);
+                animator.SetBool("bow", true);
                 combat.attackRange = 0.75f;
                 combat.attackRate = 1f;
             }
@@ -156,6 +166,8 @@ public class FpsMovement : MonoBehaviour
             animator.SetBool("isArmed", false);
             animator.SetBool("greatSword", false);
             animator.SetBool("katana", false);
+            animator.SetBool("bow", false);
+
         }
         
         if (mCurrentItem != null)

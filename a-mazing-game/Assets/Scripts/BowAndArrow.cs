@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class BowAndArrow : InventoryItemBase
 {
-    [SerializeField] private GameObject arrow;
-    
+    public Arrows arrows;
     public override void OnUse()
     {
-        transform.localPosition = PickPosition;
-        transform.localEulerAngles = PickRotation;
-        // arrow.SetActive(true);
+        base.OnUse();
     }
     
     public override void OnDrop()

@@ -1,26 +1,25 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Football : MonoBehaviour
+public class Arrow : MonoBehaviour
 {
-    private Vector3 throwDir;
+    private Vector3 shootDir;
     
-    public void Setup(Vector3 throwDir)
+    public void Setup(Vector3 shootDir)
     {
-        this.throwDir = throwDir;
-        Transform player = GameObject.Find("Player").transform;
-        transform.LookAt(player);
-        transform.Rotate(Vector3.up, 90);
+        this.shootDir = shootDir;
+        // Transform player = GameObject.Find("Player").transform;
+        // transform.LookAt(player);
+        // transform.Rotate(Vector3.up, 90);
         Destroy(gameObject, 5f);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        float throwSpeed = 20f;
-        transform.position += throwDir * throwSpeed * Time.deltaTime;
+        float throwSpeed = 40f;
+        transform.position += shootDir * throwSpeed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,7 +29,7 @@ public class Football : MonoBehaviour
             PlayerCombat target = other.GetComponent<PlayerCombat>();
             if (target != null)
             {
-                Debug.Log("hit at " + Time.time);
+                // Debug.Log("hit at " + Time.time);
                 target.TakePlayerDamage(20);
                 Destroy(gameObject);
             }

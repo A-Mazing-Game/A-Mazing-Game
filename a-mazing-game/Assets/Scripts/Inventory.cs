@@ -75,6 +75,12 @@ public class Inventory : MonoBehaviour
 
     internal void UseItem(InventoryItemBase item)
     {
+        // if (item.Name == "Bow")
+        // {
+        //     GameObject goItem = (item as MonoBehaviour).gameObject;
+        //     goItem.GetComponent<BowAndArrow>().arrows.pickupAmount--;
+        //     RemoveItem(goItem.GetComponent<BowAndArrow>().arrows);
+        // }
         if (ItemUsed != null)
         {
             ItemUsed(this, new InventoryEventArgs(item));

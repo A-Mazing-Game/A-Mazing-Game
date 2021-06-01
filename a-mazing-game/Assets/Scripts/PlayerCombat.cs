@@ -39,6 +39,12 @@ public class PlayerCombat : MonoBehaviour
     private bool showingEnd;
     private bool canHook;
     private float attackChainCounter;
+    
+    [SerializeField] private Transform bow;
+    [SerializeField] private Transform arrow;
+    [SerializeField] private Transform arrow2;
+
+
     #endregion
 
     void Start()
@@ -94,6 +100,35 @@ public class PlayerCombat : MonoBehaviour
                 nextPunch = Time.time + punchRate;
                 StartCoroutine(Punch());
             }
+        }
+    }
+    
+    private IEnumerator Shoot()
+    {
+        // int damage = 20;
+        float currentHealth = playerStats.currentHealth;
+        float currentOvershield = playerStats.currentOvershield;
+        playerStats.attackDamage = 40;
+        if (!isDead)
+        {
+            arrow2.gameObject.SetActive(true);
+            // int health = currentHealth;
+            // animator.speed = 1.0f;
+            animator.SetTrigger("Attack");
+            yield return new WaitForSeconds(0.75f);
+            // transform.LookAt(player);
+            Vector3 shootDir = transform.forward;
+            arrow.gameObject.SetActive(false);
+            if (currentHealth == playerStats.currentHealth && currentOvershield == playerStats.currentOvershield)
+            {
+                Transform newArrow = Instantiate(arrow, bow.position, Quaternion.identity);
+                newArrow.gameObject.SetActive(true);
+                // newArrow.localScale = new Vector3(12, 12, 12);
+                newArrow.GetComponent<Arrow>().Setup(shootDir);
+            }
+
+            yield return new WaitForSeconds(0.7f);
+            // arrow.gameObject.SetActive(true);
         }
     }
 

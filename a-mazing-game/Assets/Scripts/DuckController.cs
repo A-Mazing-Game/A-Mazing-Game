@@ -36,7 +36,7 @@ public class DuckController : MonoBehaviour
     [SerializeField] private Transform hand;
     
     private float wanderSpeed = 1.25f;
-    private float runSpeed = 3f;
+    private float runSpeed = 2.25f;
     
     private float attackRate = 2f;
     private float throwRate = 2.5f;
