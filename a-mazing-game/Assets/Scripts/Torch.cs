@@ -38,13 +38,16 @@ public class Torch : MonoBehaviour
         //Debug.DrawRay(transform.position, transform.forward * range, Color.green, 5f);
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
+
             
-            print("torched");
             Debug.Log(hit.transform.name);
             //Vector3 pos = hit.transform.position;
-            Vector3 pos = hit.point;
-            pos.y = pos.y + 2;
-            Instantiate(torch, hit.point, transform.rotation);
+            Vector3 placePoint = hit.point;
+            placePoint.z = hit.point.z - 0.12f * transform.forward.z;
+            placePoint.x = hit.point.x - 0.12f * transform.forward.x;
+            
+            //pos.z = pos.z  -1;
+            Instantiate(torch, placePoint, transform.rotation);
             //torch.transform.LookAt(hit.point + hit.normal);
 
         }

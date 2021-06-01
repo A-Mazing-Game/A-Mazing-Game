@@ -146,7 +146,7 @@ public class MazeConstructor : MonoBehaviour
         DisplayMaze();
         // SpawnEnemy(desiredEnemies);
         Thread.Sleep(1000);
-        StartCoroutine(SpawnCoRoutine());
+        //StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
