@@ -105,10 +105,12 @@ public class PlayerCombat : MonoBehaviour
         // Play attack animation
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
         {
+            punchRate = 0.8f;
             yield return new WaitForSeconds(0.3f);
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Right Hook"))
         {
+            punchRate = 0.6f;
             yield return new WaitForSeconds(0.5f);
         }
 

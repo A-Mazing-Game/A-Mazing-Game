@@ -11,6 +11,7 @@ public class ItemClickHandler : MonoBehaviour
 
     private Button _button;
 
+
     public FpsMovement fps;
 
     void Awake()
@@ -23,7 +24,6 @@ public class ItemClickHandler : MonoBehaviour
         if(Input.GetKeyDown(_Key))
         {
             FadeToColor(_button.colors.pressedColor);
-
             // Click the button
             _button.onClick.Invoke();
             OnItemClicked();
@@ -57,13 +57,16 @@ public class ItemClickHandler : MonoBehaviour
 
         if (item != null)
         {
+            fps.arrow.SetActive(false);
             Debug.Log("using " + item.Name);
             _Inventory.UseItem(item);
+            
         }
         else
         {
             if (fps.mCurrentItem != null)
             {
+                fps.arrow.SetActive(false);
                 fps.SetItemActive(fps.mCurrentItem, false);
                 fps.mCurrentItem = null;
             }

@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
     public event EventHandler<InventoryEventArgs> ItemRemoved;
     public event EventHandler<InventoryEventArgs> ItemUsed;
 
+    public bool hasArrows;
+
     public Inventory()
     {
         for (int i = 0; i < SLOTS; i++)
@@ -43,6 +45,8 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(InventoryItemBase item)
     {
+        if (item.Name == "Arrows")
+            hasArrows = true;
         InventorySlot freeSlot = FindStackableSlot(item);
         if (freeSlot == null)
         {
@@ -50,8 +54,18 @@ public class Inventory : MonoBehaviour
         }
         if (freeSlot != null)
         {
-            freeSlot.AddItem(item);
-
+            int addAmount = 1;
+            
+            if (item.Name == "Arrows")
+            {
+                GameObject goItem = (item as MonoBehaviour).gameObject;
+                addAmount = goItem.GetComponent<Arrows>().pickupAmount;
+                hasArrows = true;
+            }
+            
+            for (var i = 0; i < addAmount; i++)
+                freeSlot.AddItem(item);
+            
             if (ItemAdded != null)
             {
                 ItemAdded(this, new InventoryEventArgs(item));
@@ -73,6 +87,22 @@ public class Inventory : MonoBehaviour
     {
         foreach (InventorySlot slot in mSlots)
         {
+            if (item.Name == "Arrows")
+            {
+                var slotInfo = slot.RemoveAll(item);
+                if (slotInfo.Item1)
+                {
+                    GameObject goItem = (item as MonoBehaviour).gameObject;
+                    goItem.GetComponent<Arrows>().pickupAmount = slotInfo.Item2;
+                    hasArrows = false;
+                    if (ItemRemoved != null)
+                    {
+                        ItemRemoved(this, new InventoryEventArgs(item));
+                    }
+                    break;
+                }
+            }
+            
             if (slot.Remove(item))
             {
                 if (ItemRemoved != null)
@@ -81,7 +111,7 @@ public class Inventory : MonoBehaviour
                 }
                 break;
             }
-
+            
         }
     }
 }

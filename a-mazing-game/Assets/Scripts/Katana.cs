@@ -8,4 +8,9 @@ public class Katana : InventoryItemBase
     {
         base.OnUse();
     }
+    
+    public override void OnDrop()
+    {
+        base.OnDrop();
+    }
 }

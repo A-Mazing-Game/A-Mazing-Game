@@ -387,10 +387,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a78d79ad419d444e8388e9143cd8bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  Hud: {fileID: 0}
+  mCurrentItem: {fileID: 0}
   headCam: {fileID: 7004691639439559887}
+  rightHand: {fileID: 2104202123981963510}
+  leftHand: {fileID: 2104202123981963430}
+  arrow: {fileID: 0}
   walkSpeed: 2.5
   runSpeed: 4
-  Hand: {fileID: 0}
   gravity: -9.8
   rollForce: 5
   mass: 1
@@ -399,6 +404,7 @@ MonoBehaviour:
   minimumVert: -45
   maximumVert: 45
   isSprintingForward: 0
+  isDead: 0
 --- !u!114 &5584041457345969747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +419,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2104202123972457328}
   attackPoint: {fileID: 3869320385373864335}
+  GameOverScreen: {fileID: 0}
+  hud: {fileID: 0}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -420,9 +428,7 @@ MonoBehaviour:
   controlEnabled: 0
   heavyAttack: 0
   isDead: 0
-  currentItem: {fileID: 0}
-  GameOverScreen: {fileID: 0}
-  hud: {fileID: 0}
+  attackRate: 1
 --- !u!114 &7544530994945066218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 40
+  maxDamage: 0
   maxHealth: 100
   currentHealth: 0
   maxOvershield: 100
@@ -447,6 +454,8 @@ MonoBehaviour:
   staminaBar: {fileID: 0}
   overshieldBar: {fileID: 0}
   controller: {fileID: 0}
+  healthLabel: {fileID: 0}
+  staminaLabel: {fileID: 0}
 --- !u!114 &157496915772080653
 MonoBehaviour:
   m_ObjectHideFlags: 0

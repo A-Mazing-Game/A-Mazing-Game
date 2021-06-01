@@ -14,7 +14,10 @@ public class FpsMovement : MonoBehaviour
     public HUD Hud;
     public InventoryItemBase mCurrentItem;
     public Camera headCam;
-    public GameObject Hand;
+    public GameObject rightHand;
+    public GameObject leftHand;
+    public GameObject arrow;
+    public Arrows arrows;
     
     public float walkSpeed;
     public float runSpeed;
@@ -80,6 +83,7 @@ public class FpsMovement : MonoBehaviour
         isDead = GetComponent<PlayerCombat>().isDead;
         inventory.ItemUsed += Inventory_ItemUsed;
         inventory.ItemRemoved += Inventory_ItemRemoved;
+        arrow.SetActive(false);
 }
 
     private void Update()
@@ -153,6 +157,10 @@ public class FpsMovement : MonoBehaviour
             animator.SetBool("greatSword", false);
             animator.SetBool("katana", false);
         }
+        
+        if (mCurrentItem != null)
+            if (mCurrentItem.Name == "Bow" && inventory.hasArrows)
+                arrow.SetActive(true);
     }
 
     void FixedUpdate()
@@ -318,7 +326,7 @@ public class FpsMovement : MonoBehaviour
         impact += dir.normalized * force / mass;
     }
     
-    // Following code taken from Jayanam on YouTube
+    // Following code inspired by Jayanam from YouTube
     #region Inventory
 
     private void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
@@ -337,7 +345,12 @@ public class FpsMovement : MonoBehaviour
     {
         GameObject currentItem = (item as MonoBehaviour).gameObject;
         currentItem.SetActive(active);
-        currentItem.transform.parent = active ? Hand.transform : null;
+        if (currentItem.name != "Wooden Bow")
+            currentItem.transform.parent = active ? rightHand.transform : null;
+        else
+        {
+            currentItem.transform.parent = active ? leftHand.transform : null;
+        }
     }
 
     private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
@@ -362,13 +375,15 @@ public class FpsMovement : MonoBehaviour
     public void DropCurrentItem()
     {
         mCanTakeDamage = false;
-        
-        GameObject goItem = (mCurrentItem as MonoBehaviour).gameObject;
 
-        inventory.RemoveItem(mCurrentItem);
+        GameObject goItem = (mCurrentItem as MonoBehaviour).gameObject;
+        
+        mCurrentItem.OnDrop();
 
         goItem.transform.position = transform.position;
-        goItem.transform.rotation = Quaternion.Euler(0f,0f,90f);
+        
+        inventory.RemoveItem(mCurrentItem);
+        
         BoxCollider bc = goItem.AddComponent<BoxCollider>();
         bc.isTrigger = true;
     }

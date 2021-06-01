@@ -72,4 +72,22 @@ public class InventorySlot
         }
         return false;
     }
+    
+    public Tuple<bool, int> RemoveAll(InventoryItemBase item)
+    {
+        if (IsEmpty)
+            return Tuple.Create(false, 0);
+        
+        InventoryItemBase first = mItemStack.Peek();
+        if (first.Name == item.Name)
+        {
+            int count = Count;
+            while (!IsEmpty)
+            {
+                mItemStack.Pop();
+            }
+            return Tuple.Create(true, count);
+        }
+        return Tuple.Create(false, 0);
+    }
 }

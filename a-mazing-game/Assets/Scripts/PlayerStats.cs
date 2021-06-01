@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour
     public Text healthLabel;
     public Text staminaLabel;
 
-    private WaitForSeconds regenTick = new WaitForSeconds(0.1f);
+    private WaitForSeconds regenTick = new WaitForSeconds(0.05f);
     private Coroutine regen;
     
     private void Awake()

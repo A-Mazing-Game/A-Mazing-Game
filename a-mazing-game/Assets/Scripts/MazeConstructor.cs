@@ -35,7 +35,7 @@ public class MazeConstructor : MonoBehaviour
     public GameObject enemy;
     public GameObject skeleton;  // Skeleton prefab
     public GameObject healthPotion;  // health prefab
-    public GameObject staminaPotion;  // stamina prefab
+    public GameObject strengthPotion;  // strength prefab
     public GameObject shieldPotion;  // shield prefab
     public GameObject gate;
     public AIMovement ai;
@@ -546,25 +546,25 @@ public class MazeConstructor : MonoBehaviour
         }
     }
     
-    private void SpawnStamina(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    private void SpawnStrength(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to spawnStamina");
-        GameObject stamina = Instantiate(staminaPotion);
-        stamina.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        if (end.transform.position == stamina.transform.position)
+        GameObject strength = Instantiate(strengthPotion);
+        strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
+        if (end.transform.position == strength.transform.position)
         {
             Debug.Log("Stamina not spawning at end trigger");
             return;
         }
         // health.AddComponent<SphereCollider>();
-        stamina.SetActive(false);
-        stamina.name = "Stamina Potion";
-        stamina.tag = "Stamina Potion";
+        strength.SetActive(false);
+        strength.name = "Stamina Potion";
+        strength.tag = "Stamina Potion";
         
-        stamina.GetComponent<SphereCollider>().isTrigger = true;
-        TriggerEventRouter tc = stamina.AddComponent<TriggerEventRouter>();
+        strength.GetComponent<SphereCollider>().isTrigger = true;
+        TriggerEventRouter tc = strength.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
-        powerUps.AddLast(stamina);
+        powerUps.AddLast(strength);
 
     }
 
