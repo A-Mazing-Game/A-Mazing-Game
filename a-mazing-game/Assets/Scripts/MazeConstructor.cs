@@ -95,7 +95,7 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         if (mazeType == 0) // small
         {
-            desiredEnemies = 8;
+            desiredEnemies = 5;
         }
         else if (mazeType == 1)  // medium
         {
@@ -108,6 +108,7 @@ public class MazeConstructor : MonoBehaviour
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
         
 
@@ -145,13 +146,11 @@ public class MazeConstructor : MonoBehaviour
 
         DisplayMaze();
         // SpawnEnemy(desiredEnemies);
-        Thread.Sleep(1000);
-        StartCoroutine(SpawnCoRoutine());
-        StartCoroutine(UpdateGameObjects());
-        
+        // Thread.Sleep(1000);
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
-        
+        StartCoroutine(SpawnCoRoutine());
+        StartCoroutine(UpdateGameObjects());
     }
     
     public void RemoveEnemyNode(GameObject go, int type)
@@ -189,8 +188,6 @@ public class MazeConstructor : MonoBehaviour
                 node = node.Next;
             }
         }
-            
-        
     }
     
     private IEnumerator UpdateGameObjects()
@@ -632,12 +629,11 @@ public class MazeConstructor : MonoBehaviour
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
-
-        float distance = Vector3.Distance(player.transform.position, sk.transform.position);
-        // Debug.Log("distance: " + distance);
-        if (distance < 30)
+        float distance = sk.transform.position.x - player.transform.position.x;
+        Debug.Log("distance: " + distance);
+        if (distance < 10)
         {
-            // Debug.Log("Enemy too close, not spawning");
+            Debug.Log("Enemy too close, not spawning at location " + sk.transform.position);
             Destroy(sk);
             return;
         }

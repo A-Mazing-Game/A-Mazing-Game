@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -58,9 +59,10 @@ public class NewGameSettings : MonoBehaviour
         asyncLoadLevel = SceneManager.LoadSceneAsync("Scene");
         while (!asyncLoadLevel.isDone)
         {
-            print("Loading the Scene");
+            // print("Loading the Scene");
             yield return null;
         }
+        Thread.Sleep(2000);
     }
 }
 
