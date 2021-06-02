@@ -22,6 +22,8 @@ public class PlayerCombat : MonoBehaviour
     public float attackRate = 1f;
     private AudioSource[] playerAudioSource;
     public AudioClip playerHurtAudio;
+
+    public Inventory inventory;
     // public InventoryItemBase currentItem;
     #endregion
     
@@ -33,8 +35,10 @@ public class PlayerCombat : MonoBehaviour
     private FpsMovement movement;
     // private CharacterController cc;
     private float punchRate = 0.6f;
+    private float shootRate = 1.0f;
     private float nextPunch;
     private float nextAttack;
+    private float nextShot;
     private int attackDamage;
     private bool showingEnd;
     private bool canHook;
@@ -65,11 +69,22 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!isDead && fps.IsArmed)
         {
-            attackRange = 0.75f;
-            if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
+            if (fps.mCurrentItem.Name == "Bow")
             {
-                nextAttack = Time.time + attackRate;
-                StartCoroutine(Attack());
+                if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextShot)
+                {
+                    nextShot = Time.time + shootRate;
+                    StartCoroutine(Shoot());
+                }
+            }
+            else
+            {
+                attackRange = 0.75f;
+                if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
+                {
+                    nextAttack = Time.time + attackRate;
+                    StartCoroutine(Attack());
+                }
             }
         }
         else if (!isDead && !fps.IsArmed)
@@ -111,24 +126,28 @@ public class PlayerCombat : MonoBehaviour
         playerStats.attackDamage = 40;
         if (!isDead)
         {
-            arrow2.gameObject.SetActive(true);
+            // arrow2.gameObject.SetActive(false);
             // int health = currentHealth;
             // animator.speed = 1.0f;
             animator.SetTrigger("Attack");
-            yield return new WaitForSeconds(0.75f);
-            // transform.LookAt(player);
-            Vector3 shootDir = transform.forward;
+            yield return new WaitForSeconds(0.3f);
             arrow.gameObject.SetActive(false);
+            arrow2.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            // transform.LookAt(player);
+            Vector3 shootDir = fps.headCam.transform.forward;
+            // arrow.gameObject.SetActive(false);
             if (currentHealth == playerStats.currentHealth && currentOvershield == playerStats.currentOvershield)
             {
-                Transform newArrow = Instantiate(arrow, bow.position, Quaternion.identity);
+                Transform newArrow = Instantiate(arrow2, arrow2.position, arrow2.rotation);
                 newArrow.gameObject.SetActive(true);
+                arrow2.gameObject.SetActive(false);
                 // newArrow.localScale = new Vector3(12, 12, 12);
                 newArrow.GetComponent<Arrow>().Setup(shootDir);
             }
-
             yield return new WaitForSeconds(0.7f);
-            // arrow.gameObject.SetActive(true);
+            arrow.gameObject.SetActive(true);
+
         }
     }
 

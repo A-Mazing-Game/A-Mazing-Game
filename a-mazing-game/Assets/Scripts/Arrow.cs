@@ -5,34 +5,37 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     private Vector3 shootDir;
+    [SerializeField] private PlayerStats playerStats;
     
     public void Setup(Vector3 shootDir)
     {
         this.shootDir = shootDir;
-        // Transform player = GameObject.Find("Player").transform;
-        // transform.LookAt(player);
-        // transform.Rotate(Vector3.up, 90);
         Destroy(gameObject, 5f);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        float throwSpeed = 40f;
-        transform.position += shootDir * throwSpeed * Time.deltaTime;
+        float shootSpeed = 50f;
+        transform.position += shootDir * shootSpeed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetType() == typeof(BoxCollider))
+        if (other.CompareTag("Enemy"))
         {
-            PlayerCombat target = other.GetComponent<PlayerCombat>();
-            if (target != null)
-            {
-                // Debug.Log("hit at " + Time.time);
-                target.TakePlayerDamage(20);
-                Destroy(gameObject);
-            }
+            StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));            
+            // Debug.Log("hit at " + Time.time);
+            // other.TakeDamage(20);
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Duck"))
+        {
+            other.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+            // Debug.Log("hit at " + Time.time);
+            // other.TakeDamage(20);
+            Destroy(gameObject);
         }
     }
 }
+
