@@ -53,7 +53,7 @@ public class GameOverScreen : MonoBehaviour
         maxHealth = playerStats.maxHealth;
         maxDamage = playerStats.maxDamage;
         maxStamina = playerStats.maxStamina;
-        numCoins = inventory.numCoins;
+        numCoins = inventory.numCoins + PlayerPrefs.GetInt("coins", 0);
         healthStat.text = maxHealth.ToString();
         remainingCoins.text = numCoins.ToString();
         damageStat.text = maxDamage.ToString();
@@ -67,6 +67,7 @@ public class GameOverScreen : MonoBehaviour
         PlayerPrefs.SetInt("health", maxHealth);
         PlayerPrefs.SetInt("damage", maxDamage);
         PlayerPrefs.SetFloat("stamina", maxStamina);
+        PlayerPrefs.SetInt("coins", numCoins);
         gameObject.SetActive(false);
 
     }
@@ -88,10 +89,22 @@ public class GameOverScreen : MonoBehaviour
 
     public void increaseHealth()
     {
-        if (numCoins > 0)
+        if (numCoins >= 20)
         {
-            maxHealth++;
-            numCoins--;
+            maxHealth += 10;
+            numCoins -= 20;
+            remainingCoins.text = numCoins.ToString();
+            healthStat.text = maxHealth.ToString();
+        }
+
+    }
+
+    public void decreaseHealth()
+    {
+        if (maxHealth > 10)
+        {
+            maxHealth = maxHealth - 10;
+            numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             healthStat.text = maxHealth.ToString();
         }
@@ -100,10 +113,22 @@ public class GameOverScreen : MonoBehaviour
 
     public void increaseDamage()
     {
-        if (numCoins > 0)
+        if (numCoins >= 20)
         {
-            maxDamage++;
-            numCoins--;
+            maxDamage += 10;
+            numCoins -= 20;
+            remainingCoins.text = numCoins.ToString();
+            damageStat.text = maxDamage.ToString();
+        }
+
+    }
+
+    public void decreaseDamage()
+    {
+        if (maxDamage > 10)
+        {
+            maxDamage = maxDamage - 10;
+            numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
         }
@@ -112,10 +137,21 @@ public class GameOverScreen : MonoBehaviour
 
     public void increaseStamina()
     {
-        if (numCoins > 0)
+        if (numCoins >=  20)
         {
-            maxStamina++;
-            numCoins--;
+            maxStamina += 10;
+            numCoins -= 20;
+            remainingCoins.text = numCoins.ToString();
+            staminaStat.text = maxStamina.ToString();
+        }
+
+    }
+    public void decreaseStamina()
+    {
+        if (maxStamina > 10)
+        {
+            maxStamina = maxStamina - 10;
+            numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             staminaStat.text = maxStamina.ToString();
         }
@@ -128,6 +164,7 @@ public class GameOverScreen : MonoBehaviour
         PlayerPrefs.SetInt("health", maxHealth);
         PlayerPrefs.SetInt("damage", maxDamage);
         PlayerPrefs.SetFloat("stamina", maxStamina);
+        PlayerPrefs.SetInt("coins", numCoins);
     }
 
 
