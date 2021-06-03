@@ -115,7 +115,7 @@ public class GameOverScreen : MonoBehaviour
     {
         if (numCoins >= 20)
         {
-            maxDamage += 10;
+            maxDamage = Mathf.RoundToInt((float)(maxDamage * 1.1));
             numCoins -= 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
@@ -127,7 +127,7 @@ public class GameOverScreen : MonoBehaviour
     {
         if (maxDamage > 10)
         {
-            maxDamage = maxDamage - 10;
+            maxDamage = Mathf.RoundToInt((float)(maxDamage/1.1));
             numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
