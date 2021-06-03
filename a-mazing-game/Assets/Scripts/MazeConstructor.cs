@@ -47,6 +47,7 @@ public class MazeConstructor : MonoBehaviour
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
     private LinkedList<GameObject> arrowList;
+    public LinkedList<GameObject> torchList;
     public GameObject player;  // player gameobject
     public InventoryItemBase bottles;
     private int loadTutorial;  // flag to load tutorial level or not
@@ -123,6 +124,7 @@ public class MazeConstructor : MonoBehaviour
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         arrowList = new LinkedList<GameObject>();
+        torchList = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
@@ -286,6 +288,7 @@ public class MazeConstructor : MonoBehaviour
             LinkedListNode<GameObject> enemyNode = enemyList.First;
             LinkedListNode<GameObject> powerUpNode = powerUps.First;
             LinkedListNode<GameObject> arrowNode = arrowList.First;
+            LinkedListNode<GameObject> torchNode = torchList.First;
             while (enemyNode != null)  // enemies
             {
                 float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
@@ -329,6 +332,20 @@ public class MazeConstructor : MonoBehaviour
                     arrowNode.Value.SetActive(true);
                 }
                 arrowNode = arrowNode.Next;
+            }
+            
+            while (torchNode != null)  // enemies
+            {
+                float distance = Vector3.Distance(player.transform.position, torchNode.Value.transform.position);
+                if (distance > 30)
+                {
+                    torchNode.Value.SetActive(false);
+                }
+                else
+                {
+                    torchNode.Value.SetActive(true);
+                }
+                torchNode = torchNode.Next;
             }
             yield return new WaitForSeconds(1);
         }
