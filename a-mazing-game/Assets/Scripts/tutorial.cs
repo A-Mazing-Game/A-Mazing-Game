@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class tutorial : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class tutorial : MonoBehaviour
     public bool encounteredCombat;
     public bool enemyDeath;
     public GameObject tutorialScreen;
+    public Text tutorialText;
     
 
     void Start()
@@ -27,9 +29,24 @@ public class tutorial : MonoBehaviour
          * Introduce the game and the main goal (to make it to the boss portal in the opposite corner).
          * Prompt player to look down and pick up their weapon of choice.
          */
-        
-        Debug.Log("tutorialStartMessage");
+
+        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.Confined;
+        Time.timeScale = 0;
+        tutorialText.text = "Welcome to the A-Maze-ing Game Tutorial Level. Your main goal will be to make it to the " +
+            "boss portal in the opposite corner. When you reach this portal in the tutorial level, the tutorial" +
+            "will conclude. Look Down and pick up a weapon";
         tutorialScreen.SetActive(true);
+
+        Debug.Log("tutorialStartMessage");
+    }
+
+    public void continueTutorial()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        tutorialScreen.SetActive(false);
+
     }
 
     public void onWeaponPickUp()
