@@ -54,6 +54,14 @@ public class NewGameSettings : MonoBehaviour
 
     }
 
+    public void tutorialLevel()
+    {
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        PlayerPrefs.SetInt("tutorial", 1);
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
+        StartCoroutine(LoadLevel());
+    }
+
     IEnumerator LoadLevel()
     {
         asyncLoadLevel = SceneManager.LoadSceneAsync("Scene");
