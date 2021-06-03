@@ -216,7 +216,7 @@ public class MazeConstructor : MonoBehaviour
         if (loadTutorial == 1)
         {
             tutorialPowerUpSpawn();
-            tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+            // tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
         }
     }
 
@@ -427,7 +427,14 @@ public class MazeConstructor : MonoBehaviour
         int l = deadEndCol.Length;
         System.Random random = new System.Random();
         // Debug.Log("L length is: " + l);
-        for (int i = 0; i < l; i++)
+        
+        // guarantee spawning 2 piles of arrows
+        for (int i = 0; i < 3; i++)
+        {
+            SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
+        }
+        
+        for (int i = 3; i < l; i++)
         {
             // Debug.Log("Calling shit"); 
             
@@ -714,6 +721,12 @@ public class MazeConstructor : MonoBehaviour
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         float distance = Vector3.Distance(player.transform.position, health.transform.position);
         Debug.Log("health dist: " + distance);
+        if (distance < 3)
+        {
+            Debug.Log("No spawning health, too close to player");
+            Destroy(health);
+            return;
+        }
         // health.AddComponent<SphereCollider>();
         health.SetActive(false);
         health.name = "Health Potion";
@@ -737,6 +750,14 @@ public class MazeConstructor : MonoBehaviour
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
         float distance = Vector3.Distance(player.transform.position, shield.transform.position);
+        
+        Debug.Log("shield dist: " + distance);
+        if (distance < 3)
+        {
+            Debug.Log("No spawning shield, too close to player");
+            Destroy(shield);
+            return;
+        }
         shield.SetActive(false);
         shield.name = "Overshield Potion";
         shield.tag = "Overshield Potion";
@@ -753,6 +774,15 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnShield");
         GameObject arrow = Instantiate(Arrows);
         arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
+        float distance = Vector3.Distance(player.transform.position, arrow.transform.position);
+        
+        Debug.Log("arrow dist: " + distance);
+        if (distance < 3)
+        {
+            Debug.Log("No spawning arrow, too close to player");
+            Destroy(arrow);
+            return;
+        }
         arrow.SetActive(false);
         arrow.name = "Arrow";
         arrow.tag = "Arrow";
