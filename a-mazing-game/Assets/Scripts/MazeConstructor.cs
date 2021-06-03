@@ -49,7 +49,7 @@ public class MazeConstructor : MonoBehaviour
     private LinkedList<GameObject> arrowList;
     public GameObject player;  // player gameobject
     public InventoryItemBase bottles;
-    private bool loadTutorial;  // flag to load tutorial level or not
+    private int loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
     private int spawnDistance;
 
@@ -100,7 +100,7 @@ public class MazeConstructor : MonoBehaviour
         length = 0;
         agent = GetComponent<NavMeshAgent>();
         int mazeType = PlayerPrefs.GetInt("size", 0);
-        loadTutorial = false;
+        loadTutorial = PlayerPrefs.GetInt("tutorial", 0);
         spawnDistance = 10;
         if (mazeType == 0) // small
         {
@@ -148,11 +148,7 @@ public class MazeConstructor : MonoBehaviour
             {1,0,1,0,1,0,1,1,1,1,1,0,1},
             {1,0,0,0,1,0,0,0,0,0,0,0,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1}
-            
-
         };
-
-
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols,
@@ -166,7 +162,7 @@ public class MazeConstructor : MonoBehaviour
 
         DisposeOldMaze();
 
-        if(!loadTutorial)
+        if(loadTutorial == 0)
         {
             data = dataGenerator.FromDimensions(sizeRows, sizeCols);
         }        
