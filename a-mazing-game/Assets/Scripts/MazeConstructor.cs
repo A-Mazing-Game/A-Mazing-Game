@@ -139,19 +139,36 @@ public class MazeConstructor : MonoBehaviour
          */
         tutorialMaze = new int[,]  // use 11 for column and row
         {
+            // {1,1,1,1,1,1,1,1,1,1,1,1,1},
+            // {1,0,1,0,1,0,0,0,1,0,0,0,1},
+            // {1,0,1,0,1,0,1,1,1,0,1,0,1},
+            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            // {1,0,1,0,1,0,1,0,1,1,1,0,1},
+            // {1,0,1,0,0,0,0,0,1,0,0,0,1},
+            // {1,0,0,0,1,0,1,1,1,0,1,0,1},
+            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            // {1,1,1,0,1,1,1,1,1,1,1,0,1},
+            // {1,0,1,0,0,0,0,0,1,0,1,0,1},
+            // {1,0,1,0,1,0,1,1,1,1,1,0,1},
+            // {1,0,0,0,1,0,0,0,0,0,0,0,1},
+            // {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            
             {1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,1,0,1,0,0,0,1,0,0,0,1},
-            {1,0,1,0,1,0,1,1,1,0,1,0,1},
-            {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            {1,0,1,0,1,0,1,0,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,1,0,0,0,1},
-            {1,0,0,0,1,0,1,1,1,0,1,0,1},
-            {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            {1,1,1,0,1,1,1,1,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,1,0,1,0,1},
-            {1,0,1,0,1,0,1,1,1,1,1,0,1},
+            {1,0,1,1,1,0,1,0,1,1,1,0,1},
+            {1,0,1,1,1,0,1,0,1,1,1,0,1},
+            {1,0,1,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,0,1,1,1,0,1,1,1,1,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,1,1,0,1,0,0,0,0,0,1,1,1},
+            {1,0,1,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,0,1,1,1,1,1,0,0,0,1},
             {1,0,0,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,1,0,0,1,0,1,0,1,0,1},
+            {1,0,0,0,0,0,1,0,1,0,1,0,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            
+            
+
         };
     }
 
@@ -170,9 +187,12 @@ public class MazeConstructor : MonoBehaviour
         if(loadTutorial == 0)
         {
             data = dataGenerator.FromDimensions(sizeRows, sizeCols);
-        }        
+        }
+        else
+        {
+            data = tutorialMaze;
+        }
         
-        data = tutorialMaze;
 
         FindStartPosition();
         FindGoalPosition();
@@ -192,7 +212,7 @@ public class MazeConstructor : MonoBehaviour
         StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         if (loadTutorial == 1)
-            StartCoroutine(tutorialMessageCheck());
+            tutorialPowerUpSpawn();
 
     }
     
@@ -246,38 +266,6 @@ public class MazeConstructor : MonoBehaviour
         
                 node = node.Next;
             }
-        }
-    }
-
-    private IEnumerator tutorialMessageCheck()
-    {
-        /*
-         * Checks the distance from the player to an enemy and power up potion to display
-         * a tutorial message on first encounter. 
-         */
-        
-        bool run = true;
-        while (run)
-        {
-            LinkedListNode<GameObject> enemyNode = enemyList.First;
-            LinkedListNode<GameObject> powerUpNode = powerUps.First;
-            
-            Debug.Log("Encounter: " + enemyFirstEncounter);
-            if (!enemyFirstEncounter)
-            {
-                while (enemyNode != null) // enemies
-                {
-                    float distance = Math.Abs(player.transform.position.x - enemyNode.Value.transform.position.x);
-                    Debug.Log("Distance from tut msg: " + distance);
-                    if (distance < 3)
-                    {
-                        Debug.Log("encountered first enemy");
-                        enemyFirstEncounter = true;
-                    }
-                    enemyNode = enemyNode.Next;
-                }
-            }
-            yield return new WaitForSeconds(1);
         }
     }
     
@@ -364,6 +352,7 @@ public class MazeConstructor : MonoBehaviour
             else
             {
                 tutorialSpawnEnemy(enemiesToSpawn + 2);
+                StopCoroutine(SpawnCoRoutine());
             }
 
             if (spawnDistance != 0)
@@ -416,8 +405,12 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
     }
-    
-    
+
+    void tutorialPowerUpSpawn()
+    {
+        SpawnHealth(1, 3);
+        SpawnShield(1, 4);
+    }
 
     void SpawnPowerUp(GameObject endLocation)
     {
@@ -433,6 +426,7 @@ public class MazeConstructor : MonoBehaviour
             // Debug.Log("Calling shit"); 
             
             int temp = random.Next(1, 4);  // todo change from 0, 4
+            temp = 1;
             Debug.Log(temp);
             if(temp == 0)  // stamina
             {
@@ -694,12 +688,7 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to spawnStamina");
         GameObject strength = Instantiate(strengthPotion);
         strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - strength.transform.position.x;
-        if (end.transform.position == strength.transform.position && distance > 1)
-        {
-            Debug.Log("Stamina not spawning at end trigger");
-            return;
-        }
+        float distance = Vector3.Distance(player.transform.position, strength.transform.position);
         // health.AddComponent<SphereCollider>();
         strength.SetActive(false);
         strength.name = "Stamina Potion";
@@ -712,17 +701,13 @@ public class MazeConstructor : MonoBehaviour
 
     }
 
-    private void SpawnHealth(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    private void SpawnHealth(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnHealth");
         GameObject health = Instantiate(healthPotion);
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - health.transform.position.x;
-        if (end.transform.position == health.transform.position && distance > 1)
-        {
-            Debug.Log("health not spawning at end trigger");
-            return;
-        }
+        float distance = Vector3.Distance(player.transform.position, health.transform.position);
+        Debug.Log("health dist: " + distance);
         // health.AddComponent<SphereCollider>();
         health.SetActive(false);
         health.name = "Health Potion";
@@ -734,17 +719,18 @@ public class MazeConstructor : MonoBehaviour
         powerUps.AddLast(health);
     }
     
-    private void SpawnShield(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    public void shieldTrigger()
+    {
+        if(loadTutorial == 1)
+            Debug.Log("yeet");
+    }
+    
+    private void SpawnShield(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnShield");
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - shield.transform.position.x;
-        if (end.transform.position == shield.transform.position && distance > 1)
-        {
-            Debug.Log("health not spawning at end trigger");
-            return;
-        }
+        float distance = Vector3.Distance(player.transform.position, shield.transform.position);
         shield.SetActive(false);
         shield.name = "Overshield Potion";
         shield.tag = "Overshield Potion";
@@ -756,17 +742,11 @@ public class MazeConstructor : MonoBehaviour
         powerUps.AddLast(shield);
     }
     
-    private void SpawnArrow(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    private void SpawnArrow(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnShield");
         GameObject arrow = Instantiate(Arrows);
         arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
-        
-        if (end.transform.position == arrow.transform.position)
-        {
-            Debug.Log("arrow not spawning at end trigger");
-            return;
-        }
         arrow.SetActive(false);
         arrow.name = "Arrow";
         arrow.tag = "Arrow";

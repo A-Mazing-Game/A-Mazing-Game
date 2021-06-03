@@ -1703,6 +1703,8 @@ MonoBehaviour:
   player: {fileID: 0}
   bottles: {fileID: 0}
   Arrows: {fileID: 0}
+  enemyFirstEncounter: 0
+  powerUpFirstEncounter: 0
 --- !u!114 &168113930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13474,6 +13476,8 @@ MonoBehaviour:
   player: {fileID: 0}
   bottles: {fileID: 0}
   Arrows: {fileID: 0}
+  enemyFirstEncounter: 0
+  powerUpFirstEncounter: 0
 --- !u!114 &1908193745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13809,6 +13813,8 @@ MonoBehaviour:
   player: {fileID: 0}
   bottles: {fileID: 0}
   Arrows: {fileID: 2060354752}
+  enemyFirstEncounter: 0
+  powerUpFirstEncounter: 0
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0
@@ -15247,7 +15253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331024, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331024, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_LocalRotation.w

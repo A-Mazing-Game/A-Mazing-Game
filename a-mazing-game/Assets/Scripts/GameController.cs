@@ -146,7 +146,8 @@ public class GameController : MonoBehaviour
         }
         
     }
-    
+
+  
     void reduceHealth(GameObject trigger, GameObject other)
     {
         /*
