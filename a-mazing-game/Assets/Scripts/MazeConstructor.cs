@@ -46,10 +46,12 @@ public class MazeConstructor : MonoBehaviour
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
+    private LinkedList<GameObject> arrowList;
     public GameObject player;  // player gameobject
     public InventoryItemBase bottles;
     private bool loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
+    private int spawnDistance;
 
     private int[,] tutorialMaze;
     
@@ -99,6 +101,7 @@ public class MazeConstructor : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         int mazeType = PlayerPrefs.GetInt("size", 0);
         loadTutorial = false;
+        spawnDistance = 10;
         if (mazeType == 0) // small
         {
             desiredEnemies = 5;
@@ -113,6 +116,7 @@ public class MazeConstructor : MonoBehaviour
         }
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
+        arrowList = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
@@ -212,6 +216,22 @@ public class MazeConstructor : MonoBehaviour
                 node = node.Next;
             }
         }
+
+        if (type == 2)
+        {
+            Debug.Log("removing arrow");
+            node = arrowList.First;
+            while (true)
+            {
+                if (node.Value == go)
+                {
+                    arrowList.Remove(node);
+                    return;
+                }
+        
+                node = node.Next;
+            }
+        }
         else
         {
             node = powerUps.First;
@@ -238,6 +258,7 @@ public class MazeConstructor : MonoBehaviour
         {
             LinkedListNode<GameObject> enemyNode = enemyList.First;
             LinkedListNode<GameObject> powerUpNode = powerUps.First;
+            LinkedListNode<GameObject> arrowNode = arrowList.First;
             while (enemyNode != null)  // enemies
             {
                 float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
@@ -268,6 +289,20 @@ public class MazeConstructor : MonoBehaviour
                 }
                 powerUpNode = powerUpNode.Next;
             }
+            
+            while (arrowNode != null)  // enemies
+            {
+                float distance = Vector3.Distance(player.transform.position, arrowNode.Value.transform.position);
+                if (distance > 30)
+                {
+                    arrowNode.Value.SetActive(false);
+                }
+                else
+                {
+                    arrowNode.Value.SetActive(true);
+                }
+                arrowNode = arrowNode.Next;
+            }
             yield return new WaitForSeconds(1);
         }
     }
@@ -290,7 +325,11 @@ public class MazeConstructor : MonoBehaviour
             // Debug.Log("Enemies alive: " + aliveEnemies);
             
             SpawnEnemy(enemiesToSpawn + 2);
-            yield return new WaitForSeconds(30);
+            if (spawnDistance != 0)
+            {
+                spawnDistance -= 2;
+            }
+                yield return new WaitForSeconds(30);
         }
         
 
@@ -330,6 +369,7 @@ public class MazeConstructor : MonoBehaviour
             // Debug.Log("Calling shit"); 
             
             int temp = random.Next(1, 4);  // todo change from 0, 4
+            temp = 3;
             Debug.Log(temp);
             if(temp == 0)  // stamina
             {
@@ -669,7 +709,8 @@ public class MazeConstructor : MonoBehaviour
 
         TriggerEventRouter tc = arrow.AddComponent<TriggerEventRouter>();
         tc.callback = callback;
-        powerUps.AddLast(arrow);
+        arrowList.AddLast(arrow);
+
     }
 
     private void PlaceStartTrigger(TriggerEventHandler callback)
@@ -694,7 +735,7 @@ public class MazeConstructor : MonoBehaviour
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
         float distance = sk.transform.position.x - player.transform.position.x;
         Debug.Log("distance: " + distance);
-        if (distance < 10)
+        if (distance < spawnDistance)
         {
             Debug.Log("Enemy too close, not spawning at location " + sk.transform.position);
             Destroy(sk);

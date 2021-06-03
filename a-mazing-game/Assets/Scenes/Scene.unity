@@ -13485,6 +13485,10 @@ PrefabInstance:
       value: Arrow
       objectReference: {fileID: 0}
     - target: {fileID: 1548470068452468654, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
+      propertyPath: mz
+      value: 
+      objectReference: {fileID: 1944142327}
+    - target: {fileID: 1548470068452468654, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: arrow
       value: 
       objectReference: {fileID: 139936434}
@@ -14069,6 +14073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a2e53a69acf419d9bc0e381eba11e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mz: {fileID: 0}
   playerStats: {fileID: 8936840687624926663}
 --- !u!1001 &823155168814952455
 PrefabInstance:
