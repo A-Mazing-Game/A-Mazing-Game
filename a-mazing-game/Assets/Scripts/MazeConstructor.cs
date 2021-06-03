@@ -102,7 +102,7 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         loadTutorial = PlayerPrefs.GetInt("tutorial", 0);
         spawnDistance = 10;
-        if (mazeType == 0) // small
+        if (mazeType == 0  || mazeType == 4) // small or tutorial 
         {
             desiredEnemies = 5;
         }
@@ -154,6 +154,7 @@ public class MazeConstructor : MonoBehaviour
     public void GenerateNewMaze(int sizeRows, int sizeCols,
         TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null, TriggerEventHandler endGame=null)
     {
+        Debug.Log("Row and cols: " + sizeRows + " " + sizeCols);
 
         if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
         {
@@ -167,10 +168,7 @@ public class MazeConstructor : MonoBehaviour
             data = dataGenerator.FromDimensions(sizeRows, sizeCols);
         }        
         
-        else  // 11 for col and row
-        {
-            tutorialMaze = dataGenerator.FromDimensions(sizeRows, sizeCols);
-        }
+        data = tutorialMaze;
 
         FindStartPosition();
         FindGoalPosition();
