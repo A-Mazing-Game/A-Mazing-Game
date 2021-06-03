@@ -8,6 +8,7 @@ public class Torch : MonoBehaviour
     public GameObject torch;
     public Transform fakeParent;
     private Vector3 offset;
+    public MazeConstructor mz;
 
     void Start()
     {
@@ -39,7 +40,7 @@ public class Torch : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
 
-            
+            // mz = GetComponent<MazeConstructor>();
             Debug.Log(hit.transform.name);
             //Vector3 pos = hit.transform.position;
             Vector3 placePoint = hit.point;
@@ -47,7 +48,9 @@ public class Torch : MonoBehaviour
             placePoint.x = hit.point.x - 0.12f * transform.forward.x;
             
             //pos.z = pos.z  -1;
-            Instantiate(torch, placePoint, transform.rotation);
+            
+            GameObject t = Instantiate(torch, placePoint, transform.rotation);
+            mz.torchList.AddLast(t);
             //torch.transform.LookAt(hit.point + hit.normal);
 
         }

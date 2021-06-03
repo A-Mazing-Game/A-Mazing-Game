@@ -2,6 +2,8 @@
  * written by Joseph Hocking 2017
  * released under MIT license
  * text of license https://opensource.org/licenses/MIT
+ *
+ * Modified VERY heavily by Jacob
  */
 
 using System;
@@ -46,8 +48,10 @@ public class MazeConstructor : MonoBehaviour
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
-    private LinkedList<GameObject> arrowList;
+    private LinkedList<GameObject> arrowList;  // holds all spawned arrows
+    public LinkedList<GameObject> torchList;  // holds all placed torches
     public GameObject player;  // player gameobject
+    public GameObject portal;  // portal game object to get location 
     public InventoryItemBase bottles;
     private int loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
@@ -93,6 +97,7 @@ public class MazeConstructor : MonoBehaviour
     private MazeDataGenerator dataGenerator;
     private MazeMeshGenerator meshGenerator;
     private FpsMovement fpsMovement;
+    public tutorial tutorialScript ;
 
     void Awake()
     {
@@ -106,6 +111,7 @@ public class MazeConstructor : MonoBehaviour
         spawnDistance = 10;
         enemyFirstEncounter = false;
         powerUpFirstEncounter = false;
+        tutorialScript = GetComponent<tutorial>();
         if (mazeType == 0  || mazeType == 4) // small or tutorial 
         {
             desiredEnemies = 5;
@@ -121,7 +127,10 @@ public class MazeConstructor : MonoBehaviour
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         arrowList = new LinkedList<GameObject>();
+        torchList = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("Portal " + portal);
+        
         Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
         
@@ -139,19 +148,36 @@ public class MazeConstructor : MonoBehaviour
          */
         tutorialMaze = new int[,]  // use 11 for column and row
         {
+            // {1,1,1,1,1,1,1,1,1,1,1,1,1},
+            // {1,0,1,0,1,0,0,0,1,0,0,0,1},
+            // {1,0,1,0,1,0,1,1,1,0,1,0,1},
+            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            // {1,0,1,0,1,0,1,0,1,1,1,0,1},
+            // {1,0,1,0,0,0,0,0,1,0,0,0,1},
+            // {1,0,0,0,1,0,1,1,1,0,1,0,1},
+            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+            // {1,1,1,0,1,1,1,1,1,1,1,0,1},
+            // {1,0,1,0,0,0,0,0,1,0,1,0,1},
+            // {1,0,1,0,1,0,1,1,1,1,1,0,1},
+            // {1,0,0,0,1,0,0,0,0,0,0,0,1},
+            // {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            
             {1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,1,0,1,0,0,0,1,0,0,0,1},
-            {1,0,1,0,1,0,1,1,1,0,1,0,1},
-            {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            {1,0,1,0,1,0,1,0,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,1,0,0,0,1},
-            {1,0,0,0,1,0,1,1,1,0,1,0,1},
-            {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            {1,1,1,0,1,1,1,1,1,1,1,0,1},
-            {1,0,1,0,0,0,0,0,1,0,1,0,1},
-            {1,0,1,0,1,0,1,1,1,1,1,0,1},
+            {1,0,1,1,1,0,1,0,1,1,1,0,1},
+            {1,0,1,1,1,0,1,0,1,1,1,0,1},
+            {1,0,1,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,0,1,1,1,0,1,1,1,1,1},
+            {1,0,0,0,0,0,0,0,0,0,0,0,1},
+            {1,1,1,0,1,0,0,0,0,0,1,1,1},
+            {1,0,1,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,0,1,1,1,1,1,0,0,0,1},
             {1,0,0,0,1,0,0,0,0,0,0,0,1},
+            {1,0,1,1,0,0,1,0,1,0,1,0,1},
+            {1,0,0,0,0,0,1,0,1,0,1,0,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            
+            
+
         };
     }
 
@@ -170,9 +196,12 @@ public class MazeConstructor : MonoBehaviour
         if(loadTutorial == 0)
         {
             data = dataGenerator.FromDimensions(sizeRows, sizeCols);
-        }        
+        }
+        else
+        {
+            data = tutorialMaze;
+        }
         
-        data = tutorialMaze;
 
         FindStartPosition();
         FindGoalPosition();
@@ -188,13 +217,18 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         // Thread.Sleep(1000);
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
+        portal = GameObject.FindGameObjectWithTag("Portal");
         SpawnPowerUp(endLocation);
-        StartCoroutine(SpawnCoRoutine());
+        // StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         if (loadTutorial == 1)
-            StartCoroutine(tutorialMessageCheck());
-
+        {
+            tutorialPowerUpSpawn();
+            // tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+        }
     }
+
+   
     
     public void RemoveEnemyNode(GameObject go, int type)
     {
@@ -248,38 +282,6 @@ public class MazeConstructor : MonoBehaviour
             }
         }
     }
-
-    private IEnumerator tutorialMessageCheck()
-    {
-        /*
-         * Checks the distance from the player to an enemy and power up potion to display
-         * a tutorial message on first encounter. 
-         */
-        
-        bool run = true;
-        while (run)
-        {
-            LinkedListNode<GameObject> enemyNode = enemyList.First;
-            LinkedListNode<GameObject> powerUpNode = powerUps.First;
-            
-            Debug.Log("Encounter: " + enemyFirstEncounter);
-            if (!enemyFirstEncounter)
-            {
-                while (enemyNode != null) // enemies
-                {
-                    float distance = Math.Abs(player.transform.position.x - enemyNode.Value.transform.position.x);
-                    Debug.Log("Distance from tut msg: " + distance);
-                    if (distance < 3)
-                    {
-                        Debug.Log("encountered first enemy");
-                        enemyFirstEncounter = true;
-                    }
-                    enemyNode = enemyNode.Next;
-                }
-            }
-            yield return new WaitForSeconds(1);
-        }
-    }
     
     private IEnumerator UpdateGameObjects()
     {
@@ -292,6 +294,7 @@ public class MazeConstructor : MonoBehaviour
             LinkedListNode<GameObject> enemyNode = enemyList.First;
             LinkedListNode<GameObject> powerUpNode = powerUps.First;
             LinkedListNode<GameObject> arrowNode = arrowList.First;
+            LinkedListNode<GameObject> torchNode = torchList.First;
             while (enemyNode != null)  // enemies
             {
                 float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
@@ -336,6 +339,20 @@ public class MazeConstructor : MonoBehaviour
                 }
                 arrowNode = arrowNode.Next;
             }
+            
+            while (torchNode != null)  // enemies
+            {
+                float distance = Vector3.Distance(player.transform.position, torchNode.Value.transform.position);
+                if (distance > 30)
+                {
+                    torchNode.Value.SetActive(false);
+                }
+                else
+                {
+                    torchNode.Value.SetActive(true);
+                }
+                torchNode = torchNode.Next;
+            }
             yield return new WaitForSeconds(1);
         }
     }
@@ -364,6 +381,7 @@ public class MazeConstructor : MonoBehaviour
             else
             {
                 tutorialSpawnEnemy(enemiesToSpawn + 2);
+                StopCoroutine(SpawnCoRoutine());
             }
 
             if (spawnDistance != 0)
@@ -416,8 +434,12 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
     }
-    
-    
+
+    void tutorialPowerUpSpawn()
+    {
+        SpawnHealth(1, 3);
+        SpawnShield(1, 4);
+    }
 
     void SpawnPowerUp(GameObject endLocation)
     {
@@ -428,11 +450,19 @@ public class MazeConstructor : MonoBehaviour
         int l = deadEndCol.Length;
         System.Random random = new System.Random();
         // Debug.Log("L length is: " + l);
-        for (int i = 0; i < l; i++)
+        
+        // guarantee spawning 2 piles of arrows
+        for (int i = 0; i < 3; i++)
+        {
+            SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
+        }
+        
+        for (int i = 3; i < l; i++)
         {
             // Debug.Log("Calling shit"); 
             
             int temp = random.Next(1, 4);  // todo change from 0, 4
+            temp = 1;
             Debug.Log(temp);
             if(temp == 0)  // stamina
             {
@@ -694,12 +724,7 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to spawnStamina");
         GameObject strength = Instantiate(strengthPotion);
         strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - strength.transform.position.x;
-        if (end.transform.position == strength.transform.position && distance > 1)
-        {
-            Debug.Log("Stamina not spawning at end trigger");
-            return;
-        }
+        float distance = Vector3.Distance(player.transform.position, strength.transform.position);
         // health.AddComponent<SphereCollider>();
         strength.SetActive(false);
         strength.name = "Stamina Potion";
@@ -712,15 +737,18 @@ public class MazeConstructor : MonoBehaviour
 
     }
 
-    private void SpawnHealth(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    private void SpawnHealth(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnHealth");
         GameObject health = Instantiate(healthPotion);
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - health.transform.position.x;
-        if (end.transform.position == health.transform.position && distance > 1)
+        float playerDistance = Vector3.Distance(player.transform.position, health.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, health.transform.position);
+        Debug.Log("health dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
-            Debug.Log("health not spawning at end trigger");
+            Debug.Log("No spawning health, too close to player");
+            Destroy(health);
             return;
         }
         // health.AddComponent<SphereCollider>();
@@ -734,15 +762,24 @@ public class MazeConstructor : MonoBehaviour
         powerUps.AddLast(health);
     }
     
-    private void SpawnShield(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    public void shieldTrigger()
+    {
+        if(loadTutorial == 1)
+            Debug.Log("yeet");
+    }
+    
+    private void SpawnShield(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnShield");
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = player.transform.position.x - shield.transform.position.x;
-        if (end.transform.position == shield.transform.position && distance > 1)
+        float playerDistance = Vector3.Distance(player.transform.position, shield.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, shield.transform.position);
+        Debug.Log("shield dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
-            Debug.Log("health not spawning at end trigger");
+            Debug.Log("No spawning shield, too close to player");
+            Destroy(shield);
             return;
         }
         shield.SetActive(false);
@@ -756,15 +793,18 @@ public class MazeConstructor : MonoBehaviour
         powerUps.AddLast(shield);
     }
     
-    private void SpawnArrow(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+    private void SpawnArrow(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnShield");
         GameObject arrow = Instantiate(Arrows);
         arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
-        
-        if (end.transform.position == arrow.transform.position)
+        float playerDistance = Vector3.Distance(player.transform.position, arrow.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, arrow.transform.position);
+        Debug.Log("arrow dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
-            Debug.Log("arrow not spawning at end trigger");
+            Debug.Log("No spawning arrow, too close to player");
+            Destroy(arrow);
             return;
         }
         arrow.SetActive(false);

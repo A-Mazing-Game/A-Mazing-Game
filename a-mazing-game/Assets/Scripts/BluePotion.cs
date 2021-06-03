@@ -46,6 +46,7 @@ public class BluePotion : InventoryItemBase
     {
         // Destroy(gameObject);
         pickedUp = true;
+        mz.shieldTrigger();
         gameObject.SetActive(false);
     }
 }
