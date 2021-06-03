@@ -30,6 +30,7 @@ public class Arrows : InventoryItemBase
     public override void OnPickup()
     {
         isDropped = false;
+        mz.RemoveEnemyNode(gameObject, 2);
         gameObject.SetActive(false);
     }
 }
