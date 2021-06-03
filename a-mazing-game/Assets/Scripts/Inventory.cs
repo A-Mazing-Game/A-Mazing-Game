@@ -7,7 +7,7 @@ public class Inventory : MonoBehaviour
 {
     private const int SLOTS = 9;
 
-    private IList<InventorySlot> mSlots = new List<InventorySlot>();
+    public IList<InventorySlot> mSlots = new List<InventorySlot>();
 
     public event EventHandler<InventoryEventArgs> ItemAdded;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
@@ -58,8 +58,8 @@ public class Inventory : MonoBehaviour
             
             if (item.Name == "Arrows")
             {
-                GameObject goItem = (item as MonoBehaviour).gameObject;
-                addAmount = goItem.GetComponent<Arrows>().pickupAmount;
+                // GameObject goItem = (item as MonoBehaviour).gameObject;
+                addAmount = item.GetComponent<Arrows>().pickupAmount;
                 hasArrows = true;
             }
             
@@ -95,12 +95,39 @@ public class Inventory : MonoBehaviour
         {
             if (item.Name == "Arrows")
             {
-                var slotInfo = slot.RemoveAll(item);
-                if (slotInfo.Item1)
+                if (item.isDropped)
                 {
-                    GameObject goItem = (item as MonoBehaviour).gameObject;
-                    goItem.GetComponent<Arrows>().pickupAmount = slotInfo.Item2;
-                    hasArrows = false;
+                    var slotInfo = slot.RemoveAll(item);
+                    if (slotInfo.Item1)
+                    {
+                        // GameObject goItem = (item as MonoBehaviour).gameObject;
+                        item.GetComponent<Arrows>().pickupAmount = slotInfo.Item2;
+                        hasArrows = false;
+                        if (ItemRemoved != null)
+                        {
+                            ItemRemoved(this, new InventoryEventArgs(item));
+                        }
+                        break;
+                    }
+                }
+                else
+                {
+                    if (slot.Remove(item))
+                    {
+                        if (slot.IsEmpty)
+                            hasArrows = false;
+                        if (ItemRemoved != null)
+                        {
+                            ItemRemoved(this, new InventoryEventArgs(item));
+                        }
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (slot.Remove(item))
+                {
                     if (ItemRemoved != null)
                     {
                         ItemRemoved(this, new InventoryEventArgs(item));
@@ -108,16 +135,6 @@ public class Inventory : MonoBehaviour
                     break;
                 }
             }
-            
-            if (slot.Remove(item))
-            {
-                if (ItemRemoved != null)
-                {
-                    ItemRemoved(this, new InventoryEventArgs(item));
-                }
-                break;
-            }
-            
         }
     }
 }

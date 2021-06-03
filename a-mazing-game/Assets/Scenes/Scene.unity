@@ -207,6 +207,7 @@ MonoBehaviour:
   ItemType: 2
   mz: {fileID: 0}
   pickedUp: 0
+  isDropped: 0
   PickPosition: {x: -0.116, y: -0.069, z: -0.019}
   PickRotation: {x: -183.241, y: -97.53299, z: -4.35199}
   DropRotation: {x: 0, y: 0, z: 90}
@@ -2558,6 +2559,7 @@ MonoBehaviour:
   ItemType: 2
   mz: {fileID: 0}
   pickedUp: 0
+  isDropped: 0
   PickPosition: {x: -0.07, y: -0.072, z: -0.031}
   PickRotation: {x: -183.3, y: -97.8, z: -4.35}
   DropRotation: {x: -180, y: 0, z: -90}
@@ -7014,7 +7016,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9094,7 +9096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.16
+      value: 2.08
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9102,7 +9104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.4
+      value: 3.27
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9135,6 +9137,10 @@ PrefabInstance:
     - target: {fileID: 151837448847314939, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_Name
       value: Arrow Pile
+      objectReference: {fileID: 0}
+    - target: {fileID: 151837448847314939, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1548470068452468654, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: arrow
@@ -10025,7 +10031,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 8936840687624926666}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &1457528988
 SpriteRenderer:
@@ -12880,6 +12886,7 @@ MonoBehaviour:
   ItemType: 2
   mz: {fileID: 0}
   pickedUp: 0
+  isDropped: 0
   PickPosition: {x: 0.3, y: -0.143, z: 0.02}
   PickRotation: {x: 0, y: 0, z: 90}
   DropRotation: {x: 89.705, y: 104.33, z: 287.92}
@@ -13423,7 +13430,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 151837448847314885, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14397,7 +14404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104202123982331026, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3869320385373864335, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: m_RootOrder
@@ -14455,6 +14462,10 @@ PrefabInstance:
       propertyPath: arrow2
       value: 
       objectReference: {fileID: 2138607229}
+    - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
+      propertyPath: arrows
+      value: 
+      objectReference: {fileID: 2107573197}
     - target: {fileID: 5584041457345969747, guid: a99e5cd05141c4db68f43e182fca069a, type: 3}
       propertyPath: healthBar
       value: 

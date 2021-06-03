@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Arrow : MonoBehaviour
 {
@@ -20,11 +21,14 @@ public class Arrow : MonoBehaviour
         transform.position += shootDir * shootSpeed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private IEnumerator OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));            
+            other.GetComponent<NavMeshAgent>().isStopped = true;
+            StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+            yield return new WaitForSeconds(0.5f);
+            other.GetComponent<NavMeshAgent>().isStopped = false;
             // Debug.Log("hit at " + Time.time);
             // other.TakeDamage(20);
             Destroy(gameObject);

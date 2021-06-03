@@ -17,7 +17,7 @@ public class FpsMovement : MonoBehaviour
     public GameObject rightHand;
     public GameObject leftHand;
     public GameObject arrow;
-    public Arrows arrows;
+    // public Arrows arrows;
     
     public float walkSpeed;
     public float runSpeed;
@@ -167,25 +167,32 @@ public class FpsMovement : MonoBehaviour
             animator.SetBool("greatSword", false);
             animator.SetBool("katana", false);
             animator.SetBool("bow", false);
+            if (CarriesItem("Arrows"))
+            {
+                animator.SetBool("Arrow", true);
+            }
+            else
+            {
+                animator.SetBool("Arrow", false);
+            }
+            
+            
 
         }
         
-        if (mCurrentItem != null)
-            if (mCurrentItem.Name == "Bow" && inventory.hasArrows)
-                arrow.SetActive(true);
-    }
-
-    void FixedUpdate()
-    {
-        if (!isDead)
+        if (mCurrentItem != null && Input.GetKeyDown(KeyCode.R))
         {
-            // Drop item
-            if (mCurrentItem != null && Input.GetKeyDown(KeyCode.R))
-            {
-                DropCurrentItem();
-            }
+            DropCurrentItem();
         }
+
+        // if (mCurrentItem != null)
+        // {
+        //     if (mCurrentItem.Name == "Bow" && inventory.hasArrows)
+        //         arrow.SetActive(true);
+        //     // else if (mCurrentItem.Name)
+        // }
     }
+    
 
     private void MoveCharacter()
     {
@@ -398,6 +405,17 @@ public class FpsMovement : MonoBehaviour
         
         BoxCollider bc = goItem.AddComponent<BoxCollider>();
         bc.isTrigger = true;
+    }
+    
+    public void DropAndDestroyCurrentItem()
+    {
+        GameObject goItem = (mCurrentItem as MonoBehaviour).gameObject;
+
+        inventory.RemoveItem(mCurrentItem);
+
+        Destroy(goItem);
+
+        mCurrentItem = null;
     }
 
     #endregion

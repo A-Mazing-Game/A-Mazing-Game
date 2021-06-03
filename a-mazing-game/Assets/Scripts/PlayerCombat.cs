@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour
     public float attackRate = 1f;
     private AudioSource[] playerAudioSource;
     public AudioClip playerHurtAudio;
+    // public Inventory inventory;
 
     public Inventory inventory;
     // public InventoryItemBase currentItem;
@@ -43,6 +44,7 @@ public class PlayerCombat : MonoBehaviour
     private bool showingEnd;
     private bool canHook;
     private float attackChainCounter;
+    private bool isShooting;
     
     [SerializeField] private Transform bow;
     [SerializeField] private Transform arrow;
@@ -71,6 +73,16 @@ public class PlayerCombat : MonoBehaviour
         {
             if (fps.mCurrentItem.Name == "Bow")
             {
+                if (!isShooting)
+                {
+                    if (inventory.hasArrows)
+                        arrow.gameObject.SetActive(true);
+                    else
+                    {
+                        arrow.gameObject.SetActive(false);
+                    }
+                }
+
                 if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextShot)
                 {
                     nextShot = Time.time + shootRate;
@@ -117,37 +129,52 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-    
+
     private IEnumerator Shoot()
     {
-        // int damage = 20;
-        float currentHealth = playerStats.currentHealth;
-        float currentOvershield = playerStats.currentOvershield;
-        playerStats.attackDamage = 40;
-        if (!isDead)
+        isShooting = true;
+        if (inventory.hasArrows)
         {
-            // arrow2.gameObject.SetActive(false);
-            // int health = currentHealth;
-            // animator.speed = 1.0f;
-            animator.SetTrigger("Attack");
-            yield return new WaitForSeconds(0.3f);
             arrow.gameObject.SetActive(false);
-            arrow2.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-            // transform.LookAt(player);
-            Vector3 shootDir = fps.headCam.transform.forward;
-            // arrow.gameObject.SetActive(false);
-            if (currentHealth == playerStats.currentHealth && currentOvershield == playerStats.currentOvershield)
+            foreach (InventorySlot slot in inventory.mSlots)
             {
-                Transform newArrow = Instantiate(arrow2, arrow2.position, arrow2.rotation);
-                newArrow.gameObject.SetActive(true);
-                arrow2.gameObject.SetActive(false);
-                // newArrow.localScale = new Vector3(12, 12, 12);
-                newArrow.GetComponent<Arrow>().Setup(shootDir);
+                if (!slot.IsEmpty && slot.FirstItem.Name == "Arrows")
+                {
+                    // slot.FirstItem.OnUse();
+                    inventory.RemoveItem(slot.FirstItem);
+                }
             }
-            yield return new WaitForSeconds(0.7f);
-            arrow.gameObject.SetActive(true);
+            
+            // int damage = 20;
+            float currentHealth = playerStats.currentHealth;
+            float currentOvershield = playerStats.currentOvershield;
+            playerStats.attackDamage = 40;
+            if (!isDead)
+            {
+                // arrow2.gameObject.SetActive(false);
+                // int health = currentHealth;
+                // animator.speed = 1.0f;
+                animator.SetTrigger("Attack");
+                yield return new WaitForSeconds(0.3f);
+                arrow.gameObject.SetActive(false);
+                arrow2.gameObject.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                // transform.LookAt(player);
+                Vector3 shootDir = fps.headCam.transform.forward;
+                // arrow.gameObject.SetActive(false);
+                if (currentHealth == playerStats.currentHealth && currentOvershield == playerStats.currentOvershield)
+                {
+                    Transform newArrow = Instantiate(arrow2, arrow2.position, arrow2.rotation);
+                    newArrow.gameObject.SetActive(true);
+                    arrow2.gameObject.SetActive(false);
+                    // newArrow.localScale = new Vector3(12, 12, 12);
+                    newArrow.GetComponent<Arrow>().Setup(shootDir);
+                }
 
+                yield return new WaitForSeconds(0.4f);
+                arrow.gameObject.SetActive(true);
+                isShooting = false;
+            }
         }
     }
 
@@ -182,7 +209,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 Vector3 forceDir = Vector3.back;
                 hitEnemies[length - 1].GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
-                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage / 2);
+                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
             }
             else
             {

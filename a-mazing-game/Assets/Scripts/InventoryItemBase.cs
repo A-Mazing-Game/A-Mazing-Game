@@ -19,7 +19,7 @@ public class InteractableItemBase : MonoBehaviour
     public string InteractText = "Press F to pickup";
 
     public EItemType ItemType;
-
+    
     public virtual void OnInteractAnimation(Animator animator)
     {
         animator.SetTrigger("tr_pickup");
@@ -38,7 +38,9 @@ public class InteractableItemBase : MonoBehaviour
 public class InventoryItemBase : InteractableItemBase
 {
     public MazeConstructor mz;
-    public bool pickedUp = false;
+    public bool pickedUp;
+    public bool isDropped;
+
     public InventorySlot Slot
     {
         get; set;
@@ -52,12 +54,14 @@ public class InventoryItemBase : InteractableItemBase
 
     public virtual void OnDrop()
     {
+        isDropped = true;
         gameObject.SetActive(true);
         gameObject.transform.rotation = Quaternion.Euler(DropRotation);
     }
 
     public virtual void OnPickup()
     {
+        isDropped = false;
         Destroy(gameObject.GetComponent<Rigidbody>());
         Destroy(gameObject.GetComponent<BoxCollider>());
         gameObject.SetActive(false);

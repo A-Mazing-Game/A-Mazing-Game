@@ -169,7 +169,7 @@ public class AIMovement : MonoBehaviour
         if (!isDead)
         {
             playerAudioSource.PlayOneShot(skeletonHitAudio, 0.7f);
-            animator.speed = 1.75f;
+            // animator.speed = 1.75f;
             agent.isStopped = true;
             // currentHealth -= damage;
             // Play hurt animation
@@ -183,8 +183,8 @@ public class AIMovement : MonoBehaviour
                 StartCoroutine(Die());
             }
 
-            yield return new WaitForSeconds(1f);
-            animator.speed = 1f;
+            yield return new WaitForSeconds(0.5f);
+            // animator.speed = 1f;
             agent.isStopped = false;
         }
     }

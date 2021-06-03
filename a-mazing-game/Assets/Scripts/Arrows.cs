@@ -21,8 +21,14 @@ public class Arrows : InventoryItemBase
 
     public override void OnDrop()
     {
+        isDropped = true;
         arrow.SetActive(false);
         gameObject.SetActive(true);
         gameObject.transform.rotation = Quaternion.Euler(DropRotation);
+    }
+
+    public override void OnPickup()
+    {
+        base.OnPickup();
     }
 }
