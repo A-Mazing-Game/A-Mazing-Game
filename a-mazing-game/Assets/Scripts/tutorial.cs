@@ -28,8 +28,6 @@ public class tutorial : MonoBehaviour
          */
         
         Debug.Log("tutorialStartMessage");
-        Time.timeScale = 0;
-        Time.timeScale = 1;
     }
 
     public void onWeaponPickUp()
@@ -42,8 +40,6 @@ public class tutorial : MonoBehaviour
         if (!weaponPickup)
         {
             Debug.Log("onWeaponPickUp");
-            Time.timeScale = 0;
-            Time.timeScale = 1;
             weaponPickup = true;
         }
        
@@ -59,8 +55,6 @@ public class tutorial : MonoBehaviour
         if (!powerUpPickup)
         {
             Debug.Log("onPowerUpPickUp");
-            Time.timeScale = 0;
-            Time.timeScale = 1;
             powerUpPickup = true;
         }
         else
@@ -78,8 +72,6 @@ public class tutorial : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         Debug.Log("miniMap");
-        Time.timeScale = 0;
-        Time.timeScale = 1;
         StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
         StopCoroutine(miniMap());
     }
@@ -94,8 +86,6 @@ public class tutorial : MonoBehaviour
         if (!encounteredCombat)
         {
             Debug.Log("combat");
-            Time.timeScale = 0;
-            Time.timeScale = 1;
             encounteredCombat = true;
         }
     }
@@ -109,9 +99,7 @@ public class tutorial : MonoBehaviour
         if (!enemyDeath)
         {
             Debug.Log("onEnemyDeath");
-            Time.timeScale = 0;
             enemyDeath = true;
-            Time.timeScale = 1;
         }
 
         StartCoroutine(portal());
@@ -125,8 +113,6 @@ public class tutorial : MonoBehaviour
         
         yield return new WaitForSeconds(2);
         Debug.Log("portal");
-        Time.timeScale = 0;
-        Time.timeScale = 1;
         StopCoroutine(portal());
     }
 
@@ -138,8 +124,6 @@ public class tutorial : MonoBehaviour
          */
         
         Debug.Log("endGame");
-        Time.timeScale = 0;
-        Time.timeScale = 1;
     }
 
 }
