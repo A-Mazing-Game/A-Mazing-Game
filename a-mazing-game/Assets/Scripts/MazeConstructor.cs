@@ -93,6 +93,7 @@ public class MazeConstructor : MonoBehaviour
     private MazeDataGenerator dataGenerator;
     private MazeMeshGenerator meshGenerator;
     private FpsMovement fpsMovement;
+    public tutorial tutorialScript ;
 
     void Awake()
     {
@@ -106,6 +107,7 @@ public class MazeConstructor : MonoBehaviour
         spawnDistance = 10;
         enemyFirstEncounter = false;
         powerUpFirstEncounter = false;
+        tutorialScript = GetComponent<tutorial>();
         if (mazeType == 0  || mazeType == 4) // small or tutorial 
         {
             desiredEnemies = 5;
@@ -212,9 +214,13 @@ public class MazeConstructor : MonoBehaviour
         // StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         if (loadTutorial == 1)
+        {
             tutorialPowerUpSpawn();
-
+            tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+        }
     }
+
+   
     
     public void RemoveEnemyNode(GameObject go, int type)
     {

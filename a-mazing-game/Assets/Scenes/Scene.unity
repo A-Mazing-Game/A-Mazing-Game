@@ -1705,6 +1705,7 @@ MonoBehaviour:
   Arrows: {fileID: 0}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
+  tutorialScript: {fileID: 0}
 --- !u!114 &168113930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13478,6 +13479,7 @@ MonoBehaviour:
   Arrows: {fileID: 0}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
+  tutorialScript: {fileID: 0}
 --- !u!114 &1908193745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13747,6 +13749,7 @@ GameObject:
   - component: {fileID: 1944142326}
   - component: {fileID: 1944142329}
   - component: {fileID: 1944142330}
+  - component: {fileID: 1944142331}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -13814,6 +13817,7 @@ MonoBehaviour:
   Arrows: {fileID: 2060354752}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
+  tutorialScript: {fileID: 0}
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0
@@ -13858,6 +13862,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9456b6be7503d4a0aa7c07048f23ff77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1944142331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944142325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433bfabd028ac44d7868c0701a0c08e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mz: {fileID: 0}
 --- !u!1 &1987716251
 GameObject:
   m_ObjectHideFlags: 0
