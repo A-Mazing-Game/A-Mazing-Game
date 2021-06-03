@@ -52,6 +52,8 @@ public class MazeConstructor : MonoBehaviour
     private int loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
     private int spawnDistance;
+    public bool enemyFirstEncounter; // for tutorial. has player encountered an enemy
+    public bool powerUpFirstEncounter;  // for tutorial. has player encounter a powerup
 
     private int[,] tutorialMaze;
     
@@ -102,6 +104,8 @@ public class MazeConstructor : MonoBehaviour
         int mazeType = PlayerPrefs.GetInt("size", 0);
         loadTutorial = PlayerPrefs.GetInt("tutorial", 0);
         spawnDistance = 10;
+        enemyFirstEncounter = false;
+        powerUpFirstEncounter = false;
         if (mazeType == 0  || mazeType == 4) // small or tutorial 
         {
             desiredEnemies = 5;
@@ -187,6 +191,9 @@ public class MazeConstructor : MonoBehaviour
         SpawnPowerUp(endLocation);
         StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
+        if (loadTutorial == 1)
+            StartCoroutine(tutorialMessageCheck());
+
     }
     
     public void RemoveEnemyNode(GameObject go, int type)
@@ -239,6 +246,38 @@ public class MazeConstructor : MonoBehaviour
         
                 node = node.Next;
             }
+        }
+    }
+
+    private IEnumerator tutorialMessageCheck()
+    {
+        /*
+         * Checks the distance from the player to an enemy and power up potion to display
+         * a tutorial message on first encounter. 
+         */
+        
+        bool run = true;
+        while (run)
+        {
+            LinkedListNode<GameObject> enemyNode = enemyList.First;
+            LinkedListNode<GameObject> powerUpNode = powerUps.First;
+            
+            Debug.Log("Encounter: " + enemyFirstEncounter);
+            if (!enemyFirstEncounter)
+            {
+                while (enemyNode != null) // enemies
+                {
+                    float distance = Math.Abs(player.transform.position.x - enemyNode.Value.transform.position.x);
+                    Debug.Log("Distance from tut msg: " + distance);
+                    if (distance < 3)
+                    {
+                        Debug.Log("encountered first enemy");
+                        enemyFirstEncounter = true;
+                    }
+                    enemyNode = enemyNode.Next;
+                }
+            }
+            yield return new WaitForSeconds(1);
         }
     }
     
@@ -317,8 +356,16 @@ public class MazeConstructor : MonoBehaviour
             // Debug.Log("NumEnemies: " + numEnemies);
             // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
             // Debug.Log("Enemies alive: " + aliveEnemies);
-            
-            SpawnEnemy(enemiesToSpawn + 2);
+
+            if (loadTutorial == 0)
+            {
+                SpawnEnemy(enemiesToSpawn + 2);
+            }
+            else
+            {
+                tutorialSpawnEnemy(enemiesToSpawn + 2);
+            }
+
             if (spawnDistance != 0)
             {
                 spawnDistance -= 2;
@@ -330,6 +377,27 @@ public class MazeConstructor : MonoBehaviour
         yield return null;
     }
 
+    void tutorialSpawnEnemy(int numEnemies, TriggerEventHandler goalCallback = null)
+    {
+        PlaceEnemy(col[63], row[63], goalCallback);
+        PlaceEnemy(col[60], row[60], goalCallback);
+        PlaceEnemy(col[22], row[22], goalCallback);
+        PlaceEnemy(col[56], row[56], goalCallback);
+        PlaceEnemy(col[53], row[53], goalCallback);
+        PlaceEnemy(col[16], row[16], goalCallback);
+        PlaceEnemy(col[50], row[50], goalCallback);
+        // enemies = new int[length];
+        // for (int i = 0; i < numEnemies; i++)
+        // {
+        //     System.Random random = new System.Random();
+        //     int temp = random.Next(0, length - 1);
+        //     while (enemies.Contains(temp))
+        //         temp = random.Next(0, length - 1);
+        //     PlaceEnemy(col[temp], row[temp], goalCallback);
+        //     Debug.Log("From tutorialSpawn: " + temp);
+        //     enemies[i] = temp;
+        // }
+    }
     void SpawnEnemy(int numEnemies, TriggerEventHandler goalCallback=null)
     {
         /*
@@ -348,6 +416,8 @@ public class MazeConstructor : MonoBehaviour
             enemies[i] = temp;
         }
     }
+    
+    
 
     void SpawnPowerUp(GameObject endLocation)
     {
@@ -624,7 +694,8 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to spawnStamina");
         GameObject strength = Instantiate(strengthPotion);
         strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        if (end.transform.position == strength.transform.position)
+        float distance = player.transform.position.x - strength.transform.position.x;
+        if (end.transform.position == strength.transform.position && distance > 1)
         {
             Debug.Log("Stamina not spawning at end trigger");
             return;
@@ -646,8 +717,8 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnHealth");
         GameObject health = Instantiate(healthPotion);
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        
-        if (end.transform.position == health.transform.position)
+        float distance = player.transform.position.x - health.transform.position.x;
+        if (end.transform.position == health.transform.position && distance > 1)
         {
             Debug.Log("health not spawning at end trigger");
             return;
@@ -668,8 +739,8 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnShield");
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        
-        if (end.transform.position == shield.transform.position)
+        float distance = player.transform.position.x - shield.transform.position.x;
+        if (end.transform.position == shield.transform.position && distance > 1)
         {
             Debug.Log("health not spawning at end trigger");
             return;
