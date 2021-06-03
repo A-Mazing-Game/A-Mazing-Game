@@ -29,6 +29,7 @@ public class Arrows : InventoryItemBase
 
     public override void OnPickup()
     {
-        base.OnPickup();
+        isDropped = false;
+        gameObject.SetActive(false);
     }
 }
