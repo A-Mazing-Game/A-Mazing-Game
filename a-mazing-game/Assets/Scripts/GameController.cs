@@ -30,7 +30,6 @@ public class GameController : MonoBehaviour
     private int reduceLimitBy;
     // public int health;
     // public int maxHealth;
-    public int numCoins;
     private DateTime endTime;
     public TimeSpan elapsed;
 
@@ -54,7 +53,6 @@ public class GameController : MonoBehaviour
         //maxHealth = 10;
         generator = GetComponent<MazeConstructor>();
         StartNewGame();
-        numCoins = 0;
         surface.BuildNavMesh();
         hud.SetActive(true);
     }
@@ -171,7 +169,6 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-        coinLabel.text = "Coins: " + player.GetComponent<Inventory2>().numCoins.ToString();
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (!PauseScreen.isPaused)
