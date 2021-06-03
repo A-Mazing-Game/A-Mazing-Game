@@ -2,6 +2,8 @@
  * written by Joseph Hocking 2017
  * released under MIT license
  * text of license https://opensource.org/licenses/MIT
+ *
+ * Modified VERY heavily by Jacob
  */
 
 using System;
@@ -46,9 +48,10 @@ public class MazeConstructor : MonoBehaviour
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
-    private LinkedList<GameObject> arrowList;
-    public LinkedList<GameObject> torchList;
+    private LinkedList<GameObject> arrowList;  // holds all spawned arrows
+    public LinkedList<GameObject> torchList;  // holds all placed torches
     public GameObject player;  // player gameobject
+    public GameObject portal;  // portal game object to get location 
     public InventoryItemBase bottles;
     private int loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
@@ -126,6 +129,8 @@ public class MazeConstructor : MonoBehaviour
         arrowList = new LinkedList<GameObject>();
         torchList = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("Portal " + portal);
+        
         Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
         
@@ -212,6 +217,7 @@ public class MazeConstructor : MonoBehaviour
         // SpawnEnemy(desiredEnemies);
         // Thread.Sleep(1000);
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
+        portal = GameObject.FindGameObjectWithTag("Portal");
         SpawnPowerUp(endLocation);
         // StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
@@ -736,9 +742,10 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnHealth");
         GameObject health = Instantiate(healthPotion);
         health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = Vector3.Distance(player.transform.position, health.transform.position);
-        Debug.Log("health dist: " + distance);
-        if (distance < 3)
+        float playerDistance = Vector3.Distance(player.transform.position, health.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, health.transform.position);
+        Debug.Log("health dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
             Debug.Log("No spawning health, too close to player");
             Destroy(health);
@@ -766,10 +773,10 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnShield");
         GameObject shield = Instantiate(shieldPotion);
         shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = Vector3.Distance(player.transform.position, shield.transform.position);
-        
-        Debug.Log("shield dist: " + distance);
-        if (distance < 3)
+        float playerDistance = Vector3.Distance(player.transform.position, shield.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, shield.transform.position);
+        Debug.Log("shield dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
             Debug.Log("No spawning shield, too close to player");
             Destroy(shield);
@@ -791,10 +798,10 @@ public class MazeConstructor : MonoBehaviour
         // Debug.Log("Made it to SpawnShield");
         GameObject arrow = Instantiate(Arrows);
         arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
-        float distance = Vector3.Distance(player.transform.position, arrow.transform.position);
-        
-        Debug.Log("arrow dist: " + distance);
-        if (distance < 3)
+        float playerDistance = Vector3.Distance(player.transform.position, arrow.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, arrow.transform.position);
+        Debug.Log("arrow dist: " + playerDistance);
+        if (playerDistance < 3  || portalDistance < 3)
         {
             Debug.Log("No spawning arrow, too close to player");
             Destroy(arrow);
