@@ -37,6 +37,7 @@ public class AIMovement : MonoBehaviour
     private float nextAttack;
     private bool isDead;
     public MazeConstructor mz;
+    public tutorial tutorialScript;
 
     void Start()
     {
@@ -72,6 +73,7 @@ public class AIMovement : MonoBehaviour
         if (distance < lookRadius)
         {
             FaceTarget();
+            tutorialScript.GetComponent<tutorial>().combat();
             // If within attacking distance
             if (distance < agent.stoppingDistance)
             {
@@ -211,6 +213,7 @@ public class AIMovement : MonoBehaviour
         // enabled = false;
 
         Instantiate(coins, agent.transform.position, Quaternion.identity);
+        tutorialScript.GetComponent<tutorial>().onEnemyDeath();
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }

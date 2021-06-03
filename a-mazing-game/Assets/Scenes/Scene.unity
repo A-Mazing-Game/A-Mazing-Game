@@ -286,7 +286,8 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: b6ef0586b12944791bdb57fa2a286602, type: 3}
   InteractText: Press F to pickup Katana
   ItemType: 2
-  mz: {fileID: 0}
+  tutorialScript: {fileID: 1944142331}
+  mz: {fileID: 1944142327}
   pickedUp: 0
   isDropped: 0
   PickPosition: {x: -0.116, y: -0.069, z: -0.019}
@@ -1306,6 +1307,10 @@ PrefabInstance:
       propertyPath: potionAudio
       value: 
       objectReference: {fileID: 8300000, guid: dc02ce061e0ed1244b5090d9d1ae9b4a, type: 3}
+    - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+      propertyPath: tutorialScript
+      value: 
+      objectReference: {fileID: 1944142331}
     - target: {fileID: 4363554312079953821, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
       propertyPath: playerAudioSource
       value: 
@@ -2685,6 +2690,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: dc02ce061e0ed1244b5090d9d1ae9b4a, type: 3}
     - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: tutorialScript
+      value: 
+      objectReference: {fileID: 1944142331}
+    - target: {fileID: 8106001508260537355, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: playerAudioSource
       value: 
       objectReference: {fileID: 8936840687624926669}
@@ -2855,7 +2864,8 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 5de8f81c0769e4529ad9cbb67ebee31f, type: 3}
   InteractText: Press F to pickup Great Sword
   ItemType: 2
-  mz: {fileID: 0}
+  tutorialScript: {fileID: 1944142331}
+  mz: {fileID: 1944142327}
   pickedUp: 0
   isDropped: 0
   PickPosition: {x: -0.07, y: -0.072, z: -0.031}
@@ -14724,7 +14734,8 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 122e2664b10694032b844e7d8bf89587, type: 3}
   InteractText: Press F to pickup Bow
   ItemType: 2
-  mz: {fileID: 0}
+  tutorialScript: {fileID: 1944142331}
+  mz: {fileID: 1944142327}
   pickedUp: 0
   isDropped: 0
   PickPosition: {x: 0.3, y: -0.143, z: 0.02}
@@ -14915,7 +14926,7 @@ MonoBehaviour:
   Arrows: {fileID: 2060354752}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
-  tutorialScript: {fileID: 0}
+  tutorialScript: {fileID: 1944142331}
 --- !u!4 &1944142328
 Transform:
   m_ObjectHideFlags: 0
@@ -14972,7 +14983,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433bfabd028ac44d7868c0701a0c08e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mz: {fileID: 0}
+  mz: {fileID: 1944142327}
+  weaponPickup: 0
+  powerUpPickup: 0
+  encounteredCombat: 0
+  enemyDeath: 0
 --- !u!1 &1987716251
 GameObject:
   m_ObjectHideFlags: 0
@@ -16168,6 +16183,10 @@ PrefabInstance:
       propertyPath: wanderRadius
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
+      propertyPath: tutorialScript
+      value: 
+      objectReference: {fileID: 1944142331}
     - target: {fileID: 823155169055971738, guid: 1c8b4f4887c6e40a5818c0f006e1dda3, type: 3}
       propertyPath: skeletonHitAudio
       value: 

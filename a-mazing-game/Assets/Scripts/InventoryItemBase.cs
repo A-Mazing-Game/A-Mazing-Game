@@ -19,6 +19,8 @@ public class InteractableItemBase : MonoBehaviour
     public string InteractText = "Press F to pickup";
 
     public EItemType ItemType;
+    public tutorial tutorialScript;
+
     
     public virtual void OnInteractAnimation(Animator animator)
     {
@@ -48,6 +50,7 @@ public class InventoryItemBase : InteractableItemBase
 
     public virtual void OnUse()
     {
+        tutorialScript.GetComponent<tutorial>().onWeaponPickUp();
         transform.localPosition = PickPosition;
         transform.localEulerAngles = PickRotation;
     }

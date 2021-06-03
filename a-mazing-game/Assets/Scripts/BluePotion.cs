@@ -22,7 +22,6 @@ public class BluePotion : InventoryItemBase
     public override void OnUse()
     {
         playerAudioSource.PlayOneShot(potionAudio, 0.7f);
-        
         gameObject.SetActive(true);
         inventory.RemoveItem(this);
         mz.RemoveEnemyNode(gameObject, 1);
@@ -45,8 +44,8 @@ public class BluePotion : InventoryItemBase
     public override void OnPickup()
     {
         // Destroy(gameObject);
+        tutorialScript.GetComponent<tutorial>().onPowerUpPickUp();
         pickedUp = true;
-        mz.shieldTrigger();
         gameObject.SetActive(false);
     }
 }

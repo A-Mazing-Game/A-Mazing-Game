@@ -44,6 +44,7 @@ public class RedPotion : InventoryItemBase
     {
         // mz.RemoveEnemyNode(gameObject, 1);
         // Destroy(gameObject);
+        tutorialScript.GetComponent<tutorial>().onPowerUpPickUp();
         pickedUp = true;
         gameObject.SetActive(false);
     }

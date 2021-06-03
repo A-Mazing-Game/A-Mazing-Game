@@ -97,7 +97,7 @@ public class MazeConstructor : MonoBehaviour
     private MazeDataGenerator dataGenerator;
     private MazeMeshGenerator meshGenerator;
     private FpsMovement fpsMovement;
-    public tutorial tutorialScript ;
+    public tutorial tutorialScript;
 
     void Awake()
     {
@@ -204,7 +204,7 @@ public class MazeConstructor : MonoBehaviour
         FindGoalPosition();
         FindDeadEnd();
         Debug.Log("For tut: col: " + col[0] + " row: " + row[0]);
-        printMaze();
+        // printMaze();
 
         // store values used to generate this mesh
         hallWidth = meshGenerator.width;
@@ -216,16 +216,24 @@ public class MazeConstructor : MonoBehaviour
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         portal = GameObject.FindGameObjectWithTag("Portal");
         SpawnPowerUp(endLocation);
-        // StartCoroutine(SpawnCoRoutine());
+        
         StartCoroutine(UpdateGameObjects());
         if (loadTutorial == 1)
         {
             tutorialPowerUpSpawn();
-            // tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+            tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+        }
+        else
+        {
+            StartCoroutine(SpawnCoRoutine());
         }
     }
 
-   
+    public void test()
+    {
+        Debug.Log("in test");
+        StartCoroutine(SpawnCoRoutine());
+    }
     
     public void RemoveEnemyNode(GameObject go, int type)
     {
@@ -354,7 +362,7 @@ public class MazeConstructor : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnCoRoutine()
+    public IEnumerator SpawnCoRoutine()
     {
         /*
          * Continually spawn enemies within the maze
@@ -759,12 +767,6 @@ public class MazeConstructor : MonoBehaviour
         powerUps.AddLast(health);
     }
     
-    public void shieldTrigger()
-    {
-        if(loadTutorial == 1)
-            Debug.Log("yeet");
-    }
-    
     private void SpawnShield(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
     {
         // Debug.Log("Made it to SpawnShield");
@@ -834,7 +836,7 @@ public class MazeConstructor : MonoBehaviour
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
-        float distance = sk.transform.position.x - player.transform.position.x;
+        float distance = Math.Abs(sk.transform.position.x - player.transform.position.x);
         Debug.Log("distance: " + distance);
         if (distance < spawnDistance)
         {
