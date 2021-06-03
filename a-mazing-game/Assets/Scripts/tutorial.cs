@@ -32,11 +32,11 @@ public class tutorial : MonoBehaviour
          */
 
         Cursor.lockState = CursorLockMode.None;
-        //Cursor.lockState = CursorLockMode.Confined;
         Time.timeScale = 0;
         tutorialText.text = "Welcome to the A-Maze-ing Game Tutorial Level. Your main goal will be to make it to the " +
-            "boss portal in the opposite corner. When you reach this portal in the tutorial level, the tutorial" +
-            "will conclude. Look Down and pick up a weapon";
+            "boss portal in the opposite corner. When you reach this portal in the tutorial level, the tutorial " +
+            "will conclude. Look Down and pick up a weapon, you can move the player with the WASD keys and sprint " +
+            "by pressing shift while walking, note: this does use your stamina (yellow bar)!";
         tutorialScreen.SetActive(true);
 
         Debug.Log("tutorialStartMessage");
@@ -44,7 +44,6 @@ public class tutorial : MonoBehaviour
 
     public void continueTutorial()
     {
-        Debug.Log("testing");
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         tutorialScreen.SetActive(false);
@@ -62,6 +61,14 @@ public class tutorial : MonoBehaviour
         {
             Debug.Log("onWeaponPickUp");
             weaponPickup = true;
+            
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text =
+                "You have picked up your first weapon! You can also place torches on the wall of the maze by pressing T to keep " +
+                "track of where you have already been. The game can be paused at any time by pressing P. Now go pick " +
+                "up the red and blue potions in front of you.";
+            tutorialScreen.SetActive(true);
         }
        
     }
@@ -77,6 +84,18 @@ public class tutorial : MonoBehaviour
         {
             Debug.Log("onPowerUpPickUp");
             powerUpPickup = true;
+            
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text = "There are two main potions spawned within the maze. Red potions are health potions and " +
+                                "blue potions are shield potions. Shield health will be consumed before player health." +
+                                " Once you pick up a spawned item, that item is placed in your inventory, you can use " +
+                                "your number keys (1-9) on the keyboard to use that specific item or to swap weapons. " +
+                                "Potions / pickups are spawned in dead end hallways within the maze. Be careful though, " +
+                                "arrows do not glow, so they are hard to see when you're on the hunt for ammo!" +
+                                " Make sure to pick up the last potion!";
+                
+            tutorialScreen.SetActive(true);
         }
         else
         {
@@ -93,6 +112,15 @@ public class tutorial : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         Debug.Log("miniMap");
+        
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0;
+        tutorialText.text = "In the top left of the screen is the level minimap. You are the green dot in the center " +
+                            "of the map. Enemies appear on the minimap as red dots and powerups appear as smaller " +
+                            "dots on the map as their associated color. There are enemies on your minimap now, " +
+                            "go and try to fight it!";
+                
+        tutorialScreen.SetActive(true);
         StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
         StopCoroutine(miniMap());
     }
@@ -107,6 +135,16 @@ public class tutorial : MonoBehaviour
         if (!encounteredCombat)
         {
             Debug.Log("combat");
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text = "You have been spotted! Melee weapons have two attack modes, quick and " +
+                                "a jumping attacks. You can press the left mouse button to perform a quick attack, " +
+                                "you can also perform a jumping attack by sprinting and pressing the left mouse button at " +
+                                "the same time. You can also doge enemies by pressing the right mouse button. " +
+                                "The bow is a ranged weapon that needs arrows to shoot, I bet you'll find some if you" +
+                                " look around!";
+                
+            tutorialScreen.SetActive(true);
             encounteredCombat = true;
         }
     }
@@ -120,6 +158,15 @@ public class tutorial : MonoBehaviour
         if (!enemyDeath)
         {
             Debug.Log("onEnemyDeath");
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text = "Nice job! Enemies also drop coins when you kill them! Coins can be used" +
+                                " to purchase player upgrades such as increasing the player's max health. " +
+                                "Enemies are continuously being spawned within the maze, and in greater numbers. " +
+                                "Make sure you don't stay in the maze too long or you could be overrun! Or you may want " +
+                                "to explore the maze some more to stockpile your potions and arrows...";
+                
+            tutorialScreen.SetActive(true);
             enemyDeath = true;
         }
 
@@ -132,8 +179,16 @@ public class tutorial : MonoBehaviour
          * Immediately after: Prompt the player to make it to the portal to finish the tutorial
          */
         
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(10);
         Debug.Log("portal");
+        
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0;
+        tutorialText.text = "When you're ready to leave the maze, you can walk through the portal. In a normal game mode, " +
+                            "once you enter the portal, you will be teleported to the boss fight. For this tutorial, " +
+                            "the game will end. Have fun!";
+                
+        tutorialScreen.SetActive(true);
         StopCoroutine(portal());
     }
 
