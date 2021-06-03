@@ -57,6 +57,13 @@ public class NewGameSettings : MonoBehaviour
     public void tutorialLevel()
     {
         sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("rows", 11);
+        PlayerPrefs.SetInt("cols", 11);
+        PlayerPrefs.SetInt("size", 4);
+        PlayerPrefs.SetInt("continue", 1);
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
+        StartCoroutine(LoadLevel());
         PlayerPrefs.SetInt("tutorial", 1);
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
         StartCoroutine(LoadLevel());
