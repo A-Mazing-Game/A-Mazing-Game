@@ -22,6 +22,7 @@ public class tutorial : MonoBehaviour
         powerUpPickup = false;
         encounteredCombat = false;
         enemyDeath = false;
+        Cursor.lockState = CursorLockMode.None;
     }
     public void tutorialStartMessage()
     {
@@ -43,6 +44,7 @@ public class tutorial : MonoBehaviour
 
     public void continueTutorial()
     {
+        Debug.Log("testing");
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         tutorialScreen.SetActive(false);
