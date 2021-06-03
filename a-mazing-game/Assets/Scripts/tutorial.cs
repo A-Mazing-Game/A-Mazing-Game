@@ -11,6 +11,7 @@ public class tutorial : MonoBehaviour
     public bool powerUpPickup;
     public bool encounteredCombat;
     public bool enemyDeath;
+    public GameObject tutorialScreen;
     
 
     void Start()
@@ -28,6 +29,7 @@ public class tutorial : MonoBehaviour
          */
         
         Debug.Log("tutorialStartMessage");
+        tutorialScreen.SetActive(true);
     }
 
     public void onWeaponPickUp()
