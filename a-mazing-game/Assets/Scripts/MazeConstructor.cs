@@ -209,7 +209,7 @@ public class MazeConstructor : MonoBehaviour
         // Thread.Sleep(1000);
         GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
         SpawnPowerUp(endLocation);
-        StartCoroutine(SpawnCoRoutine());
+        // StartCoroutine(SpawnCoRoutine());
         StartCoroutine(UpdateGameObjects());
         if (loadTutorial == 1)
             tutorialPowerUpSpawn();
