@@ -129,9 +129,6 @@ public class MazeConstructor : MonoBehaviour
         arrowList = new LinkedList<GameObject>();
         torchList = new LinkedList<GameObject>();
         player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log("Portal " + portal);
-        
-        Debug.Log("Player location " + player.transform.position);
         ai = GetComponent<AIMovement>();
         
 
