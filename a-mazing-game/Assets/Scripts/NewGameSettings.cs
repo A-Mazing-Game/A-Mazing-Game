@@ -58,8 +58,8 @@ public class NewGameSettings : MonoBehaviour
     {
         sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("rows", 11);
-        PlayerPrefs.SetInt("cols", 11);
+        PlayerPrefs.SetInt("rows", 13);
+        PlayerPrefs.SetInt("cols", 13);
         PlayerPrefs.SetInt("size", 4);
         PlayerPrefs.SetInt("continue", 1);
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);

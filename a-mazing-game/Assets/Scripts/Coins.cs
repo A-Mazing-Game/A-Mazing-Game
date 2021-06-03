@@ -20,6 +20,7 @@ public class Coins : MonoBehaviour
         {
             playerAudioSource[1].PlayOneShot(coinAudio, 0.7f);
             other.GetComponent<Inventory2>().numCoins++;
+            other.GetComponent<PlayerStats>().AddCoins();
             Destroy(gameObject);
         }
     }

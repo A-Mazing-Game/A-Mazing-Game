@@ -15,6 +15,7 @@ public class PlayerStats : MonoBehaviour
     public float maxStamina;
     public float currentStamina;
     public int enemiesKilled = 0;
+    private int numCoins;
 
     public HealthBar healthBar;
     public StaminaBar staminaBar;
@@ -23,16 +24,19 @@ public class PlayerStats : MonoBehaviour
 
     public Text healthLabel;
     public Text staminaLabel;
+    public Text coinLabel;
 
     private WaitForSeconds regenTick = new WaitForSeconds(0.05f);
     private Coroutine regen;
     
     private void Awake()
     {
+
         controller = GameObject.Find("Controller");
         maxHealth = PlayerPrefs.GetInt("health", 100);
         maxDamage = PlayerPrefs.GetInt("damage", 40);
         maxStamina = PlayerPrefs.GetFloat("stamina", 100);
+        
         currentHealth = maxHealth;
         attackDamage = maxDamage;
         healthBar.SetMaxHealth(maxHealth);
@@ -44,6 +48,8 @@ public class PlayerStats : MonoBehaviour
         currentStamina = maxStamina;
         healthLabel.text = maxHealth.ToString() + "/" + maxHealth.ToString();
         staminaLabel.text = maxStamina.ToString() + "/" + maxStamina.ToString();
+        numCoins = GetComponent<Inventory2>().numCoins + PlayerPrefs.GetInt("coins", 0);
+        coinLabel.text = "Coins: " + numCoins.ToString();
     }
 
 
@@ -71,6 +77,11 @@ public class PlayerStats : MonoBehaviour
     }
 
 
+    public void AddCoins()
+    {
+        numCoins += 1;
+        coinLabel.text = "Coins: " + numCoins.ToString();
+    }
     public int SubtractHealth(int damage)
     {
         currentHealth -= damage;
