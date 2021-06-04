@@ -6,14 +6,14 @@ using UnityEngine.AI;
 public class Arrow : MonoBehaviour
 {
     private Vector3 shootDir;
-    private AudioSource[] playerAudioSource;
+    public AudioSource playerAudioSource;
     [SerializeField] private PlayerStats playerStats;
     public AudioClip arrowAudio;
     public GameObject player;
+    bool isPlaying = false;
 
     public void Setup(Vector3 shootDir)
     {
-        playerAudioSource = player.GetComponents<AudioSource>();
         this.shootDir = shootDir;
         Destroy(gameObject, 5f);
     }
@@ -27,7 +27,11 @@ public class Arrow : MonoBehaviour
 
     private IEnumerator OnTriggerEnter(Collider other)
     {
-        playerAudioSource[1].PlayOneShot(arrowAudio, 0.7f);
+        if (!isPlaying)
+        {
+            playerAudioSource.PlayOneShot(arrowAudio, 0.7f);
+            isPlaying = true;
+        }
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<NavMeshAgent>().isStopped = true;

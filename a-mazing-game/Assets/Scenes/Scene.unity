@@ -3369,6 +3369,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8936840687624926666}
     - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
+      propertyPath: playerGO
+      value: 
+      objectReference: {fileID: 8936840687624926659}
+    - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
+      propertyPath: mageHitAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 0119373ea2851d443986563793dc43f9, type: 3}
+    - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
+      propertyPath: mageDeadAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 67b134257dd33aa42a6ac300db2e0ca0, type: 3}
+    - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
       propertyPath: tutorialScript
       value: 
       objectReference: {fileID: 1944142331}
@@ -16134,6 +16146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a2e53a69acf419d9bc0e381eba11e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAudioSource: {fileID: 8936840687624926669}
   playerStats: {fileID: 8936840687624926663}
   arrowAudio: {fileID: 8300000, guid: b75ac8eecf4e3454889e973269ca1d72, type: 3}
   player: {fileID: 8936840687624926659}

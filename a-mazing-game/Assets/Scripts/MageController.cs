@@ -13,8 +13,9 @@ public class MageController : MonoBehaviour
     public GameObject coins;
     public EnemyHealthBar healthBar;
     public Rigidbody rb;
+    public GameObject playerGO;
     
-    public AudioSource playerAudioSource;
+    private AudioSource[] playerAudioSource;
     public AudioClip mageHitAudio;
     public AudioClip mageDeadAudio;
     
@@ -47,6 +48,7 @@ public class MageController : MonoBehaviour
          healthBar.SetMaxHealth(maxHealth);
          healthBar.SetHealth(maxHealth);
          fireball.gameObject.SetActive(true);
+         playerAudioSource = playerGO.GetComponents<AudioSource>();
     }
 
     void Update()
@@ -182,7 +184,7 @@ public class MageController : MonoBehaviour
         {
             agent.isStopped = true;
             rb.AddForce(-transform.forward * 2, ForceMode.Impulse);
-            playerAudioSource.PlayOneShot(mageHitAudio, 0.7f);
+            playerAudioSource[1].PlayOneShot(mageHitAudio, 0.4f);
             // animator.speed = 1.75f;
             // currentHealth -= damage;
             // Play hurt animation
@@ -192,7 +194,7 @@ public class MageController : MonoBehaviour
             if (currentHealth <= 0)
             {
                 isDead = true;
-                playerAudioSource.PlayOneShot(mageDeadAudio, 0.7f);
+                playerAudioSource[1].PlayOneShot(mageDeadAudio, 2.0f);
                 StartCoroutine(Die());
             }
 
