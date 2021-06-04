@@ -226,7 +226,7 @@ public class MazeConstructor : MonoBehaviour
         }
         else
         {
-            // StartCoroutine(SpawnCoRoutine());
+            StartCoroutine(SpawnCoRoutine());
         }
     }
 
