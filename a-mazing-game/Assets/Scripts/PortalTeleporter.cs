@@ -23,7 +23,7 @@ public class PortalTeleporter : MonoBehaviour
         duck = GameObject.Find("Duck").gameObject;
         shout = GameObject.Find("AutzenModel").GetComponent<AudioSource>();
         player = GameObject.Find("Player").transform;
-        AutzenLocation = new Vector3(-346f, 0.5f, 32f);
+        AutzenLocation = new Vector3(-341.5f, 0f, 32f);
         healthBar.SetActive(false);
         duck.SetActive(false);
     }
@@ -44,6 +44,7 @@ public class PortalTeleporter : MonoBehaviour
                 duck.SetActive(true);
                 healthBar.SetActive(true);
                 player.position = AutzenLocation;
+                player.Rotate(Vector3.up, -115f);
                 shout.Play();
                 playerIsOverlapping = false;
             }

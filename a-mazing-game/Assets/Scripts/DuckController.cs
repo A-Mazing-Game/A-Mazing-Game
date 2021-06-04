@@ -17,7 +17,8 @@ public class DuckController : MonoBehaviour
     public AudioSource duckAudio;
     public AudioClip duckHurtAudio;
     public AudioClip duckDeadAudio;
-
+    public StartBossFight startFight;
+    
     public float lookRadius;
     public float wanderRadius;
     public float throwRadius;
@@ -53,10 +54,25 @@ public class DuckController : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(maxHealth);
         duckAudio.clip = duckHurtAudio;
+        agent.isStopped = true;
     }
 
     void Update()
     {
+        if (startFight.startFight)
+        {
+            animator.SetTrigger("Getup");
+            while (animator.GetCurrentAnimatorStateInfo(0).IsName("Standup") 
+                    || animator.GetCurrentAnimatorStateInfo(0).IsName("Pushups"))
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
+        
         // Distance to the target
         float distance = Vector3.Distance(player.position, transform.position);
 
@@ -70,11 +86,14 @@ public class DuckController : MonoBehaviour
                 cheercone.gameObject.SetActive(false);
                 FaceTarget();
                 // Idle();
-                if (Time.time > nextThrow)
-                {
-                    nextThrow = Time.time + throwRate;
-                    StartCoroutine(Throw());
-                }
+                // while (animator.GetCurrentAnimatorStateInfo(0).IsName("Standup"))
+                // {
+                    if (Time.time > nextThrow)
+                    {
+                        nextThrow = Time.time + throwRate;
+                        StartCoroutine(Throw());
+                    }
+                // }
             }
             
             // If not inside the throw radius
