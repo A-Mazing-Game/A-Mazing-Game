@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class tutorial : MonoBehaviour
 {
@@ -15,7 +16,12 @@ public class tutorial : MonoBehaviour
     public GameObject tutorialScreen;
     public Text tutorialText;
     private int startTut;
-    
+    float sliderSensitivity;
+    bool finishedTutorial;
+
+    public Button MenuButton;
+
+    public Button ContinueButton;
 
     void Start()
     {
@@ -27,6 +33,8 @@ public class tutorial : MonoBehaviour
         if(startTut == 1)
             Cursor.lockState = CursorLockMode.None;
         Debug.Log("start tut: " + startTut);
+        finishedTutorial = false;
+        MenuButton.gameObject.SetActive(false);
     }
     public void tutorialStartMessage(int load=0)
     {
@@ -223,6 +231,25 @@ public class tutorial : MonoBehaviour
             return;
         
         Debug.Log("endGame");
+        Cursor.lockState = CursorLockMode.None;
+        ContinueButton.gameObject.SetActive(false);
+        MenuButton.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        tutorialText.text = "Congratulations! You've reached the end of the tutorial! Play the easy or medium maze for practive" +
+            "or the hard mode maze for a challenge. ";
+        tutorialScreen.SetActive(true);
+    }
+
+    public void backToMenu()
+    {
+
+        SceneManager.LoadScene("Menu");
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
+        tutorialScreen.SetActive(false);
+        Time.timeScale = 1;
+
     }
 
 }

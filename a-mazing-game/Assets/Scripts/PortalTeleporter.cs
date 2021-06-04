@@ -12,11 +12,13 @@ public class PortalTeleporter : MonoBehaviour
     public AudioSource shout;
     public int test;
     public GameObject healthBar;
+    public MazeConstructor mz;
     private bool playerIsOverlapping = false;
     // Update is called once per frame
 
     void Awake()
     {
+        mz = GameObject.Find("Controller").GetComponent<MazeConstructor>();
         healthBar = GameObject.Find("Duck Health").gameObject;
         duck = GameObject.Find("Duck").gameObject;
         shout = GameObject.Find("AutzenModel").GetComponent<AudioSource>();
@@ -29,28 +31,24 @@ public class PortalTeleporter : MonoBehaviour
     {
         if (playerIsOverlapping)
         {
-            Debug.Log("In portal");
-            print("portal touch");
-            //Vector3 portalToPlayer = player.position - transform.position;
-            //float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
-
-            /*if (dotProduct < 0f)
+            int flag = PlayerPrefs.GetInt("tutorial", 0);
+            if (flag == 1)
             {
-                float rotDiff = -Quaternion.Angle(transform.rotation, receiver.rotation);
-                rotDiff = rotDiff + 180;
-                player.Rotate(Vector3.up, rotDiff);
+                mz.GetComponent<tutorial>().endGame();
+                Vector3 resetPlayer = new Vector3(0, 0, 0);
+                player.position = resetPlayer;
 
-                Vector3 positionOffset = Quaternion.Euler(0f, rotDiff, 0f) * portalToPlayer;
-                player.position = receiver.position + positionOffset;
+            }
+            else
+            {
+                duck.SetActive(true);
+                healthBar.SetActive(true);
+                player.position = AutzenLocation;
+                shout.Play();
                 playerIsOverlapping = false;
-            }*/
-            duck.SetActive(true);
-            healthBar.SetActive(true);
-            player.position = AutzenLocation;
-            shout.Play();
-            playerIsOverlapping = false;
+            }
         }
-        
+
     }
 
     public void SetReceiver(Transform receive)
