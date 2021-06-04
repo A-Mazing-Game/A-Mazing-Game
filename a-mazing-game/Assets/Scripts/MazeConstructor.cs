@@ -850,11 +850,13 @@ public class MazeConstructor : MonoBehaviour
                 {
                     sk = Instantiate(mage);
                     sk.name = "Mage";
+                    sk.tag = "Mage";
                 }
                 else
                 {
                     sk = Instantiate(skeleton);
                     sk.name = "Skeleton";
+                    sk.tag = "Enemy";
                 }
         
                 // Debug.Log("X: " + x + " y: " + y);
@@ -863,7 +865,6 @@ public class MazeConstructor : MonoBehaviour
                 // Debug.Log("autzen distance " + distance);
             
                 sk.SetActive(false);
-                sk.tag = "Enemy";
                 enemyList.AddLast(sk);
             }
             
@@ -882,11 +883,13 @@ public class MazeConstructor : MonoBehaviour
         {
             sk = Instantiate(mage) as GameObject;
             sk.name = "Mage";
+            sk.tag = "Mage";
         }
         else
         {
             sk = Instantiate(skeleton) as GameObject;
             sk.name = "Skeleton";
+            sk.tag = "Enemy";
         }
         Debug.Log("Random spawn is " + temp);
         // sk.AddComponent<NavMeshAgent>();
@@ -908,8 +911,6 @@ public class MazeConstructor : MonoBehaviour
         // t.material = mr.materials[0];
         
         // Instantiate(skeleton);
-        
-        sk.tag = "Enemy";
 
         enemyList.AddLast(sk);
         
