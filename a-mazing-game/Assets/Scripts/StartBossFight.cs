@@ -9,3 +9,12 @@ public class StartBossFight : MonoBehaviour
     public MazeConstructor mz;
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player"))
+        {
+            mz = GameObject.Find("Controller").GetComponent<MazeConstructor>();
+            StartCoroutine(mz.GetComponent<MazeConstructor>().spawnEnemyAutzen());
+            startFight = true;
+            gameObject.SetActive(false);
+        }
+    }
+}
