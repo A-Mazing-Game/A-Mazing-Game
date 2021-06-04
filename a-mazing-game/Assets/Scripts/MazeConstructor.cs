@@ -58,6 +58,7 @@ public class MazeConstructor : MonoBehaviour
     private int spawnDistance;
     public bool enemyFirstEncounter; // for tutorial. has player encountered an enemy
     public bool powerUpFirstEncounter;  // for tutorial. has player encounter a powerup
+    public GameObject mage;
 
     private int[,] tutorialMaze;
     
@@ -833,6 +834,10 @@ public class MazeConstructor : MonoBehaviour
     private void PlaceEnemy(int column, int newRow, TriggerEventHandler callback)
     {
         // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+        System.Random random = new System.Random();
+        int temp = random.Next(1, 8);
+        Debug.Log("Random spawn is " + temp);
         GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
