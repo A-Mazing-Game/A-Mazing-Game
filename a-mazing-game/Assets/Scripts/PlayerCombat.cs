@@ -219,7 +219,7 @@ public class PlayerCombat : MonoBehaviour
                     playerStats.enemiesKilled++;
                 }
             }
-            else
+            else if (hitEnemies[length - 1].CompareTag("Enemy"))
             {
                 StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
                 if (hitEnemies[length - 1].GetComponent<AIMovement>().currentHealth <= 0)
@@ -321,7 +321,7 @@ public class PlayerCombat : MonoBehaviour
                         playerStats.enemiesKilled++;
                     }
                 }
-                else
+                else if (enemy.CompareTag("Enemy"))
                 {
                     StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
                     // Debug.Log(enemy.name + " hit!");
