@@ -85,7 +85,7 @@ public class DuckController : MonoBehaviour
                 // football.gameObject.SetActive(true);
                 cheercone.gameObject.SetActive(false);
                 FaceTarget();
-                Idle();
+                // Idle();
                 if (Time.time > nextThrow)
                 {
                     nextThrow = Time.time + throwRate;
