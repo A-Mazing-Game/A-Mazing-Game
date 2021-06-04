@@ -85,8 +85,11 @@ public class PlayerCombat : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextShot)
                 {
-                    nextShot = Time.time + shootRate;
-                    StartCoroutine(Shoot());
+                    if (Cursor.lockState == CursorLockMode.Locked)
+                    {
+                        nextShot = Time.time + shootRate;
+                        StartCoroutine(Shoot());
+                    }
                 }
             }
             else
@@ -94,8 +97,11 @@ public class PlayerCombat : MonoBehaviour
                 attackRange = 0.75f;
                 if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
                 {
-                    nextAttack = Time.time + attackRate;
-                    StartCoroutine(Attack());
+                    if (Cursor.lockState == CursorLockMode.Locked)
+                    {
+                        nextAttack = Time.time + attackRate;
+                        StartCoroutine(Attack());
+                    }
                 }
             }
         }
@@ -104,10 +110,13 @@ public class PlayerCombat : MonoBehaviour
             attackRange = 0.6f;
             if (!canHook && Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextPunch)
             {
-                animator.speed = 1.5f;
-                animator.SetTrigger("Punch");
-                nextPunch = Time.time + punchRate;
-                StartCoroutine(Punch());
+                if (Cursor.lockState == CursorLockMode.Locked)
+                {
+                    animator.speed = 1.5f;
+                    animator.SetTrigger("Punch");
+                    nextPunch = Time.time + punchRate;
+                    StartCoroutine(Punch());
+                }
             }
             
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
@@ -122,10 +131,13 @@ public class PlayerCombat : MonoBehaviour
             
             if (canHook && Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextPunch)
             {
-                animator.speed = 1.5f;
-                animator.SetTrigger("Right Hook");
-                nextPunch = Time.time + punchRate;
-                StartCoroutine(Punch());
+                if (Cursor.lockState == CursorLockMode.Locked)
+                {
+                    animator.speed = 1.5f;
+                    animator.SetTrigger("Right Hook");
+                    nextPunch = Time.time + punchRate;
+                    StartCoroutine(Punch());
+                }
             }
         }
     }
