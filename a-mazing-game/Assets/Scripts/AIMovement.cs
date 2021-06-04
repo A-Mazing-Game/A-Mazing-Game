@@ -16,7 +16,7 @@ public class AIMovement : MonoBehaviour
     public EnemyHealthBar healthBar;
     
     public AudioSource playerAudioSource;
-    public AudioClip skeletonHitAudio;
+
     public AudioClip skeletonDeadAudio;
     
     public float lookRadius;
@@ -170,7 +170,7 @@ public class AIMovement : MonoBehaviour
     {
         if (!isDead)
         {
-            playerAudioSource.PlayOneShot(skeletonHitAudio, 0.7f);
+            //playerAudioSource.PlayOneShot(skeletonHitAudio, 0.7f);
             // animator.speed = 1.75f;
             agent.isStopped = true;
             // currentHealth -= damage;
