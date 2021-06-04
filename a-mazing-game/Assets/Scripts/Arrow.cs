@@ -29,15 +29,27 @@ public class Arrow : MonoBehaviour
             StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
             yield return new WaitForSeconds(0.5f);
             other.GetComponent<NavMeshAgent>().isStopped = false;
-            // Debug.Log("hit at " + Time.time);
-            // other.TakeDamage(20);
             Destroy(gameObject);
+            if (other.GetComponent<AIMovement>().currentHealth <= 0)
+            {
+                playerStats.enemiesKilled++;
+            }
+        }
+        else if (other.CompareTag("Mage"))
+        {
+            other.GetComponent<NavMeshAgent>().isStopped = true;
+            StartCoroutine(other.GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+            yield return new WaitForSeconds(0.5f);
+            other.GetComponent<NavMeshAgent>().isStopped = false;
+            Destroy(gameObject);
+            if (other.GetComponent<MageController>().currentHealth <= 0)
+            {
+                playerStats.enemiesKilled++;
+            }
         }
         else if (other.CompareTag("Duck"))
         {
             other.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
-            // Debug.Log("hit at " + Time.time);
-            // other.TakeDamage(20);
             Destroy(gameObject);
         }
     }

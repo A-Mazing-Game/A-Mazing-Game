@@ -213,7 +213,7 @@ public class AIMovement : MonoBehaviour
 
         Instantiate(coins, agent.transform.position, Quaternion.identity);
         tutorialScript.GetComponent<tutorial>().onEnemyDeath();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
         Destroy(gameObject);
     }
 }

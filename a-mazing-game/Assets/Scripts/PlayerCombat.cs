@@ -211,6 +211,14 @@ public class PlayerCombat : MonoBehaviour
                 hitEnemies[length - 1].GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
                 hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
             }
+            else if (hitEnemies[length - 1].CompareTag("Mage"))
+            {
+                StartCoroutine(hitEnemies[length - 1].GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+                if (hitEnemies[length - 1].GetComponent<MageController>().currentHealth <= 0)
+                {
+                    playerStats.enemiesKilled++;
+                }
+            }
             else
             {
                 StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
@@ -304,6 +312,14 @@ public class PlayerCombat : MonoBehaviour
                     Vector3 forceDir = Vector3.back;
                     enemy.GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
                     enemy.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+                }
+                else if (enemy.CompareTag("Mage"))
+                {
+                    StartCoroutine(enemy.GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+                    if (enemy.GetComponent<MageController>().currentHealth <= 0)
+                    {
+                        playerStats.enemiesKilled++;
+                    }
                 }
                 else
                 {

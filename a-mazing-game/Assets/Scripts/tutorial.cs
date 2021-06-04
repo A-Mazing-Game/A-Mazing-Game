@@ -195,7 +195,7 @@ public class tutorial : MonoBehaviour
                                 " look around!";
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true)
+            pauseAudio(true);
             encounteredCombat = true;
         }
     }

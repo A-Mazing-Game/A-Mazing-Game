@@ -16,6 +16,7 @@ TagManager:
   - Duck
   - Autzen
   - Arrow
+  - Mage
   layers:
   - Default
   - TransparentFX
