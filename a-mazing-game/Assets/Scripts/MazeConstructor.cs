@@ -470,7 +470,6 @@ public class MazeConstructor : MonoBehaviour
             // Debug.Log("Calling shit"); 
             
             int temp = random.Next(1, 4);  // todo change from 0, 4
-            temp = 1;
             Debug.Log(temp);
             if(temp == 0)  // stamina
             {
