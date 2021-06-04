@@ -3011,6 +3011,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
+      propertyPath: tutorialScript
+      value: 
+      objectReference: {fileID: 1944142331}
+    - target: {fileID: 7542569278366044446, guid: 31324d12a5b3546e0ac044830bcfd5d7, type: 3}
       propertyPath: playerAudioSource
       value: 
       objectReference: {fileID: 8936840687624926660}

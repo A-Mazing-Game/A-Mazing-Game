@@ -32,6 +32,8 @@ public class Arrows : InventoryItemBase
     {
         isDropped = false;
         mz.RemoveEnemyNode(gameObject, 2);
+        Vector3 temp = new Vector3(0, -10, 0);
+        gameObject.transform.position += temp;
         gameObject.SetActive(false);
     }
 }

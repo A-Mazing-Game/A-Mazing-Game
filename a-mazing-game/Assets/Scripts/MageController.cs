@@ -38,6 +38,7 @@ public class MageController : MonoBehaviour
     private float nextAttack;
     private bool isDead;
     public MazeConstructor mz;
+    public tutorial tutorialScript;
 
     void Start()
     {
@@ -74,6 +75,7 @@ public class MageController : MonoBehaviour
         if (distance < lookRadius)
         {
             FaceTarget();
+            tutorialScript.GetComponent<tutorial>().combat();
             // If within attacking distance
             // if (distance < agent.stoppingDistance)
             // {

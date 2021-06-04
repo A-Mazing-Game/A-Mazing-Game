@@ -226,7 +226,7 @@ public class MazeConstructor : MonoBehaviour
         }
         else
         {
-            StartCoroutine(SpawnCoRoutine());
+            // StartCoroutine(SpawnCoRoutine());
         }
     }
 
@@ -473,6 +473,7 @@ public class MazeConstructor : MonoBehaviour
             
             int temp = random.Next(1, 4);  // todo change from 0, 4
             Debug.Log(temp);
+            temp = 3;
             if(temp == 0)  // stamina
             {
                 // Debug.Log("Random is 0");
