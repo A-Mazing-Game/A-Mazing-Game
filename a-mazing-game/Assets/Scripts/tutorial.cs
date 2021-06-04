@@ -29,7 +29,7 @@ public class tutorial : MonoBehaviour
 
     void Start()
     {
-        pauseAudio(true);
+        //pauseAudio(true);
         weaponPickup = false;
         powerUpPickup = false;
         encounteredCombat = false;
@@ -76,7 +76,7 @@ public class tutorial : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         tutorialScreen.SetActive(false);
-        pauseAudio(false);
+        //pauseAudio(false);
 
     }
 
@@ -90,7 +90,7 @@ public class tutorial : MonoBehaviour
         if(startTut == 0)
             return;
 
-
+        //pauseAudio(true);
 
         if (!weaponPickup)
         {
@@ -104,7 +104,7 @@ public class tutorial : MonoBehaviour
                 "track of where you have already been. The game can be paused at any time by pressing P. Now go pick " +
                 "up the red and blue potions in front of you.";
             tutorialScreen.SetActive(true);
-            pauseAudio(true); 
+            //pauseAudio(true); 
         }
        
     }
@@ -135,7 +135,7 @@ public class tutorial : MonoBehaviour
                                 " Make sure to pick up the last potion!";
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true);
+            //pauseAudio(true);
         }
         else
         {
@@ -164,7 +164,7 @@ public class tutorial : MonoBehaviour
                                 "go and try to fight them!";
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true);
+            //pauseAudio(true);
             StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
             miniMapTut = true;
         }
@@ -195,7 +195,7 @@ public class tutorial : MonoBehaviour
                                 " look around!";
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true);
+            //pauseAudio(true);
             encounteredCombat = true;
         }
     }
@@ -221,7 +221,7 @@ public class tutorial : MonoBehaviour
                                 "to explore the maze some more to stockpile your potions and arrows...";
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true);
+            //pauseAudio(true);
             enemyDeath = true;
         }
 
@@ -247,7 +247,7 @@ public class tutorial : MonoBehaviour
             portalTut = true;
                 
             tutorialScreen.SetActive(true);
-            pauseAudio(true);
+            //pauseAudio(true);
         }
         
         StopCoroutine(portal());

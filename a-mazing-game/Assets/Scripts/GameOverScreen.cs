@@ -25,7 +25,7 @@ public class GameOverScreen : MonoBehaviour
     public Text staminaStat;
     public BaseStats stats;
     private int maxHealth; //max health counter
-    private int maxDamage; //max damage counter
+    private float maxDamage; //max damage counter
     private float maxStamina; // max stamina counter
     private int numCoins;
     private PlayerStats playerStats;
@@ -65,7 +65,7 @@ public class GameOverScreen : MonoBehaviour
     {
         setStats();
         PlayerPrefs.SetInt("health", maxHealth);
-        PlayerPrefs.SetInt("damage", maxDamage);
+        PlayerPrefs.SetFloat("damage", maxDamage);
         PlayerPrefs.SetFloat("stamina", maxStamina);
         PlayerPrefs.SetInt("coins", numCoins);
         gameObject.SetActive(false);
@@ -115,7 +115,7 @@ public class GameOverScreen : MonoBehaviour
     {
         if (numCoins >= 20)
         {
-            maxDamage = Mathf.RoundToInt((float)(maxDamage * 1.1));
+            maxDamage += 0.1f;
             numCoins -= 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
@@ -127,7 +127,7 @@ public class GameOverScreen : MonoBehaviour
     {
         if (maxDamage > 10)
         {
-            maxDamage = Mathf.RoundToInt((float)(maxDamage/1.1));
+            maxDamage -= 0.1f;
             numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
@@ -162,7 +162,7 @@ public class GameOverScreen : MonoBehaviour
     private void setStats()
     {
         PlayerPrefs.SetInt("health", maxHealth);
-        PlayerPrefs.SetInt("damage", maxDamage);
+        PlayerPrefs.SetFloat("damage", maxDamage);
         PlayerPrefs.SetFloat("stamina", maxStamina);
         PlayerPrefs.SetInt("coins", numCoins);
     }

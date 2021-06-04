@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-    public int attackDamage;
-    public int maxDamage;
+    public float attackDamage;
+    public float maxDamage;
     public int maxHealth;
     public int currentHealth;
     public int maxOvershield;
@@ -34,7 +34,7 @@ public class PlayerStats : MonoBehaviour
 
         controller = GameObject.Find("Controller");
         maxHealth = PlayerPrefs.GetInt("health", 100);
-        maxDamage = PlayerPrefs.GetInt("damage", 40);
+        maxDamage = PlayerPrefs.GetFloat("damage", 1.0f);
         maxStamina = PlayerPrefs.GetFloat("stamina", 100);
         
         currentHealth = maxHealth;
@@ -57,7 +57,7 @@ public class PlayerStats : MonoBehaviour
     {
         controller = GameObject.Find("Controller");
         maxHealth = PlayerPrefs.GetInt("health", 100);
-        maxDamage = PlayerPrefs.GetInt("damage", 40);
+        maxDamage = PlayerPrefs.GetFloat("damage", 1.0f);
         maxStamina = PlayerPrefs.GetFloat("stamina", 100);
         currentHealth = maxHealth;
         attackDamage = maxDamage;

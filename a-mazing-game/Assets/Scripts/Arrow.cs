@@ -26,7 +26,8 @@ public class Arrow : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<NavMeshAgent>().isStopped = true;
-            StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+            int damage = Mathf.RoundToInt((float)(playerStats.attackDamage * 40f));
+            StartCoroutine(other.GetComponent<AIMovement>().TakeDamage(damage));
             yield return new WaitForSeconds(0.5f);
             other.GetComponent<NavMeshAgent>().isStopped = false;
             Destroy(gameObject);
@@ -38,7 +39,8 @@ public class Arrow : MonoBehaviour
         else if (other.CompareTag("Mage"))
         {
             other.GetComponent<NavMeshAgent>().isStopped = true;
-            StartCoroutine(other.GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+            int damage = Mathf.RoundToInt((float)(playerStats.attackDamage * 40f));
+            StartCoroutine(other.GetComponent<MageController>().TakeDamage(damage));
             yield return new WaitForSeconds(0.5f);
             other.GetComponent<NavMeshAgent>().isStopped = false;
             Destroy(gameObject);
@@ -49,7 +51,8 @@ public class Arrow : MonoBehaviour
         }
         else if (other.CompareTag("Duck"))
         {
-            other.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+            int damage = Mathf.RoundToInt((float)(playerStats.attackDamage * 40f));
+            other.GetComponent<DuckController>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }

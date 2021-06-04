@@ -18,6 +18,7 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange;
     public bool controlEnabled;
     public bool heavyAttack;
+    public int swordDamage;
     public bool isDead;
     public float attackRate = 1f;
     private AudioSource[] playerAudioSource;
@@ -65,6 +66,7 @@ public class PlayerCombat : MonoBehaviour
         startTime = DateTime.Now;
         endTime = DateTime.Now;
         controlEnabled = true;
+        
     }
     
     void Update()
@@ -193,7 +195,7 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator Punch()
     {
         // int damage = 20;
-        playerStats.attackDamage = 20;
+        int punchDamage = Mathf.RoundToInt((float)(playerStats.attackDamage * 20f));
         // attackRange = 0.6f;
         // Play attack animation
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Left Punch"))
@@ -221,11 +223,11 @@ public class PlayerCombat : MonoBehaviour
             {
                 Vector3 forceDir = Vector3.back;
                 hitEnemies[length - 1].GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
-                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+                hitEnemies[length - 1].GetComponent<DuckController>().TakeDamage(punchDamage);
             }
             else if (hitEnemies[length - 1].CompareTag("Mage"))
             {
-                StartCoroutine(hitEnemies[length - 1].GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+                StartCoroutine(hitEnemies[length - 1].GetComponent<MageController>().TakeDamage(punchDamage));
                 if (hitEnemies[length - 1].GetComponent<MageController>().currentHealth <= 0)
                 {
                     playerStats.enemiesKilled++;
@@ -233,7 +235,7 @@ public class PlayerCombat : MonoBehaviour
             }
             else if (hitEnemies[length - 1].CompareTag("Enemy"))
             {
-                StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+                StartCoroutine(hitEnemies[length - 1].GetComponent<AIMovement>().TakeDamage(punchDamage));
                 if (hitEnemies[length - 1].GetComponent<AIMovement>().currentHealth <= 0)
                 {
                     playerStats.enemiesKilled++;
@@ -280,14 +282,14 @@ public class PlayerCombat : MonoBehaviour
         if (attackType == 0)
         {
             // Katana normal attack
-            playerStats.attackDamage = 40;
+            swordDamage = Mathf.RoundToInt((float)(playerStats.attackDamage * 40f));
             yield return new WaitForSeconds(0.1f);
             controlEnabled = true;
         }
         else if (attackType == 1)
         {
             // Katana special attack
-            playerStats.attackDamage = 80;
+            swordDamage = Mathf.RoundToInt((float)(playerStats.attackDamage * 80f));
             heavyAttack = true;
             movement.runSpeed = 4.0f;
             yield return new WaitForSeconds(0.9f);
@@ -296,14 +298,14 @@ public class PlayerCombat : MonoBehaviour
         else if (attackType == 2)
         {
             // Great sword normal attack
-            playerStats.attackDamage = 60;
+            swordDamage = Mathf.RoundToInt((float)(playerStats.attackDamage * 60f));
             yield return new WaitForSeconds(0.7f);
             controlEnabled = true;
         }
         else if (attackType == 3)
         {
             // Great sword special attack
-            playerStats.attackDamage = 100;
+            swordDamage = Mathf.RoundToInt((float)(playerStats.attackDamage * 100f));
             heavyAttack = true;
             movement.runSpeed = 4.0f;
             yield return new WaitForSeconds(1.3f);
@@ -323,11 +325,11 @@ public class PlayerCombat : MonoBehaviour
                 {
                     Vector3 forceDir = Vector3.back;
                     enemy.GetComponent<Rigidbody>().AddForce(5 * forceDir, ForceMode.Impulse);
-                    enemy.GetComponent<DuckController>().TakeDamage(playerStats.attackDamage);
+                    enemy.GetComponent<DuckController>().TakeDamage(swordDamage);
                 }
                 else if (enemy.CompareTag("Mage"))
                 {
-                    StartCoroutine(enemy.GetComponent<MageController>().TakeDamage(playerStats.attackDamage));
+                    StartCoroutine(enemy.GetComponent<MageController>().TakeDamage(swordDamage));
                     if (enemy.GetComponent<MageController>().currentHealth <= 0)
                     {
                         playerStats.enemiesKilled++;
@@ -335,7 +337,7 @@ public class PlayerCombat : MonoBehaviour
                 }
                 else if (enemy.CompareTag("Enemy"))
                 {
-                    StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(playerStats.attackDamage));
+                    StartCoroutine(enemy.GetComponent<AIMovement>().TakeDamage(swordDamage));
                     // Debug.Log(enemy.name + " hit!");
                     if (enemy.GetComponent<AIMovement>().currentHealth <= 0)
                     {

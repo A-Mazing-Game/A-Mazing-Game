@@ -23,6 +23,7 @@ public class NewGameSettings : MonoBehaviour
         PlayerPrefs.SetInt("size", 0);
         PlayerPrefs.SetInt("continue", 1);
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
+        AudioListener.pause = false;
         StartCoroutine(LoadLevel());
 
 
