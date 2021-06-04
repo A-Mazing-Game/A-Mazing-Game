@@ -34,7 +34,7 @@ public class MageController : MonoBehaviour
     private float speed = 1.5f;
     // private float runSpeed = 2.25f;
     
-    private float attackRate = 2f;
+    private float attackRate = 3f;
     private float nextAttack;
     private bool isDead;
     public MazeConstructor mz;
@@ -56,6 +56,7 @@ public class MageController : MonoBehaviour
         // If not inside the lookRadius
         if (distance >= lookRadius)
         {
+            agent.isStopped = false;
             Wander();
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance
                                    && !agent.hasPath || agent.velocity.sqrMagnitude == 0f)
@@ -78,6 +79,7 @@ public class MageController : MonoBehaviour
             // if (distance < agent.stoppingDistance)
             // {
             Idle();
+            agent.isStopped = true;
             if (Time.time > nextAttack)
             {
                 nextAttack = Time.time + attackRate;
@@ -182,7 +184,7 @@ public class MageController : MonoBehaviour
             // animator.speed = 1.75f;
             // currentHealth -= damage;
             // Play hurt animation
-            nextAttack = Time.time + 1f;
+            nextAttack = Time.time + 2f;
             animator.SetTrigger("Hurt");
             currentHealth = SubtractEnemyHealth(damage);
             if (currentHealth <= 0)
