@@ -927,8 +927,8 @@ public class MazeConstructor : MonoBehaviour
     private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
     {
         // Debug.Log("End trigger: " + column + " " + newRow);
-        // Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
-        Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
+        Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
+        // Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
 
         Instantiate(gate, gatePos, Quaternion.Euler(-90, 135, 0));
         gate.tag = "Portal";
