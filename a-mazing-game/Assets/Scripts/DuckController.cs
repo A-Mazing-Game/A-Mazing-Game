@@ -85,15 +85,13 @@ public class DuckController : MonoBehaviour
                 // football.gameObject.SetActive(true);
                 cheercone.gameObject.SetActive(false);
                 FaceTarget();
-                // Idle();
-                // while (animator.GetCurrentAnimatorStateInfo(0).IsName("Standup"))
-                // {
-                    if (Time.time > nextThrow)
-                    {
-                        nextThrow = Time.time + throwRate;
-                        StartCoroutine(Throw());
-                    }
-                // }
+                Idle();
+                if (Time.time > nextThrow)
+                {
+                    nextThrow = Time.time + throwRate;
+                    StartCoroutine(Throw());
+                }
+                
             }
             
             // If not inside the throw radius
