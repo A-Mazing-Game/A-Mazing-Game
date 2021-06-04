@@ -461,7 +461,9 @@ public class MazeConstructor : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             if (i > l)
+            {
                 break;
+            }
             SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
         }
         
@@ -867,7 +869,7 @@ public class MazeConstructor : MonoBehaviour
                 enemyList.AddLast(sk);
             }
             
-            yield return new WaitForSeconds(15);
+            yield return new WaitForSeconds(20);
         }
     }
     private void PlaceEnemy(int column, int newRow, TriggerEventHandler callback)
