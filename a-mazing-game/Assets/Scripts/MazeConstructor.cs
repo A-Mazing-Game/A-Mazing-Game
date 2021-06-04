@@ -53,7 +53,7 @@ public class MazeConstructor : MonoBehaviour
     public GameObject player;  // player gameobject
     public GameObject portal;  // portal game object to get location 
     public InventoryItemBase bottles;
-    private int loadTutorial;  // flag to load tutorial level or not
+    public int loadTutorial;  // flag to load tutorial level or not
     public GameObject Arrows;
     private int spawnDistance;
     public bool enemyFirstEncounter; // for tutorial. has player encountered an enemy

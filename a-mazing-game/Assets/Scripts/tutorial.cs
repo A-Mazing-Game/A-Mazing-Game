@@ -14,6 +14,7 @@ public class tutorial : MonoBehaviour
     public bool enemyDeath;
     public GameObject tutorialScreen;
     public Text tutorialText;
+    private int startTut;
     
 
     void Start()
@@ -23,6 +24,8 @@ public class tutorial : MonoBehaviour
         encounteredCombat = false;
         enemyDeath = false;
         Cursor.lockState = CursorLockMode.None;
+        startTut = mz.GetComponent<MazeConstructor>().loadTutorial;
+        Debug.Log("start tut: " + startTut);
     }
     public void tutorialStartMessage()
     {
@@ -31,6 +34,9 @@ public class tutorial : MonoBehaviour
          * Prompt player to look down and pick up their weapon of choice.
          */
 
+        if(startTut == 0)
+            return;
+        
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
         tutorialText.text = "Welcome to the A-Maze-ing Game Tutorial Level. Your main goal will be to make it to the " +
@@ -57,6 +63,9 @@ public class tutorial : MonoBehaviour
          * and pausing the game)
          */
 
+        if(startTut == 0)
+            return;
+        
         if (!weaponPickup)
         {
             Debug.Log("onWeaponPickUp");
@@ -80,6 +89,9 @@ public class tutorial : MonoBehaviour
          * Talk about each function and how to use them (1-9 keys)
          */
 
+        if(startTut == 0)
+            return;
+        
         if (!powerUpPickup)
         {
             Debug.Log("onPowerUpPickUp");
@@ -109,7 +121,8 @@ public class tutorial : MonoBehaviour
          * Either immediately after, or when the player walks a bit further:
          * Introduce the minimap and what to look for. Point out a red dot, and prompt the player to walk over to it.
          */
-
+        
+        
         yield return new WaitForSeconds(1);
         Debug.Log("miniMap");
         
@@ -132,6 +145,9 @@ public class tutorial : MonoBehaviour
          * to roll, run and left click to heavy attack)
          */
 
+        if(startTut == 0)
+            return;
+        
         if (!encounteredCombat)
         {
             Debug.Log("combat");
@@ -155,6 +171,9 @@ public class tutorial : MonoBehaviour
          * Once player kills first skeleton: Point to the coin counter after the player picked up the coins
          */
 
+        if(startTut == 0)
+            return;
+        
         if (!enemyDeath)
         {
             Debug.Log("onEnemyDeath");
@@ -198,6 +217,8 @@ public class tutorial : MonoBehaviour
          * Once player reaches portal: End the tutorial, tell player to try easy or medium maze for practice,
          * and hard for a good challenge.
          */
+        if(startTut == 0)
+            return;
         
         Debug.Log("endGame");
     }
