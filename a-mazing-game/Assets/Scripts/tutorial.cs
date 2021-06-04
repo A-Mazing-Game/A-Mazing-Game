@@ -249,8 +249,8 @@ public class tutorial : MonoBehaviour
         ContinueButton.gameObject.SetActive(false);
         MenuButton.gameObject.SetActive(true);
         Time.timeScale = 0;
-        tutorialText.text = "Congratulations! You've reached the end of the tutorial! Play the easy or medium maze for practive" +
-            "or the hard mode maze for a challenge. ";
+        tutorialText.text = "Congratulations! You've reached the end of the tutorial! Play the easy or medium maze for practice" +
+            " or the hard mode maze for a challenge. ";
         tutorialScreen.SetActive(true);
     }
 
