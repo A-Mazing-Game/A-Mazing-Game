@@ -460,6 +460,8 @@ public class MazeConstructor : MonoBehaviour
         // guarantee spawning 2 piles of arrows
         for (int i = 0; i < 3; i++)
         {
+            if (i > l)
+                break;
             SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
         }
         
@@ -831,14 +833,62 @@ public class MazeConstructor : MonoBehaviour
         tc.callback = callback;
     }
 
+
+    public IEnumerator spawnEnemyAutzen()
+    {
+
+        while (true)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                GameObject sk;
+                System.Random random = new System.Random();
+                int temp = random.Next(1, 3);
+                int x = random.Next(-370, -340);
+                int y = random.Next(30, 40);
+                if (temp == 1)
+                {
+                    sk = Instantiate(mage);
+                    sk.name = "Mage";
+                }
+                else
+                {
+                    sk = Instantiate(skeleton);
+                    sk.name = "Skeleton";
+                }
+        
+                // Debug.Log("X: " + x + " y: " + y);
+                sk.transform.position = new Vector3(x, .1f, y);
+                float distance = Vector3.Distance(player.transform.position, sk.transform.position);
+                // Debug.Log("autzen distance " + distance);
+            
+                sk.SetActive(false);
+                sk.tag = "Enemy";
+                enemyList.AddLast(sk);
+            }
+            
+            yield return new WaitForSeconds(15);
+        }
+    }
     private void PlaceEnemy(int column, int newRow, TriggerEventHandler callback)
     {
         // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
         System.Random random = new System.Random();
         int temp = random.Next(1, 8);
+        GameObject sk;
+        Debug.Log("temp " + temp);
+        if (temp >= 5f)
+        {
+            sk = Instantiate(mage) as GameObject;
+            sk.name = "Mage";
+        }
+        else
+        {
+            sk = Instantiate(skeleton) as GameObject;
+            sk.name = "Skeleton";
+        }
         Debug.Log("Random spawn is " + temp);
-        GameObject sk = Instantiate(skeleton) as GameObject;
         // sk.AddComponent<NavMeshAgent>();
         sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
         float distance = Math.Abs(sk.transform.position.x - player.transform.position.x);
@@ -858,7 +908,7 @@ public class MazeConstructor : MonoBehaviour
         // t.material = mr.materials[0];
         
         // Instantiate(skeleton);
-        sk.name = "Skeleton";
+        
         sk.tag = "Enemy";
 
         enemyList.AddLast(sk);

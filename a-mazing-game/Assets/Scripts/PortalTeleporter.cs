@@ -41,6 +41,7 @@ public class PortalTeleporter : MonoBehaviour
             }
             else
             {
+                StartCoroutine(mz.GetComponent<MazeConstructor>().spawnEnemyAutzen());
                 duck.SetActive(true);
                 healthBar.SetActive(true);
                 player.position = AutzenLocation;
