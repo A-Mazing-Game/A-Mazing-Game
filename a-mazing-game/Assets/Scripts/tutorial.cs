@@ -20,6 +20,7 @@ public class tutorial : MonoBehaviour
     bool finishedTutorial;
     public bool miniMapTut;
     public bool portalTut;
+    public Camera playerCam;
 
     public Button MenuButton;
 
@@ -28,6 +29,7 @@ public class tutorial : MonoBehaviour
 
     void Start()
     {
+        pauseAudio(true);
         weaponPickup = false;
         powerUpPickup = false;
         encounteredCombat = false;
@@ -40,6 +42,12 @@ public class tutorial : MonoBehaviour
         Debug.Log("start tut: " + startTut);
         finishedTutorial = false;
         MenuButton.gameObject.SetActive(false);
+    }
+
+    public void pauseAudio(bool state)
+    {
+        //playerCam.GetComponent<AudioListener>().pause = state;
+        AudioListener.pause = state;
     }
     public void tutorialStartMessage(int load=0)
     {
@@ -68,6 +76,7 @@ public class tutorial : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         tutorialScreen.SetActive(false);
+        pauseAudio(false);
 
     }
 
@@ -80,7 +89,9 @@ public class tutorial : MonoBehaviour
 
         if(startTut == 0)
             return;
-        
+
+
+
         if (!weaponPickup)
         {
             Debug.Log("onWeaponPickUp");
@@ -93,6 +104,7 @@ public class tutorial : MonoBehaviour
                 "track of where you have already been. The game can be paused at any time by pressing P. Now go pick " +
                 "up the red and blue potions in front of you.";
             tutorialScreen.SetActive(true);
+            pauseAudio(true); 
         }
        
     }
@@ -106,7 +118,7 @@ public class tutorial : MonoBehaviour
 
         if(startTut == 0)
             return;
-        
+
         if (!powerUpPickup)
         {
             Debug.Log("onPowerUpPickUp");
@@ -123,6 +135,7 @@ public class tutorial : MonoBehaviour
                                 " Make sure to pick up the last potion!";
                 
             tutorialScreen.SetActive(true);
+            pauseAudio(true);
         }
         else
         {
@@ -136,8 +149,8 @@ public class tutorial : MonoBehaviour
          * Either immediately after, or when the player walks a bit further:
          * Introduce the minimap and what to look for. Point out a red dot, and prompt the player to walk over to it.
          */
-        
-        
+
+
         yield return new WaitForSeconds(1);
         Debug.Log("miniMap");
 
@@ -151,6 +164,7 @@ public class tutorial : MonoBehaviour
                                 "go and try to fight them!";
                 
             tutorialScreen.SetActive(true);
+            pauseAudio(true);
             StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
             miniMapTut = true;
         }
@@ -167,7 +181,7 @@ public class tutorial : MonoBehaviour
 
         if(startTut == 0)
             return;
-        
+
         if (!encounteredCombat)
         {
             Debug.Log("combat");
@@ -181,6 +195,7 @@ public class tutorial : MonoBehaviour
                                 " look around!";
                 
             tutorialScreen.SetActive(true);
+            pauseAudio(true)
             encounteredCombat = true;
         }
     }
@@ -193,7 +208,7 @@ public class tutorial : MonoBehaviour
 
         if(startTut == 0)
             return;
-        
+
         if (!enemyDeath)
         {
             Debug.Log("onEnemyDeath");
@@ -206,6 +221,7 @@ public class tutorial : MonoBehaviour
                                 "to explore the maze some more to stockpile your potions and arrows...";
                 
             tutorialScreen.SetActive(true);
+            pauseAudio(true);
             enemyDeath = true;
         }
 
@@ -231,6 +247,7 @@ public class tutorial : MonoBehaviour
             portalTut = true;
                 
             tutorialScreen.SetActive(true);
+            pauseAudio(true);
         }
         
         StopCoroutine(portal());
@@ -244,10 +261,12 @@ public class tutorial : MonoBehaviour
          */
         if(startTut == 0)
             return;
+
         
         Cursor.lockState = CursorLockMode.None;
         ContinueButton.gameObject.SetActive(false);
         MenuButton.gameObject.SetActive(true);
+        pauseAudio(true);
         Time.timeScale = 0;
         tutorialText.text = "Congratulations! You've reached the end of the tutorial! Play the easy or medium maze for practice" +
             " or the hard mode maze for a challenge. ";
