@@ -12,7 +12,7 @@ public class SettingsMenu : MonoBehaviour
 
     void Awake()
     {
-        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 2f);
     }
 
     public void ApplySensitivity()

@@ -16,7 +16,7 @@ public class NewGameSettings : MonoBehaviour
     // Start is called before the first frame update
     public void smallGame()
     {
-        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 2f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 13);
         PlayerPrefs.SetInt("cols", 13);
@@ -31,7 +31,7 @@ public class NewGameSettings : MonoBehaviour
 
     public void mediumGame()
     {
-        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 2f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 25);
         PlayerPrefs.SetInt("cols", 25);
@@ -44,7 +44,7 @@ public class NewGameSettings : MonoBehaviour
 
     public void largeGame()
     {
-        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 2f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 37);
         PlayerPrefs.SetInt("cols", 37);
@@ -57,7 +57,7 @@ public class NewGameSettings : MonoBehaviour
 
     public void tutorialLevel()
     {
-        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
+        sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 2f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("rows", 13);
         PlayerPrefs.SetInt("cols", 13);
