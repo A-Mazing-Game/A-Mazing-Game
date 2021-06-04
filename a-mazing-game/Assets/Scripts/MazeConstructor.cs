@@ -881,7 +881,6 @@ public class MazeConstructor : MonoBehaviour
         int temp = random.Next(1, 8);
         GameObject sk;
         Debug.Log("temp " + temp);
-        temp = 0; 
         if (temp >= 5f)
         {
             sk = Instantiate(mage) as GameObject;
