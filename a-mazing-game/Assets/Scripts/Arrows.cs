@@ -24,6 +24,7 @@ public class Arrows : InventoryItemBase
         isDropped = true;
         arrow.SetActive(false);
         gameObject.SetActive(true);
+        mz.arrowList.AddLast(gameObject);
         gameObject.transform.rotation = Quaternion.Euler(DropRotation);
     }
 

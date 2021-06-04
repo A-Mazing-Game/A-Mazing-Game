@@ -48,7 +48,7 @@ public class MazeConstructor : MonoBehaviour
     public int desiredEnemies;  // number of enemies to initially spawn in the maze
     private LinkedList<GameObject> enemyList;  // holds all enemies 
     private LinkedList<GameObject> powerUps;  // holds all spawned powerups
-    private LinkedList<GameObject> arrowList;  // holds all spawned arrows
+    public LinkedList<GameObject> arrowList;  // holds all spawned arrows
     public LinkedList<GameObject> torchList;  // holds all placed torches
     public GameObject player;  // player gameobject
     public GameObject portal;  // portal game object to get location 
