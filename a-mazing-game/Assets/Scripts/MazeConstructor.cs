@@ -221,7 +221,7 @@ public class MazeConstructor : MonoBehaviour
         if (loadTutorial == 1)
         {
             tutorialPowerUpSpawn();
-            tutorialScript.GetComponent<tutorial>().tutorialStartMessage();
+            tutorialScript.GetComponent<tutorial>().tutorialStartMessage(1);
         }
         else
         {

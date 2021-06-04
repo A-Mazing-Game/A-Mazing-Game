@@ -23,18 +23,20 @@ public class tutorial : MonoBehaviour
         powerUpPickup = false;
         encounteredCombat = false;
         enemyDeath = false;
-        Cursor.lockState = CursorLockMode.None;
         startTut = mz.GetComponent<MazeConstructor>().loadTutorial;
+        if(startTut == 1)
+            Cursor.lockState = CursorLockMode.None;
         Debug.Log("start tut: " + startTut);
     }
-    public void tutorialStartMessage()
+    public void tutorialStartMessage(int load=0)
     {
         /*
          * Introduce the game and the main goal (to make it to the boss portal in the opposite corner).
          * Prompt player to look down and pick up their weapon of choice.
          */
 
-        if(startTut == 0)
+        Debug.Log("why: " + startTut);
+        if(load == 0)
             return;
         
         Cursor.lockState = CursorLockMode.None;
