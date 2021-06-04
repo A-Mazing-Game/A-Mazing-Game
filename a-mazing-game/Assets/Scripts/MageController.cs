@@ -33,7 +33,6 @@ public class MageController : MonoBehaviour
     [SerializeField] private Transform hand;
     
     private float speed = 1.5f;
-    // private float runSpeed = 2.25f;
     
     private float attackRate = 3f;
     private float nextAttack;
@@ -79,9 +78,6 @@ public class MageController : MonoBehaviour
         {
             FaceTarget();
             tutorialScript.GetComponent<tutorial>().combat();
-            // If within attacking distance
-            // if (distance < agent.stoppingDistance)
-            // {
             Idle();
             agent.isStopped = true;
             if (Time.time > nextAttack)
@@ -89,13 +85,6 @@ public class MageController : MonoBehaviour
                 nextAttack = Time.time + attackRate;
                 StartCoroutine(Cast());
             }
-            // }
-            // else
-            // {
-            //     // Move towards the target
-            //     agent.SetDestination(player.position);
-            //     Run();
-            // }
         }
     }
 
@@ -126,12 +115,6 @@ public class MageController : MonoBehaviour
         agent.speed = speed;
         animator.SetFloat("Speed", 1f, 0.2f, Time.deltaTime);
     }
-    
-    // private void Run()
-    // {
-    //     agent.speed = runSpeed;
-    //     animator.SetFloat("Speed", 1f, 0.2f, Time.deltaTime);
-    // }
 
     private IEnumerator Cast()
     {
@@ -161,15 +144,7 @@ public class MageController : MonoBehaviour
             agent.isStopped = false;
         }
     }
-
-    // private void OnDrawGizmosSelected()
-    // {
-    //     if (attackPoint == null)
-    //         return;
-    //     
-    //     Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    // }
-
+    
     // Rotate to face the target
     void FaceTarget()
     {
@@ -200,7 +175,8 @@ public class MageController : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
             // animator.speed = 1f;
-            agent.isStopped = false;
+            if (!isDead)
+                agent.isStopped = false;
         }
     }
     
@@ -213,7 +189,8 @@ public class MageController : MonoBehaviour
         // Play death animation
         // animator.speed = 1f;
         animator.SetBool("IsDead", true);
-        // agent.isStopped = true;
+        agent.isStopped = true;
+        rb.constraints = RigidbodyConstraints.FreezePosition;
         GetComponent<CapsuleCollider>().enabled = false;
         // GetComponent<MeshCollider>().enabled = false;
         transform.GetChild(1).gameObject.SetActive(false);

@@ -840,7 +840,7 @@ public class MazeConstructor : MonoBehaviour
 
         while (true)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 6; i++)
             {
                 GameObject sk;
                 System.Random random = new System.Random();

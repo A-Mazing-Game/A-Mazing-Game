@@ -187,7 +187,8 @@ public class AIMovement : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
             // animator.speed = 1f;
-            agent.isStopped = false;
+            if (!isDead)
+                agent.isStopped = false;
         }
     }
     
@@ -202,7 +203,7 @@ public class AIMovement : MonoBehaviour
         animator.SetBool("IsDead", true);
         // agent.isStopped = true;
         GetComponent<CapsuleCollider>().enabled = false;
-        GetComponent<MeshCollider>().enabled = false;
+        // GetComponent<MeshCollider>().enabled = false;
         transform.GetChild(2).gameObject.SetActive(false);
         transform.GetChild(3).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
