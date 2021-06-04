@@ -61,10 +61,8 @@ public class FpsMovement : MonoBehaviour
     private int potionHealth = 20;
     private int potionOvershield = 10;
     private float zoomSpeed = 10f;
-    private float startZoomSpeed = 2f;
     private bool started;
     private bool camAtPlayer;
-    private bool mCanTakeDamage = true;
 
     #endregion
 
@@ -393,8 +391,6 @@ public class FpsMovement : MonoBehaviour
     
     public void DropCurrentItem()
     {
-        mCanTakeDamage = false;
-
         GameObject goItem = (mCurrentItem as MonoBehaviour).gameObject;
         
         mCurrentItem.OnDrop();
