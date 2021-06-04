@@ -24,6 +24,7 @@ public class tutorial : MonoBehaviour
     public Button MenuButton;
 
     public Button ContinueButton;
+    AsyncOperation asyncLoadLevel;
 
     void Start()
     {
@@ -244,7 +245,6 @@ public class tutorial : MonoBehaviour
         if(startTut == 0)
             return;
         
-        Debug.Log("endGame");
         Cursor.lockState = CursorLockMode.None;
         ContinueButton.gameObject.SetActive(false);
         MenuButton.gameObject.SetActive(true);
@@ -256,13 +256,18 @@ public class tutorial : MonoBehaviour
 
     public void backToMenu()
     {
-
-        SceneManager.LoadScene("Menu");
+        StartCoroutine(loadMenu());
         sliderSensitivity = PlayerPrefs.GetFloat("sensitivity", 4f);
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
-        tutorialScreen.SetActive(false);
         Time.timeScale = 1;
+        tutorialScreen.SetActive(false);
+
+    }
+
+    IEnumerator loadMenu()
+    {
+        yield return SceneManager.LoadSceneAsync("Menu");
 
     }
 
