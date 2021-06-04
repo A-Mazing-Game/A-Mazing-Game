@@ -224,6 +224,7 @@ public class MageController : MonoBehaviour
         // enabled = false;
 
         Instantiate(coins, agent.transform.position, Quaternion.identity);
+        tutorialScript.GetComponent<tutorial>().onEnemyDeath();
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }
