@@ -196,7 +196,7 @@ public class AIMovement : MonoBehaviour
     private IEnumerator Die()
     {
         // Debug.Log("Enemy died!");
-        
+        mz.RemoveEnemyNode(gameObject, 0);
         // Play death animation
         animator.speed = 1f;
         animator.SetBool("IsDead", true);
@@ -206,8 +206,7 @@ public class AIMovement : MonoBehaviour
         transform.GetChild(2).gameObject.SetActive(false);
         transform.GetChild(3).gameObject.SetActive(false);
         // GetComponent<NavMeshAgent>().enabled = false;
-
-        mz.RemoveEnemyNode(gameObject, 0);
+        
         enabled = false;
         // mz.RemoveEnemyNode(gameObject);
         // enabled = false;

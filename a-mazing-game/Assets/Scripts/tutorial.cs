@@ -18,6 +18,8 @@ public class tutorial : MonoBehaviour
     private int startTut;
     float sliderSensitivity;
     bool finishedTutorial;
+    public bool miniMapTut;
+    public bool portalTut;
 
     public Button MenuButton;
 
@@ -29,6 +31,8 @@ public class tutorial : MonoBehaviour
         powerUpPickup = false;
         encounteredCombat = false;
         enemyDeath = false;
+        portalTut = false;
+        miniMapTut = false;
         startTut = mz.GetComponent<MazeConstructor>().loadTutorial;
         if(startTut == 1)
             Cursor.lockState = CursorLockMode.None;
@@ -135,16 +139,21 @@ public class tutorial : MonoBehaviour
         
         yield return new WaitForSeconds(1);
         Debug.Log("miniMap");
-        
-        Cursor.lockState = CursorLockMode.None;
-        Time.timeScale = 0;
-        tutorialText.text = "In the top left of the screen is the level minimap. You are the green dot in the center " +
-                            "of the map. Enemies appear on the minimap as red dots and powerups appear as smaller " +
-                            "dots on the map as their associated color. There are enemies on your minimap now, " +
-                            "go and try to fight it!";
+
+        if (!miniMapTut)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text = "In the top left of the screen is the level minimap. You are the green dot in the center " +
+                                "of the map. Enemies appear on the minimap as red dots and powerups appear as smaller " +
+                                "dots on the map as their associated color. There are enemies on your minimap now, " +
+                                "go and try to fight them!";
                 
-        tutorialScreen.SetActive(true);
-        StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
+            tutorialScreen.SetActive(true);
+            StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnCoRoutine());
+            miniMapTut = true;
+        }
+        
         StopCoroutine(miniMap());
     }
 
@@ -210,14 +219,19 @@ public class tutorial : MonoBehaviour
         
         yield return new WaitForSeconds(10);
         Debug.Log("portal");
-        
-        Cursor.lockState = CursorLockMode.None;
-        Time.timeScale = 0;
-        tutorialText.text = "When you're ready to leave the maze, you can walk through the portal. In a normal game mode, " +
-                            "once you enter the portal, you will be teleported to the boss fight. For this tutorial, " +
-                            "the game will end. Have fun!";
+
+        if (!portalTut)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            tutorialText.text = "When you're ready to leave the maze, you can walk through the portal. In a normal game mode, " +
+                                "once you enter the portal, you will be teleported to the boss fight. For this tutorial, " +
+                                "the game will end. Have fun!";
+            portalTut = true;
                 
-        tutorialScreen.SetActive(true);
+            tutorialScreen.SetActive(true);
+        }
+        
         StopCoroutine(portal());
     }
 
