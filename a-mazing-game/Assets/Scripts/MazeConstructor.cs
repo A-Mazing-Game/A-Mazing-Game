@@ -359,7 +359,7 @@ public class MazeConstructor : MonoBehaviour
                 }
                 torchNode = torchNode.Next;
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
         }
     }
 
