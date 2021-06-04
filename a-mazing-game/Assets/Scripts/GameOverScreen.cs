@@ -115,7 +115,7 @@ public class GameOverScreen : MonoBehaviour
     {
         if (numCoins >= 20)
         {
-            maxDamage += 0.1f;
+            maxDamage += 0.05f;
             numCoins -= 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
@@ -125,9 +125,9 @@ public class GameOverScreen : MonoBehaviour
 
     public void decreaseDamage()
     {
-        if (maxDamage > 0.1f)
+        if (maxDamage > 0.05f)
         {
-            maxDamage -= 0.1f;
+            maxDamage -= 0.05f;
             numCoins = numCoins + 20;
             remainingCoins.text = numCoins.ToString();
             damageStat.text = maxDamage.ToString();
