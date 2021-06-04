@@ -125,7 +125,7 @@ public class GameOverScreen : MonoBehaviour
 
     public void decreaseDamage()
     {
-        if (maxDamage > 10)
+        if (maxDamage > 0.1f)
         {
             maxDamage -= 0.1f;
             numCoins = numCoins + 20;
