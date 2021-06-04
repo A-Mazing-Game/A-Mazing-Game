@@ -19,10 +19,14 @@ public class PlayerCombat : MonoBehaviour
     public bool controlEnabled;
     public bool heavyAttack;
     public int swordDamage;
+    public int arrowDamage;
     public bool isDead;
     public float attackRate = 1f;
     private AudioSource[] playerAudioSource;
     public AudioClip playerHurtAudio;
+    public AudioClip swordAudio;
+    public AudioClip punchAudio;
+
     // public Inventory inventory;
 
     public Inventory inventory;
@@ -162,7 +166,7 @@ public class PlayerCombat : MonoBehaviour
             // int damage = 20;
             float currentHealth = playerStats.currentHealth;
             float currentOvershield = playerStats.currentOvershield;
-            playerStats.attackDamage = 40;
+            //playerStats.attackDamage = 40;
             if (!isDead)
             {
                 // arrow2.gameObject.SetActive(false);
@@ -218,6 +222,7 @@ public class PlayerCombat : MonoBehaviour
         int length = hitEnemies.Length;
         if (length > 0)
         {
+            playerAudioSource[1].PlayOneShot(punchAudio, 0.7f);
             // Debug.Log(hitEnemies[length - 1].name + " hit!");
             if (hitEnemies[length - 1].CompareTag("Duck"))
             {
@@ -320,6 +325,7 @@ public class PlayerCombat : MonoBehaviour
             
             foreach (Collider enemy in hitEnemies)
             {
+                playerAudioSource[1].PlayOneShot(swordAudio, 0.7f);
                 // Debug.Log(enemy.name + " hit!");
                 if (enemy.CompareTag("Duck"))
                 {
