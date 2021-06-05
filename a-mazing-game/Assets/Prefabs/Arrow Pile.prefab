@@ -129,6 +129,7 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: dc4a07befdbe74e0da32d96ff0bd1fe9, type: 3}
   InteractText: Press F to pickup Arrows
   ItemType: 0
+  tutorialScript: {fileID: 0}
   mz: {fileID: 0}
   pickedUp: 0
   isDropped: 0
@@ -138,7 +139,7 @@ MonoBehaviour:
   UseItemAfterPickup: 0
   arrow: {fileID: 0}
   inventory: {fileID: 0}
-  pickupAmount: 5
+  pickupAmount: 10
 --- !u!1001 &151837446937087719
 PrefabInstance:
   m_ObjectHideFlags: 0
