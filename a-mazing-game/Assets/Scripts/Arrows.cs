@@ -10,7 +10,7 @@ public class Arrows : InventoryItemBase
 
     private void Start()
     {
-        pickupAmount = 5;
+        pickupAmount = 10;
     }
     
     public override void OnUse()
@@ -24,14 +24,16 @@ public class Arrows : InventoryItemBase
         isDropped = true;
         arrow.SetActive(false);
         gameObject.SetActive(true);
-        mz.arrowList.AddLast(gameObject);
+        if (!gameObject.CompareTag("Start Arrow"))
+            mz.arrowList.AddLast(gameObject);
         gameObject.transform.rotation = Quaternion.Euler(DropRotation);
     }
 
     public override void OnPickup()
     {
         isDropped = false;
-        mz.RemoveEnemyNode(gameObject, 2);
+        if (!gameObject.CompareTag("Start Arrow"))
+            mz.RemoveEnemyNode(gameObject, 2);
         Vector3 temp = new Vector3(0, -10, 0);
         gameObject.transform.position += temp;
         gameObject.SetActive(false);
