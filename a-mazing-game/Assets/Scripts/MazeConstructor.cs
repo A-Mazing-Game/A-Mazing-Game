@@ -443,8 +443,8 @@ public class MazeConstructor : MonoBehaviour
 
     void tutorialPowerUpSpawn()
     {
-        SpawnHealth(1, 3);
-        SpawnShield(1, 4);
+        placePowerUp(1, 3, "Health Potion", "Health Potion", -.5f, healthPotion);
+        placePowerUp(1, 4, "Overshield Potion", "Overshield Potion" ,-.5f, shieldPotion);
     }
 
     void SpawnPowerUp(GameObject endLocation)
@@ -464,7 +464,7 @@ public class MazeConstructor : MonoBehaviour
             {
                 break;
             }
-            SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
+            placePowerUp(deadEndCol[i], deadEndRow[i], "Arrow", "Arrow", 0.0f, Arrows);
         }
         
         for (int i = 3; i < l; i++)
@@ -482,16 +482,16 @@ public class MazeConstructor : MonoBehaviour
             else if (temp == 1)  // health
             {
                 // Debug.Log("Random is 1");
-                SpawnHealth(deadEndCol[i], deadEndRow[i], endLocation);
+                placePowerUp(deadEndCol[i], deadEndRow[i], "Health Potion", "Health Potion", -.5f, healthPotion);
             }
             else if (temp == 2)  // shield
             {
                 // Debug.Log("Random is 2");
-                SpawnShield(deadEndCol[i], deadEndRow[i], endLocation);
+                placePowerUp(deadEndCol[i], deadEndRow[i], "Overshield Potion", "Overshield Potion" ,-.5f, shieldPotion);
             }
             else if (temp == 3) // arrow pile
             {
-                SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
+                placePowerUp(deadEndCol[i], deadEndRow[i], "Arrow", "Arrow", 0.0f, Arrows);
             }
         }
     }
@@ -727,99 +727,27 @@ public class MazeConstructor : MonoBehaviour
             }
         }
     }
-    
-    private void SpawnStrength(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
+
+    private void placePowerUp(int column, int newRow, string name, string tag, float offset, GameObject item)
     {
-        // Debug.Log("Made it to spawnStamina");
-        GameObject strength = Instantiate(strengthPotion);
-        strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = Vector3.Distance(player.transform.position, strength.transform.position);
-        // health.AddComponent<SphereCollider>();
-        strength.SetActive(false);
-        strength.name = "Stamina Potion";
-        strength.tag = "Stamina Potion";
+        GameObject go = Instantiate(item);
+        go.transform.position = new Vector3(column * hallWidth, offset, newRow * hallWidth);
+        float playerDistance = Vector3.Distance(player.transform.position, go.transform.position);
+        float portalDistance = Vector3.Distance(portal.transform.position, go.transform.position);
         
-        strength.GetComponent<SphereCollider>().isTrigger = true;
-        TriggerEventRouter tc = strength.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(strength);
-
-    }
-
-    private void SpawnHealth(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnHealth");
-        GameObject health = Instantiate(healthPotion);
-        health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, health.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, health.transform.position);
-        Debug.Log("health dist: " + playerDistance);
         if (playerDistance < 3  || portalDistance < 3)
         {
             Debug.Log("No spawning health, too close to player");
-            Destroy(health);
+            Destroy(go);
             return;
         }
-        // health.AddComponent<SphereCollider>();
-        health.SetActive(false);
-        health.name = "Health Potion";
-        health.tag = "Health Potion";
         
-        health.GetComponent<SphereCollider>().isTrigger = true;
-        TriggerEventRouter tc = health.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(health);
+        go.SetActive(false);
+        go.name = name;
+        go.tag = tag;
+        powerUps.AddLast(go);
     }
     
-    private void SpawnShield(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnShield");
-        GameObject shield = Instantiate(shieldPotion);
-        shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, shield.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, shield.transform.position);
-        Debug.Log("shield dist: " + playerDistance);
-        if (playerDistance < 3  || portalDistance < 3)
-        {
-            Debug.Log("No spawning shield, too close to player");
-            Destroy(shield);
-            return;
-        }
-        shield.SetActive(false);
-        shield.name = "Overshield Potion";
-        shield.tag = "Overshield Potion";
-        
-        shield.GetComponent<SphereCollider>().isTrigger = true;
-
-        TriggerEventRouter tc = shield.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(shield);
-    }
-    
-    private void SpawnArrow(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnShield");
-        GameObject arrow = Instantiate(Arrows);
-        arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, arrow.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, arrow.transform.position);
-        Debug.Log("arrow dist: " + playerDistance);
-        if (playerDistance < 3  || portalDistance < 3)
-        {
-            Debug.Log("No spawning arrow, too close to player");
-            Destroy(arrow);
-            return;
-        }
-        arrow.SetActive(false);
-        arrow.name = "Arrow";
-        arrow.tag = "Arrow";
-
-        TriggerEventRouter tc = arrow.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        arrowList.AddLast(arrow);
-
-    }
-
     private void PlaceStartTrigger(TriggerEventHandler callback)
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
