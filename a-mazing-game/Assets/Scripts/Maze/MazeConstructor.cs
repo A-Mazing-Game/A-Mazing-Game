@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Maze.Enums;
 using UnityEditor;
 //using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -94,6 +95,11 @@ public class MazeConstructor : MonoBehaviour
     {
         get; private set;
     }
+    
+    /// <summary>
+    /// The type of maze to generate. <see cref="MazeTypeEnum"/>
+    /// </summary>
+    private MazeTypeEnum MazeType => (MazeTypeEnum)PlayerPrefs.GetInt("mazeType", 0);
 
     private MazeDataGenerator dataGenerator;
     private MazeMeshGenerator meshGenerator;
@@ -107,24 +113,34 @@ public class MazeConstructor : MonoBehaviour
         fpsMovement = GetComponent<FpsMovement>();
         length = 0;
         agent = GetComponent<NavMeshAgent>();
-        int mazeType = PlayerPrefs.GetInt("size", 0);
         loadTutorial = PlayerPrefs.GetInt("tutorial", 0);
         spawnDistance = 10;
         enemyFirstEncounter = false;
         powerUpFirstEncounter = false;
         tutorialScript = GetComponent<tutorial>();
-        if (mazeType == 0  || mazeType == 4) // small or tutorial 
+        
+        switch (MazeType)
         {
-            desiredEnemies = 5;
+            case MazeTypeEnum.Small:
+            case MazeTypeEnum.Tutorial:
+                desiredEnemies = 5;
+                break;
+            
+            case MazeTypeEnum.Medium:
+                desiredEnemies = 24;
+                break;
+            
+            case MazeTypeEnum.Large:
+                desiredEnemies = 37;
+                break;
+            
+            // We should never get here, catch it and throw an exception
+            case MazeTypeEnum.None:
+                default:
+                throw new InvalidOperationException();
+            
         }
-        else if (mazeType == 1)  // medium
-        {
-            desiredEnemies = 24;
-        }
-        else  // large
-        {
-            desiredEnemies = 37;
-        }
+        
         enemyList = new LinkedList<GameObject>();
         powerUps = new LinkedList<GameObject>();
         arrowList = new LinkedList<GameObject>();
