@@ -24,7 +24,6 @@ public class BluePotion : InventoryItemBase
         playerAudioSource.PlayOneShot(potionAudio, 0.7f);
         gameObject.SetActive(true);
         inventory.RemoveItem(this);
-        mz.RemoveEnemyNode(gameObject, 1);
         Destroy(gameObject);
         int currentOvershield = playerStats.currentOvershield;
         int maxOvershield = playerStats.maxOvershield;
