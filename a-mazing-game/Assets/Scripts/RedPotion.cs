@@ -23,7 +23,6 @@ public class RedPotion : InventoryItemBase
         playerAudioSource.PlayOneShot(potionAudio, 0.7f);
         gameObject.SetActive(true);
         inventory.RemoveItem(this);
-        mz.RemoveEnemyNode(gameObject, 1);
         Destroy(gameObject);
         int currentHealth = playerStats.currentHealth;
         int maxHealth = playerStats.maxHealth;

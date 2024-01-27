@@ -1296,7 +1296,7 @@ MonoBehaviour:
   portal: {fileID: 0}
   bottles: {fileID: 0}
   loadTutorial: 0
-  Arrows: {fileID: 0}
+  arrow: {fileID: 0}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
   mage: {fileID: 0}
@@ -14040,7 +14040,7 @@ MonoBehaviour:
   portal: {fileID: 0}
   bottles: {fileID: 0}
   loadTutorial: 0
-  Arrows: {fileID: 0}
+  arrow: {fileID: 0}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
   mage: {fileID: 0}
@@ -14982,7 +14982,7 @@ MonoBehaviour:
   portal: {fileID: 0}
   bottles: {fileID: 0}
   loadTutorial: 0
-  Arrows: {fileID: 2060354752}
+  arrow: {fileID: 151837448847314939, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
   enemyFirstEncounter: 0
   powerUpFirstEncounter: 0
   mage: {fileID: 356774050}
@@ -15310,11 +15310,6 @@ PrefabInstance:
       objectReference: {fileID: 1827821328}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
---- !u!1 &2060354752 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 151837448847314939, guid: 2fcc7b3fcc938496e868eb2a9c457af4, type: 3}
-  m_PrefabInstance: {fileID: 2060354751}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2066144034
 GameObject:
   m_ObjectHideFlags: 0

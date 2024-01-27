@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Maze;
 using UnityEngine;
 
 public class Torch : MonoBehaviour
@@ -50,7 +51,6 @@ public class Torch : MonoBehaviour
             //pos.z = pos.z  -1;
             
             GameObject t = Instantiate(torch, placePoint, transform.rotation);
-            mz.torchList.AddLast(t);
             //torch.transform.LookAt(hit.point + hit.normal);
 
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Maze;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -197,7 +198,6 @@ public class AIMovement : MonoBehaviour
     private IEnumerator Die()
     {
         // Debug.Log("Enemy died!");
-        mz.RemoveEnemyNode(gameObject, 0);
         // Play death animation
         animator.speed = 1f;
         animator.SetBool("IsDead", true);

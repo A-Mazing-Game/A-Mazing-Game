@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Maze;
 using UnityEngine;
 
 public class StartBossFight : MonoBehaviour
@@ -12,7 +13,7 @@ public class StartBossFight : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             mz = GameObject.Find("Controller").GetComponent<MazeConstructor>();
-            StartCoroutine(mz.GetComponent<MazeConstructor>().spawnEnemyAutzen());
+            StartCoroutine(mz.GetComponent<MazeConstructor>().SpawnEnemyAutzen());
             startFight = true;
             gameObject.SetActive(false);
         }

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
 using System.Threading;
+using Maze;
 using UnityEngine.Serialization;
 
 
