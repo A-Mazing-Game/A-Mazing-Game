@@ -8,989 +8,644 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Maze.Enums;
-using UnityEditor;
-//using UnityEditor.Experimental.GraphView;
+using Powerups;
 using UnityEngine;
-using UnityEngine.AI;
-using Random = System.Random;
+using Debug = UnityEngine.Debug;
 
-public class MazeConstructor : MonoBehaviour
+namespace Maze
 {
-    public bool showDebug;
-    private int[] col;
-    public int[] row;
-    private int[] enemies; // the spawn location of enemies
-    public int length;
+    public class MazeConstructor : MonoBehaviour
+    {
+        public bool showDebug;
+        private int[] col;
+        public int[] row;
+        private int[] enemies; // the spawn location of enemies
+        public int length;
 
     
 
-    [SerializeField] private Material mazeMat1;
-    [SerializeField] private Material mazeMat2;
-    [SerializeField] private Material startMat;
-    [SerializeField] private Material treasureMat;
-    [SerializeField] private Material endGoal;
-    [SerializeField] private Material testSpawn;
-    public GameObject start;
-    public GameObject enemy;
-    public GameObject skeleton;  // Skeleton prefab
-    public GameObject healthPotion;  // health prefab
-    public GameObject strengthPotion;  // strength prefab
-    public GameObject shieldPotion;  // shield prefab
-    public GameObject gate;
-    public AIMovement ai;
-    public NavMeshAgent agent;
-    private MeshRenderer mr;  // mesh renderer
-    private int[] deadEndCol;  // stores dead column indices
-    private int[] deadEndRow;  // stores dead end row indicies
-    public int desiredEnemies;  // number of enemies to initially spawn in the maze
-    private LinkedList<GameObject> enemyList;  // holds all enemies 
-    private LinkedList<GameObject> powerUps;  // holds all spawned powerups
-    public LinkedList<GameObject> arrowList;  // holds all spawned arrows
-    public LinkedList<GameObject> torchList;  // holds all placed torches
-    public GameObject player;  // player gameobject
-    public GameObject portal;  // portal game object to get location 
-    public InventoryItemBase bottles;
-    public int loadTutorial;  // flag to load tutorial level or not
-    public GameObject Arrows;
-    private int spawnDistance;
-    public bool enemyFirstEncounter; // for tutorial. has player encountered an enemy
-    public bool powerUpFirstEncounter;  // for tutorial. has player encounter a powerup
-    public GameObject mage;
+        [SerializeField] private Material mazeMat1;
+        [SerializeField] private Material mazeMat2;
+        public GameObject skeleton;  // Skeleton prefab
+        public GameObject healthPotion;  // health prefab
+        public GameObject shieldPotion;  // shield prefab
+        public GameObject gate;
+        private MeshRenderer mr;  // mesh renderer
+        private int[] deadEndCol;  // stores dead column indices
+        private int[] deadEndRow;  // stores dead end row indicies
+        public int desiredEnemies;  // number of enemies to initially spawn in the maze
+        public GameObject player;  // player gameobject
+        private GameObject Portal => GameObject.FindGameObjectWithTag("Portal");  // portal game object to get location
+        public GameObject arrow;
+        private int spawnDistance;
+        public GameObject mage;
 
-    private int[,] tutorialMaze;
+        private int[,] tutorialMaze;
     
     
-    public int[,] data
-    {
-        get; private set;
-    }
+        private int[,] Data { get; set; }
 
-    public float hallWidth
-    {
-        get; private set;
-    }
-    public float hallHeight
-    {
-        get; private set;
-    }
-
-    public int startRow
-    {
-        get; private set;
-    }
-    public int startCol
-    {
-        get; private set;
-    }
-
-    public int goalRow
-    {
-        get; private set;
-    }
-    public int goalCol
-    {
-        get; private set;
-    }
+        public float HallWidth { get; private set; }
+        public int StartRow { get; private set; }
+        public int StartCol { get; private set; }
     
-    /// <summary>
-    /// The type of maze to generate. <see cref="MazeTypeEnum"/>
-    /// </summary>
-    private MazeTypeEnum MazeType => (MazeTypeEnum)PlayerPrefs.GetInt("mazeType", 0);
+        /// <summary>
+        /// The type of maze to generate. <see cref="MazeTypeEnum"/>
+        /// </summary>
+        public MazeTypeEnum MazeType => (MazeTypeEnum)PlayerPrefs.GetInt("mazeType", 0);
 
-    private MazeDataGenerator dataGenerator;
-    private MazeMeshGenerator meshGenerator;
-    private FpsMovement fpsMovement;
-    public tutorial tutorialScript;
+        private MazeDataGenerator dataGenerator;
+        private MazeMeshGenerator meshGenerator;
+        public tutorial tutorialScript;
 
-    void Awake()
-    {
-        dataGenerator = new MazeDataGenerator();
-        meshGenerator = new MazeMeshGenerator();
-        fpsMovement = GetComponent<FpsMovement>();
-        length = 0;
-        agent = GetComponent<NavMeshAgent>();
-        loadTutorial = PlayerPrefs.GetInt("tutorial", 0);
-        spawnDistance = 10;
-        enemyFirstEncounter = false;
-        powerUpFirstEncounter = false;
-        tutorialScript = GetComponent<tutorial>();
-        
-        switch (MazeType)
+        public MazeConstructor(int[,] data)
         {
-            case MazeTypeEnum.Small:
-            case MazeTypeEnum.Tutorial:
-                desiredEnemies = 5;
-                break;
-            
-            case MazeTypeEnum.Medium:
-                desiredEnemies = 24;
-                break;
-            
-            case MazeTypeEnum.Large:
-                desiredEnemies = 37;
-                break;
-            
-            // We should never get here, catch it and throw an exception
-            case MazeTypeEnum.None:
-                default:
-                throw new InvalidOperationException();
-            
+            Data = data;
         }
+
+        void Awake()
+        {
+            dataGenerator = new MazeDataGenerator();
+            meshGenerator = new MazeMeshGenerator();
+            length = 0;
+            spawnDistance = 10;
+            tutorialScript = GetComponent<tutorial>();
         
-        enemyList = new LinkedList<GameObject>();
-        powerUps = new LinkedList<GameObject>();
-        arrowList = new LinkedList<GameObject>();
-        torchList = new LinkedList<GameObject>();
-        player = GameObject.FindGameObjectWithTag("Player");
-        ai = GetComponent<AIMovement>();
+            switch (MazeType)
+            {
+                case MazeTypeEnum.Small:
+                case MazeTypeEnum.Tutorial:
+                    desiredEnemies = -2;
+                    break;
+            
+                case MazeTypeEnum.Medium:
+                    desiredEnemies = -2;
+                    break;
+            
+                case MazeTypeEnum.Large:
+                    desiredEnemies = 37;
+                    break;
+            
+                // We should never get here, catch it and throw an exception
+                case MazeTypeEnum.None:
+                default:
+                    throw new InvalidOperationException();
+            
+            }
+            
+            player = GameObject.FindGameObjectWithTag("Player");
         
 
-        // default to walls surrounding a single empty cell
-        data = new int[,]
-        {
-            {1, 1, 1},
-            {1, 0, 1},
-            {1, 1, 1}
-        };
+            // default to walls surrounding a single empty cell
+            Data = new[,]
+            {
+                {1, 1, 1},
+                {1, 0, 1},
+                {1, 1, 1}
+            };
         
-        /*
+            /*
          * This is the tutorial maze so it is not randomly generated each time
          */
-        tutorialMaze = new int[,]  // use 11 for column and row
-        {
-            // {1,1,1,1,1,1,1,1,1,1,1,1,1},
-            // {1,0,1,0,1,0,0,0,1,0,0,0,1},
-            // {1,0,1,0,1,0,1,1,1,0,1,0,1},
-            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            // {1,0,1,0,1,0,1,0,1,1,1,0,1},
-            // {1,0,1,0,0,0,0,0,1,0,0,0,1},
-            // {1,0,0,0,1,0,1,1,1,0,1,0,1},
-            // {1,0,0,0,1,0,1,0,0,0,1,0,1},
-            // {1,1,1,0,1,1,1,1,1,1,1,0,1},
-            // {1,0,1,0,0,0,0,0,1,0,1,0,1},
-            // {1,0,1,0,1,0,1,1,1,1,1,0,1},
-            // {1,0,0,0,1,0,0,0,0,0,0,0,1},
-            // {1,1,1,1,1,1,1,1,1,1,1,1,1}
+            tutorialMaze = new[,]  // use 11 for column and row
+            {
+                // {1,1,1,1,1,1,1,1,1,1,1,1,1},
+                // {1,0,1,0,1,0,0,0,1,0,0,0,1},
+                // {1,0,1,0,1,0,1,1,1,0,1,0,1},
+                // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+                // {1,0,1,0,1,0,1,0,1,1,1,0,1},
+                // {1,0,1,0,0,0,0,0,1,0,0,0,1},
+                // {1,0,0,0,1,0,1,1,1,0,1,0,1},
+                // {1,0,0,0,1,0,1,0,0,0,1,0,1},
+                // {1,1,1,0,1,1,1,1,1,1,1,0,1},
+                // {1,0,1,0,0,0,0,0,1,0,1,0,1},
+                // {1,0,1,0,1,0,1,1,1,1,1,0,1},
+                // {1,0,0,0,1,0,0,0,0,0,0,0,1},
+                // {1,1,1,1,1,1,1,1,1,1,1,1,1}
             
-            {1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,0,1,1,1,0,1,0,1,1,1,0,1},
-            {1,0,1,1,1,0,1,0,1,1,1,0,1},
-            {1,0,1,0,1,0,0,0,0,0,0,0,1},
-            {1,0,1,0,1,1,1,0,1,1,1,1,1},
-            {1,0,0,0,0,0,0,0,0,0,0,0,1},
-            {1,1,1,0,1,0,0,0,0,0,1,1,1},
-            {1,0,1,0,1,0,0,0,0,0,0,0,1},
-            {1,0,1,0,1,1,1,1,1,0,0,0,1},
-            {1,0,0,0,1,0,0,0,0,0,0,0,1},
-            {1,0,1,1,0,0,1,0,1,0,1,0,1},
-            {1,0,0,0,0,0,1,0,1,0,1,0,1},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1}
+                {1,1,1,1,1,1,1,1,1,1,1,1,1},
+                {1,0,1,1,1,0,1,0,1,1,1,0,1},
+                {1,0,1,1,1,0,1,0,1,1,1,0,1},
+                {1,0,1,0,1,0,0,0,0,0,0,0,1},
+                {1,0,1,0,1,1,1,0,1,1,1,1,1},
+                {1,0,0,0,0,0,0,0,0,0,0,0,1},
+                {1,1,1,0,1,0,0,0,0,0,1,1,1},
+                {1,0,1,0,1,0,0,0,0,0,0,0,1},
+                {1,0,1,0,1,1,1,1,1,0,0,0,1},
+                {1,0,0,0,1,0,0,0,0,0,0,0,1},
+                {1,0,1,1,0,0,1,0,1,0,1,0,1},
+                {1,0,0,0,0,0,1,0,1,0,1,0,1},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1}
             
             
 
-        };
-    }
-
-    public void GenerateNewMaze(int sizeRows, int sizeCols,
-        TriggerEventHandler startCallback=null, TriggerEventHandler goalCallback=null, TriggerEventHandler endGame=null)
-    {
-        Debug.Log("Row and cols: " + sizeRows + " " + sizeCols);
-
-        if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
-        {
-            Debug.LogError("Odd numbers work better for dungeon size.");
+            };
         }
 
-        DisposeOldMaze();
+        public void GenerateNewMaze(int sizeRows, int sizeCols)
+        {
+            Debug.Log("Row and cols: " + sizeRows + " " + sizeCols);
 
-        if(loadTutorial == 0)
-        {
-            data = dataGenerator.FromDimensions(sizeRows, sizeCols);
-        }
-        else
-        {
-            data = tutorialMaze;
-        }
+            if (sizeRows % 2 == 0 && sizeCols % 2 == 0)
+            {
+                Debug.LogError("Odd numbers work better for dungeon size.");
+            }
+
+            DisposeOldMaze();
+
+            switch (MazeType)
+            {
+                case MazeTypeEnum.Tutorial:
+                    Data = tutorialMaze;
+                    break;
+                
+                case MazeTypeEnum.Large:
+                case MazeTypeEnum.Medium:
+                case MazeTypeEnum.Small:
+                    Data = dataGenerator.FromDimensions(sizeRows, sizeCols);
+                    break;
+                    
+            }
         
 
-        FindStartPosition();
-        FindGoalPosition();
-        FindDeadEnd();
-        Debug.Log("For tut: col: " + col[0] + " row: " + row[0]);
-        // printMaze();
+            FindStartPosition();
+            FindGoalPosition();
+            FindDeadEnd();
+            Debug.Log("For tut: col: " + col[0] + " row: " + row[0]);
+            // printMaze();
 
-        // store values used to generate this mesh
-        hallWidth = meshGenerator.width;
-        hallHeight = meshGenerator.height;
+            // store values used to generate this mesh
+            HallWidth = meshGenerator.width;
 
-        DisplayMaze();
-        // SpawnEnemy(desiredEnemies);
-        // Thread.Sleep(1000);
-        GameObject endLocation = PlaceEndTrigger(col[0], row[0], endGame);
-        portal = GameObject.FindGameObjectWithTag("Portal");
-        SpawnPowerUp(endLocation);
-        
-        StartCoroutine(UpdateGameObjects());
-        if (loadTutorial == 1)
-        {
-            tutorialPowerUpSpawn();
-            tutorialScript.GetComponent<tutorial>().tutorialStartMessage(1);
+            DisplayMaze();
+            PlaceEndPortal(col[0], row[0]);
+            SpawnPowerUp();
+            
+            switch (MazeType)
+            {
+                case MazeTypeEnum.Tutorial:
+                TutorialPowerUpSpawn();
+                tutorialScript.GetComponent<tutorial>().tutorialStartMessage(1);
+                break;
+                
+                case MazeTypeEnum.Small:
+                case MazeTypeEnum.Medium:
+                case MazeTypeEnum.Large:
+                    StartCoroutine(SpawnCoRoutine());
+                    break;
+            }
         }
-        else
-        {
-            StartCoroutine(SpawnCoRoutine());
-        }
-    }
-
-    public void test()
-    {
-        Debug.Log("in test");
-        StartCoroutine(SpawnCoRoutine());
-    }
-    
-    public void RemoveEnemyNode(GameObject go, int type)
-    {
-        // 0 = enemy LL
-        // 1 = powerUp LL
-
-        LinkedListNode<GameObject> node;
         
-        if(type == 0)
+        /// <summary>
+        /// Spawn enemies within the maze until the end of time
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator SpawnCoRoutine()
         {
-            node = enemyList.First;
             while (true)
             {
-                if (node.Value == go)
-                {
-                    enemyList.Remove(node);
-                    return;
-                }
-        
-                node = node.Next;
-            }
-        }
+                GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+                int numEnemies = allEnemies.Length;
+                int enemiesToSpawn = desiredEnemies - numEnemies;
 
-        if (type == 2)
-        {
-            Debug.Log("removing arrow");
-            node = arrowList.First;
-            while (true)
-            {
-                if (node.Value == go)
+                switch (MazeType)
                 {
-                    arrowList.Remove(node);
-                    return;
+                    case MazeTypeEnum.Tutorial:
+                        TutorialSpawnEnemy();
+                        StopCoroutine(SpawnCoRoutine());
+                        break;
+                    
+                    default:
+                        SpawnEnemy(enemiesToSpawn + 2);
+                        break;
                 }
-        
-                node = node.Next;
-            }
-        }
-        else
-        {
-            node = powerUps.First;
-            while (true)
-            {
-                if (node.Value == go)
-                {
-                    powerUps.Remove(node);
-                    return;
-                }
-        
-                node = node.Next;
-            }
-        }
-    }
-    
-    private IEnumerator UpdateGameObjects()
-    {
-        /*
-         * Enables / disables spawned game objects based upon their location
-         */
-        
-        while (true)
-        {
-            LinkedListNode<GameObject> enemyNode = enemyList.First;
-            LinkedListNode<GameObject> powerUpNode = powerUps.First;
-            LinkedListNode<GameObject> arrowNode = arrowList.First;
-            LinkedListNode<GameObject> torchNode = torchList.First;
-            while (enemyNode != null)  // enemies
-            {
-                float distance = Vector3.Distance(player.transform.position, enemyNode.Value.transform.position);
-                if (distance > 30)
-                {
-                    enemyNode.Value.SetActive(false);
-                }
-                else
-                {
-                    enemyNode.Value.SetActive(true);
-                }
-                enemyNode = enemyNode.Next;
-            }
 
-            while (powerUpNode != null)  // power ups
-            {
-                float distance = Vector3.Distance(player.transform.position, powerUpNode.Value.transform.position);
-                if (!powerUpNode.Value.GetComponent<InventoryItemBase>().pickedUp)
+                if (spawnDistance != 0)
                 {
-                    if (distance > 30)
-                    {
-                        powerUpNode.Value.SetActive(false);
-                    }
-                    else
-                    {
-                        powerUpNode.Value.SetActive(true);
-                    }
+                    spawnDistance -= 2;
                 }
-                powerUpNode = powerUpNode.Next;
-            }
-            
-            while (arrowNode != null)  // enemies
-            {
-                float distance = Vector3.Distance(player.transform.position, arrowNode.Value.transform.position);
-                if (distance > 30)
-                {
-                    arrowNode.Value.SetActive(false);
-                }
-                else
-                {
-                    arrowNode.Value.SetActive(true);
-                }
-                arrowNode = arrowNode.Next;
-            }
-            
-            while (torchNode != null)  // enemies
-            {
-                float distance = Vector3.Distance(player.transform.position, torchNode.Value.transform.position);
-                if (distance > 30)
-                {
-                    torchNode.Value.SetActive(false);
-                }
-                else
-                {
-                    torchNode.Value.SetActive(true);
-                }
-                torchNode = torchNode.Next;
-            }
-            yield return new WaitForSeconds(2);
-        }
-    }
-
-    public IEnumerator SpawnCoRoutine()
-    {
-        /*
-         * Continually spawn enemies within the maze
-         */
-        
-        while (true)
-        {
-            // Debug.Log("Player pos: " + player.transform.position);
-            GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-            int numEnemies = allEnemies.Length;
-            int enemiesToSpawn = desiredEnemies - numEnemies;
-            
-            // Debug.Log("NumEnemies: " + numEnemies);
-            // Debug.Log("Enemies to spawn: " + enemiesToSpawn);
-            // Debug.Log("Enemies alive: " + aliveEnemies);
-
-            if (loadTutorial == 0)
-            {
-                SpawnEnemy(enemiesToSpawn + 2);
-            }
-            else
-            {
-                tutorialSpawnEnemy(enemiesToSpawn + 2);
-                StopCoroutine(SpawnCoRoutine());
-            }
-
-            if (spawnDistance != 0)
-            {
-                spawnDistance -= 2;
-            }
                 yield return new WaitForSeconds(30);
+            }
+        }
+
+        void TutorialSpawnEnemy()
+        {
+            PlaceEnemy(col[63], row[63]);
+            PlaceEnemy(col[60], row[60]);
+            PlaceEnemy(col[22], row[22]);
+            PlaceEnemy(col[56], row[56]);
+            PlaceEnemy(col[53], row[53]);
+            PlaceEnemy(col[16], row[16]);
+            PlaceEnemy(col[50], row[50]);
         }
         
-
-        yield return null;
-    }
-
-    void tutorialSpawnEnemy(int numEnemies, TriggerEventHandler goalCallback = null)
-    {
-        PlaceEnemy(col[63], row[63], goalCallback);
-        PlaceEnemy(col[60], row[60], goalCallback);
-        PlaceEnemy(col[22], row[22], goalCallback);
-        PlaceEnemy(col[56], row[56], goalCallback);
-        PlaceEnemy(col[53], row[53], goalCallback);
-        PlaceEnemy(col[16], row[16], goalCallback);
-        PlaceEnemy(col[50], row[50], goalCallback);
-        // enemies = new int[length];
-        // for (int i = 0; i < numEnemies; i++)
-        // {
-        //     System.Random random = new System.Random();
-        //     int temp = random.Next(0, length - 1);
-        //     while (enemies.Contains(temp))
-        //         temp = random.Next(0, length - 1);
-        //     PlaceEnemy(col[temp], row[temp], goalCallback);
-        //     Debug.Log("From tutorialSpawn: " + temp);
-        //     enemies[i] = temp;
-        // }
-    }
-    void SpawnEnemy(int numEnemies, TriggerEventHandler goalCallback=null)
-    {
-        /*
+        void SpawnEnemy(int numEnemies)
+        {
+            /*
          * Simple method that spawns enemies in the maze
          */
         
-        enemies = new int[length];
-        for (int i = 0; i < numEnemies; i++)
-        {
-            System.Random random = new System.Random();
-            int temp = random.Next(0, length - 1);
-            while(enemies.Contains(temp))
-                temp = random.Next(0, length - 1);
-            // if(!(enemies.Contains(temp)))
-            PlaceEnemy(col[temp], row[temp], goalCallback);
-            enemies[i] = temp;
+            enemies = new int[length];
+            for (int i = 0; i < numEnemies; i++)
+            {
+                System.Random random = new System.Random();
+                int temp = random.Next(0, length - 1);
+                while(enemies.Contains(temp))
+                    temp = random.Next(0, length - 1);
+                // if(!(enemies.Contains(temp)))
+                PlaceEnemy(col[temp], row[temp]);
+                enemies[i] = temp;
+            }
         }
-    }
 
-    void tutorialPowerUpSpawn()
-    {
-        SpawnHealth(1, 3);
-        SpawnShield(1, 4);
-    }
+        private void TutorialPowerUpSpawn()
+        {
+            PlaceItem(1, 3, healthPotion, "health potion");
+            PlaceItem(1, 3, shieldPotion, "shield potion");
+        }
 
-    void SpawnPowerUp(GameObject endLocation)
-    {
-        /*
+        void SpawnPowerUp()
+        {
+            /*
          * Spawn power ups within the maze
          */
         
-        int l = deadEndCol.Length;
-        System.Random random = new System.Random();
-        // Debug.Log("L length is: " + l);
+            int l = deadEndCol.Length;
+            System.Random random = new System.Random();
         
-        // guarantee spawning 2 piles of arrows
-        for (int i = 0; i < 3; i++)
-        {
-            if (i > l)
+            // guarantee spawning 2 piles of arrows
+            for (int i = 0; i < 3; i++)
             {
-                break;
+                if (i > l)
+                {
+                    break;
+                }
+                PlaceItem(deadEndCol[i], deadEndRow[i], arrow, "arrow pile");
             }
-            SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
-        }
         
-        for (int i = 3; i < l; i++)
-        {
-            // Debug.Log("Calling shit"); 
-            
-            int temp = random.Next(1, 4);  // todo change from 0, 4
-            Debug.Log(temp);
-            if(temp == 0)  // stamina
+            for (int i = 3; i < l; i++)
             {
-                // Debug.Log("Random is 0");
-                // SpawnStamina(deadEndCol[i], deadEndRow[i], endLocation);
-            }   
-            
-            else if (temp == 1)  // health
-            {
-                // Debug.Log("Random is 1");
-                SpawnHealth(deadEndCol[i], deadEndRow[i], endLocation);
-            }
-            else if (temp == 2)  // shield
-            {
-                // Debug.Log("Random is 2");
-                SpawnShield(deadEndCol[i], deadEndRow[i], endLocation);
-            }
-            else if (temp == 3) // arrow pile
-            {
-                SpawnArrow(deadEndCol[i], deadEndRow[i], endLocation);
+                int droppableType = random.Next((int)DroppableTypeEnum.Health, (int)DroppableTypeEnum.Arrow);
+
+                switch ((DroppableTypeEnum)droppableType)
+                {
+                    case DroppableTypeEnum.Health:
+                        PlaceItem(deadEndCol[i], deadEndRow[i], healthPotion, "health potion");
+                        break;
+                    
+                    case DroppableTypeEnum.Arrow:
+                        PlaceItem(deadEndCol[i], deadEndRow[i], arrow, "arrow pile");
+                        break;
+                    
+                    case DroppableTypeEnum.Overshield:
+                        PlaceItem(deadEndCol[i], deadEndRow[i], shieldPotion, "shield potion");
+                        break;
+                }
             }
         }
-    }
 
-    private void DisplayMaze()
-    {
-        GameObject go = new GameObject();
-        go.transform.position = Vector3.zero;
-        go.name = "Procedural Maze";
-        go.tag = "Generated";
-        
-        MeshFilter mf = go.AddComponent<MeshFilter>();
-        mf.mesh = meshGenerator.FromData(data);
-
-        MeshCollider mc = go.AddComponent<MeshCollider>();
-        mc.sharedMesh = mf.mesh;
-
-        mr = go.AddComponent<MeshRenderer>();
-        mr.materials = new Material[2] {mazeMat1, mazeMat2};
-        // go.AddComponent<NavMeshMo>()
-    }
-
-    void debugSpawn(int length)
-    {
-        for (int i = 0; i < length; i++)
+        private void DisplayMaze()
         {
-            Debug.Log("DeadEndCol: " + deadEndCol[i] + " eadEndRow: " + deadEndRow[i]);
+            GameObject go = new GameObject();
+            go.transform.position = Vector3.zero;
+            go.name = "Procedural Maze";
+            go.tag = "Generated";
+        
+            MeshFilter mf = go.AddComponent<MeshFilter>();
+            mf.mesh = meshGenerator.FromData(Data);
+
+            MeshCollider mc = go.AddComponent<MeshCollider>();
+            mc.sharedMesh = mf.mesh;
+
+            mr = go.AddComponent<MeshRenderer>();
+            mr.materials = new[] {mazeMat1, mazeMat2};
+            // go.AddComponent<NavMeshMo>()
         }
-    }
+
+        private void DisposeOldMaze()
+        {
+            GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
+            foreach (GameObject go in objects) {
+                Destroy(go);
+            }
+        }
+
+        private void FindStartPosition()
+        {
+            int[,] maze = Data;
+            int rMax = maze.GetUpperBound(0);
+            int cMax = maze.GetUpperBound(1);
+
+            for (int i = 0; i <= rMax; i++)
+            {
+                for (int j = 0; j <= cMax; j++)
+                {
+                    if (maze[i, j] == 0)
+                    {
+                        StartRow = i;
+                        StartCol = j;
+                        return;
+                    }
+                }
+            }
+        }
     
-    void printMaze()
-    {
-        int rMax = data.GetUpperBound(0);  // 1
-        int cMax = data.GetUpperBound(1);  // 2
-        int[,] maze = data;
+        private void FindDeadEnd()
+        {
+            int[,] maze = Data;
+            int rMax = maze.GetUpperBound(0);
+            int cMax = maze.GetUpperBound(1);
+            int tempLength = 0;
 
+            for (int currentRow = 1; currentRow < rMax; currentRow++)
+            {
+                for (int currentCol = 1; currentCol < cMax; currentCol++)
+                {
+                    if (maze[currentRow, currentCol] == 0)
+                    {
+                        int left = maze[currentRow, currentCol - 1];
+                        int right = maze[currentRow, currentCol + 1];
+                        int front = maze[currentRow + 1, currentCol];
+                        int back = maze[currentRow - 1, currentCol];
+                    
+                        if((left == 1 && right == 1) && (front == 1 && back == 0))
+                        {
+                            // Debug.Log("Check case 1");
+                            tempLength++;
+                            // break;
+                        }
+
+                        if ((left == 0 && right == 1) && (front == 1 && back == 1))
+                        {
+                            // Debug.Log("Check case 2");
+                            tempLength++;
+                            // break;
+                        }
+
+                        if ((left == 1 && right == 0) && (front == 1 && back == 1))
+                        {
+                            // Debug.Log("Check case 3");
+                            tempLength++;
+                            // break;
+                        }
+
+                        if ((left == 1 && right == 1) && (front == 0 && back == 1))
+                        {
+                            // Debug.Log("Check case 4");
+                            tempLength++;
+                            // break;
+                        }
+                    }
+                }
+            }
+
+            deadEndCol = new int[tempLength];
+            deadEndRow = new int[tempLength];
+            int itter = 0;
+        
+        
+            for (int i = 1; i < rMax; i++)
+            {
+                for (int j = 1; j < cMax; j++)
+                {
+                    if (maze[i, j] == 0)
+                    {
+                        int left = maze[i, j - 1];
+                        int right = maze[i, j + 1];
+                        int front = maze[i + 1, j];
+                        int back = maze[i - 1, j];
+
+                        if ((left == 1 && right == 1) && (front == 1 && back == 0))
+                        {
+                            deadEndCol[itter] = j;
+                            deadEndRow[itter] = i;
+                            // Debug.Log("Case 1");
+                            itter++;
+                            // break;
+                        }
+
+                        if ((left == 0 && right == 1) && (front == 1 && back == 1))
+                        {
+                            deadEndCol[itter] = j;
+                            deadEndRow[itter] = i;
+                            // Debug.Log("Case 2");
+                            itter++;
+                            // break;
+                        }
+
+                        if ((left == 1 && right == 0) && (front == 1 && back == 1))
+                        {
+                            deadEndCol[itter] = j;
+                            deadEndRow[itter] = i;
+                            // Debug.Log("Case 3");
+                            itter++;
+                            // break;
+                        }
+                    
+                        if ((left == 1 && right == 1) && (front == 0 && back == 1))
+                        {
+                            deadEndCol[itter] = j;
+                            deadEndRow[itter] = i;
+                            // Debug.Log("Case 4");
+                            itter++;
+                            // break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void FindGoalPosition()
+        {
+            int[,] maze = Data;
+            int rMax = maze.GetUpperBound(0);
+            int cMax = maze.GetUpperBound(1);
         
 
-        // loop top to bottom, left to right
-        for (int i = rMax; i >= 0; i--)
+            // loop top to bottom, right to left
+            for (int i = rMax; i >= 0; i--)
+            {
+                for (int j = cMax; j >= 0; j--)
+                {
+                    if (maze[i, j] == 0)
+                    {
+                        length++;
+                    }
+                }
+            }
+
+            col = new int[length];
+            row = new int [length];
+            int itter = 0;
+        
+            for (int i = rMax; i >= 0; i--)
+            {
+                for (int j = cMax; j >= 0; j--)
+                {
+                    if (maze[i, j] == 0)
+                    {
+                        row[itter] = i;
+                        col[itter] = j;
+                        itter++;
+                    
+                        // return;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Spawn a pickup given the location
+        /// </summary>
+        /// <param name="columnIndex">the int value of the column index</param>
+        /// <param name="rowIndex">the int value of the row index</param>
+        /// <param name="pickupName">the name to give the gameobject</param>
+        /// <param name="pickup">the tag to give the gameobject</param>
+        private void PlaceItem(int columnIndex, int rowIndex, GameObject pickup, string pickupName)
         {
+            // Where to spawn the pickup
+            Vector3 spawnPosition = new Vector3(columnIndex * HallWidth, -.5f, rowIndex * HallWidth);
+        
+            // get the distance between the pickup and portal
+            float playerDistance = Vector3.Distance(player.transform.position, spawnPosition);
+            float portalDistance = Vector3.Distance(Portal.transform.position, spawnPosition);
+        
+            // Don't want a pickup to spawn on the player or portal
+            if (playerDistance < 3  || portalDistance < 3)
+            {
+                return;
+            }
+
+            // Instantiate then set the meta data
+            GameObject go = Instantiate(pickup);
+            go.transform.position = new Vector3(columnIndex * HallWidth, -0.0f, rowIndex * HallWidth);
+            go.SetActive(true);
+            go.name = pickupName;
+        }
+        public IEnumerator SpawnEnemyAutzen()
+        {
+
+            while (true)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    GameObject sk;
+                    System.Random random = new System.Random();
+                    int temp = random.Next(1, 3);
+                    int x = random.Next(-370, -340);
+                    int y = random.Next(30, 40);
+                    if (temp == 1)
+                    {
+                        sk = Instantiate(mage);
+                        sk.name = "Mage";
+                        sk.tag = "Mage";
+                    }
+                    else
+                    {
+                        sk = Instantiate(skeleton);
+                        sk.name = "Skeleton";
+                        sk.tag = "Enemy";
+                    }
+        
+                    // Debug.Log("X: " + x + " y: " + y);
+                    sk.transform.position = new Vector3(x, .1f, y);
+                    // Debug.Log("autzen distance " + distance);
+            
+                    sk.SetActive(false);
+                }
+            
+                yield return new WaitForSeconds(20);
+            }
+        }
+        private void PlaceEnemy(int column, int newRow)
+        {
+            // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            System.Random random = new System.Random();
+            int temp = random.Next(1, 8);
+            GameObject sk;
+            Debug.Log("temp " + temp);
+            if (temp >= 5f && MazeType != MazeTypeEnum.Tutorial)
+            {
+                sk = Instantiate(mage);
+                sk.name = "Mage";
+                sk.tag = "Mage";
+            }
+            else
+            {
+                sk = Instantiate(skeleton);
+                sk.name = "Skeleton";
+                sk.tag = "Enemy";
+            }
+            Debug.Log("Random spawn is " + temp);
+            // sk.AddComponent<NavMeshAgent>();
+            sk.transform.position = new Vector3(column * HallWidth, .1f, newRow * HallWidth);
+            float distance = Math.Abs(sk.transform.position.x - player.transform.position.x);
+            Debug.Log("distance: " + distance);
+            if (distance < spawnDistance)
+            {
+                Debug.Log("Enemy too close, not spawning at location " + sk.transform.position);
+                Destroy(sk);
+                return;
+            }
+        
+            sk.AddComponent<MeshCollider>();
+            // sk.enabled = true;
+            sk.SetActive(true);
+
+        }
+    
+        /// <summary>
+        /// Spawn the portal at the end of the maze
+        /// </summary>
+        /// <param name="column">column int index</param>
+        /// <param name="newRow">row int index</param>
+        private void PlaceEndPortal(int column, int newRow)
+        {
+            Vector3 gatePos = new Vector3(column * HallWidth + HallWidth / 2, .5f, newRow * HallWidth);
+
+            Instantiate(gate, gatePos, Quaternion.Euler(-90, 135, 0));
+            gate.tag = "Portal";
+            gate.name = "MazePortal";
+        }
+
+        // top-down debug display
+        void OnGUI()
+        {
+            if (!showDebug)
+            {
+                return;
+            }
+
+            int[,] maze = Data;
+            int rMax = maze.GetUpperBound(0);
+            int cMax = maze.GetUpperBound(1);
+
             string msg = "";
-            for (int j = 0; j <= cMax; j++)
+
+            // loop top to bottom, left to right
+            for (int i = rMax; i >= 0; i--)
             {
-                if (maze[i, j] == 0)
+                for (int j = 0; j <= cMax; j++)
                 {
-                    msg += "0,";
-                }
-                else
-                {
-                    msg += "1,";
-                }
-            }
-            Debug.Log(msg);
-        }
-    }
-
-    public void DisposeOldMaze()
-    {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
-        foreach (GameObject go in objects) {
-            Destroy(go);
-        }
-    }
-
-    private void FindStartPosition()
-    {
-        int[,] maze = data;
-        int rMax = maze.GetUpperBound(0);
-        int cMax = maze.GetUpperBound(1);
-
-        for (int i = 0; i <= rMax; i++)
-        {
-            for (int j = 0; j <= cMax; j++)
-            {
-                if (maze[i, j] == 0)
-                {
-                    startRow = i;
-                    startCol = j;
-                    // Debug.Log("Starting POS. Row: " + i + " " + "Col " + j);
-                    return;
-                }
-            }
-        }
-    }
-    
-    private void FindDeadEnd()
-    {
-        int[,] maze = data;
-        int rMax = maze.GetUpperBound(0);
-        int cMax = maze.GetUpperBound(1);
-        int length = 0;
-        // Debug.Log("rmax " + rMax + " cmax " + cMax);
-
-        for (int row = 1; row < rMax; row++)
-        {
-            for (int col = 1; col < cMax; col++)
-            {
-                if (maze[row, col] == 0)
-                {
-                    int left = maze[row, col - 1];
-                    int right = maze[row, col + 1];
-                    int front = maze[row + 1, col];
-                    int back = maze[row - 1, col];
-                    
-                    if((left == 1 && right == 1) && (front == 1 && back == 0))
+                    if (maze[i, j] == 0)
                     {
-                        // Debug.Log("Check case 1");
-                        length++;
-                        // break;
+                        msg += "0";
+                    }
+                    else
+                    {
+                        msg += "+";
                     }
 
-                    if ((left == 0 && right == 1) && (front == 1 && back == 1))
-                    {
-                        // Debug.Log("Check case 2");
-                        length++;
-                        // break;
-                    }
-
-                    if ((left == 1 && right == 0) && (front == 1 && back == 1))
-                    {
-                        // Debug.Log("Check case 3");
-                        length++;
-                        // break;
-                    }
-
-                    if ((left == 1 && right == 1) && (front == 0 && back == 1))
-                    {
-                        // Debug.Log("Check case 4");
-                        length++;
-                        // break;
-                    }
+                    msg += " ";
                 }
+                msg += "\n";
             }
+
+            GUI.Label(new Rect(20, 20, 500, 500), msg);
         }
-
-        deadEndCol = new int[length];
-        deadEndRow = new int[length];
-        int itter = 0;
-        
-        
-        
-        for (int i = 1; i < rMax; i++)
-        {
-            for (int j = 1; j < cMax; j++)
-            {
-                if (maze[i, j] == 0)
-                {
-                    int left = maze[i, j - 1];
-                    int right = maze[i, j + 1];
-                    int front = maze[i + 1, j];
-                    int back = maze[i - 1, j];
-
-                    if ((left == 1 && right == 1) && (front == 1 && back == 0))
-                    {
-                        deadEndCol[itter] = j;
-                        deadEndRow[itter] = i;
-                        // Debug.Log("Case 1");
-                        itter++;
-                        // break;
-                    }
-
-                    if ((left == 0 && right == 1) && (front == 1 && back == 1))
-                    {
-                        deadEndCol[itter] = j;
-                        deadEndRow[itter] = i;
-                        // Debug.Log("Case 2");
-                        itter++;
-                        // break;
-                    }
-
-                    if ((left == 1 && right == 0) && (front == 1 && back == 1))
-                    {
-                        deadEndCol[itter] = j;
-                        deadEndRow[itter] = i;
-                        // Debug.Log("Case 3");
-                        itter++;
-                        // break;
-                    }
-                    
-                    if ((left == 1 && right == 1) && (front == 0 && back == 1))
-                    {
-                        deadEndCol[itter] = j;
-                        deadEndRow[itter] = i;
-                        // Debug.Log("Case 4");
-                        itter++;
-                        // break;
-                    }
-                }
-            }
-        }
-    }
-
-    private void FindGoalPosition()
-    {
-        int[,] maze = data;
-        int rMax = maze.GetUpperBound(0);
-        int cMax = maze.GetUpperBound(1);
-        
-
-        // loop top to bottom, right to left
-        for (int i = rMax; i >= 0; i--)
-        {
-            for (int j = cMax; j >= 0; j--)
-            {
-                if (maze[i, j] == 0)
-                {
-                    length++;
-                    // goalRow = i;
-                    // goalCol = j;
-                    // return;
-                }
-            }
-        }
-        // Debug.Log("rmax " + rMax + " cmax " + cMax + " length " + length);
-
-        col = new int[length];
-        row = new int [length];
-        int itter = 0;
-        
-        for (int i = rMax; i >= 0; i--)
-        {
-            for (int j = cMax; j >= 0; j--)
-            {
-                if (maze[i, j] == 0)
-                {
-                    row[itter] = i;
-                    col[itter] = j;
-                    itter++;
-                    
-                    // return;
-                }
-            }
-        }
-    }
-    
-    private void SpawnStrength(int column, int newRow, GameObject end, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to spawnStamina");
-        GameObject strength = Instantiate(strengthPotion);
-        strength.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float distance = Vector3.Distance(player.transform.position, strength.transform.position);
-        // health.AddComponent<SphereCollider>();
-        strength.SetActive(false);
-        strength.name = "Stamina Potion";
-        strength.tag = "Stamina Potion";
-        
-        strength.GetComponent<SphereCollider>().isTrigger = true;
-        TriggerEventRouter tc = strength.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(strength);
-
-    }
-
-    private void SpawnHealth(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnHealth");
-        GameObject health = Instantiate(healthPotion);
-        health.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, health.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, health.transform.position);
-        Debug.Log("health dist: " + playerDistance);
-        if (playerDistance < 3  || portalDistance < 3)
-        {
-            Debug.Log("No spawning health, too close to player");
-            Destroy(health);
-            return;
-        }
-        // health.AddComponent<SphereCollider>();
-        health.SetActive(false);
-        health.name = "Health Potion";
-        health.tag = "Health Potion";
-        
-        health.GetComponent<SphereCollider>().isTrigger = true;
-        TriggerEventRouter tc = health.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(health);
-    }
-    
-    private void SpawnShield(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnShield");
-        GameObject shield = Instantiate(shieldPotion);
-        shield.transform.position = new Vector3(column * hallWidth, -.5f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, shield.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, shield.transform.position);
-        Debug.Log("shield dist: " + playerDistance);
-        if (playerDistance < 3  || portalDistance < 3)
-        {
-            Debug.Log("No spawning shield, too close to player");
-            Destroy(shield);
-            return;
-        }
-        shield.SetActive(false);
-        shield.name = "Overshield Potion";
-        shield.tag = "Overshield Potion";
-        
-        shield.GetComponent<SphereCollider>().isTrigger = true;
-
-        TriggerEventRouter tc = shield.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        powerUps.AddLast(shield);
-    }
-    
-    private void SpawnArrow(int column, int newRow, GameObject end=null, TriggerEventHandler callback=null)
-    {
-        // Debug.Log("Made it to SpawnShield");
-        GameObject arrow = Instantiate(Arrows);
-        arrow.transform.position = new Vector3(column * hallWidth, -0.0f, newRow * hallWidth);
-        float playerDistance = Vector3.Distance(player.transform.position, arrow.transform.position);
-        float portalDistance = Vector3.Distance(portal.transform.position, arrow.transform.position);
-        Debug.Log("arrow dist: " + playerDistance);
-        if (playerDistance < 3  || portalDistance < 3)
-        {
-            Debug.Log("No spawning arrow, too close to player");
-            Destroy(arrow);
-            return;
-        }
-        arrow.SetActive(false);
-        arrow.name = "Arrow";
-        arrow.tag = "Arrow";
-
-        TriggerEventRouter tc = arrow.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-        arrowList.AddLast(arrow);
-
-    }
-
-    private void PlaceStartTrigger(TriggerEventHandler callback)
-    {
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.position = new Vector3(startCol * hallWidth, .5f, startRow * hallWidth);
-        go.name = "Start Trigger";
-        go.tag = "Generated";
-
-        go.GetComponent<BoxCollider>().isTrigger = true;
-        go.GetComponent<MeshRenderer>().sharedMaterial = startMat;
-
-        TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
-        tc.callback = callback;
-    }
-
-
-    public IEnumerator spawnEnemyAutzen()
-    {
-
-        while (true)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                GameObject sk;
-                System.Random random = new System.Random();
-                int temp = random.Next(1, 3);
-                int x = random.Next(-370, -340);
-                int y = random.Next(30, 40);
-                if (temp == 1)
-                {
-                    sk = Instantiate(mage);
-                    sk.name = "Mage";
-                    sk.tag = "Mage";
-                }
-                else
-                {
-                    sk = Instantiate(skeleton);
-                    sk.name = "Skeleton";
-                    sk.tag = "Enemy";
-                }
-        
-                // Debug.Log("X: " + x + " y: " + y);
-                sk.transform.position = new Vector3(x, .1f, y);
-                float distance = Vector3.Distance(player.transform.position, sk.transform.position);
-                // Debug.Log("autzen distance " + distance);
-            
-                sk.SetActive(false);
-                enemyList.AddLast(sk);
-            }
-            
-            yield return new WaitForSeconds(20);
-        }
-    }
-    private void PlaceEnemy(int column, int newRow, TriggerEventHandler callback)
-    {
-        // GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-        System.Random random = new System.Random();
-        int temp = random.Next(1, 8);
-        GameObject sk;
-        Debug.Log("temp " + temp);
-        if (temp >= 5f && loadTutorial == 0) 
-        {
-            sk = Instantiate(mage) as GameObject;
-            sk.name = "Mage";
-            sk.tag = "Mage";
-        }
-        else
-        {
-            sk = Instantiate(skeleton) as GameObject;
-            sk.name = "Skeleton";
-            sk.tag = "Enemy";
-        }
-        Debug.Log("Random spawn is " + temp);
-        // sk.AddComponent<NavMeshAgent>();
-        sk.transform.position = new Vector3(column * hallWidth, .1f, newRow * hallWidth);
-        float distance = Math.Abs(sk.transform.position.x - player.transform.position.x);
-        Debug.Log("distance: " + distance);
-        if (distance < spawnDistance)
-        {
-            Debug.Log("Enemy too close, not spawning at location " + sk.transform.position);
-            Destroy(sk);
-            return;
-        }
-        
-        sk.AddComponent<MeshCollider>();
-        // sk.enabled = true;
-        sk.SetActive(true);
-        
-        MeshCollider t = sk.GetComponent<MeshCollider>();
-        // t.material = mr.materials[0];
-        
-        // Instantiate(skeleton);
-
-        enemyList.AddLast(sk);
-        
-        // sk.GetComponent<BoxCollider>().isTrigger = true;
-        // skeleton.GetComponent<MeshRenderer>().sharedMaterial = treasureMat;
-
-        // TriggerEventRouter tc = skeleton.AddComponent<TriggerEventRouter>();
-        // tc.callback = callback;
-
-    }
-    
-    private GameObject PlaceEndTrigger(int column, int newRow, TriggerEventHandler callback)
-    {
-        // Debug.Log("End trigger: " + column + " " + newRow);
-        Vector3 gatePos = new Vector3(column * hallWidth + hallWidth / 2, .5f, newRow * hallWidth);
-        // Vector3 gatePos = new Vector3(hallWidth + hallWidth / 2, .5f, hallWidth);
-
-        Instantiate(gate, gatePos, Quaternion.Euler(-90, 135, 0));
-        gate.tag = "Portal";
-        gate.name = "MazePortal";
-
-        //go.GetComponent<BoxCollider>().isTrigger = true;
-        //go.GetComponent<MeshRenderer>().sharedMaterial = endGoal;
-
-        //TriggerEventRouter tc = go.AddComponent<TriggerEventRouter>();
-        //tc.callback = callback;
-
-        return gate;
-    }
-
-    // top-down debug display
-    void OnGUI()
-    {
-        if (!showDebug)
-        {
-            return;
-        }
-
-        int[,] maze = data;
-        int rMax = maze.GetUpperBound(0);
-        int cMax = maze.GetUpperBound(1);
-
-        string msg = "";
-
-        // loop top to bottom, left to right
-        for (int i = rMax; i >= 0; i--)
-        {
-            for (int j = 0; j <= cMax; j++)
-            {
-                if (maze[i, j] == 0)
-                {
-                    msg += "0";
-                }
-                else
-                {
-                    msg += "+";
-                }
-
-                msg += " ";
-            }
-            msg += "\n";
-        }
-
-        GUI.Label(new Rect(20, 20, 500, 500), msg);
     }
 }

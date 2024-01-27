@@ -65,7 +65,6 @@ public class NewGameSettings : MonoBehaviour
         PlayerPrefs.SetInt("mazeType", (int)MazeTypeEnum.Tutorial);
         PlayerPrefs.SetInt("continue", 1);
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
-        PlayerPrefs.SetInt("tutorial", 1);
         PlayerPrefs.SetFloat("sensitivity", sliderSensitivity);
         StartCoroutine(LoadLevel());
     }

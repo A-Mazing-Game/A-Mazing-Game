@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Maze;
+using Maze.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -15,7 +17,7 @@ public class tutorial : MonoBehaviour
     public bool enemyDeath;
     public GameObject tutorialScreen;
     public Text tutorialText;
-    private int startTut;
+    private MazeTypeEnum MazeType => mz.GetComponent<MazeConstructor>().MazeType;
     float sliderSensitivity;
     bool finishedTutorial;
     public bool miniMapTut;
@@ -36,10 +38,9 @@ public class tutorial : MonoBehaviour
         enemyDeath = false;
         portalTut = false;
         miniMapTut = false;
-        startTut = mz.GetComponent<MazeConstructor>().loadTutorial;
-        if(startTut == 1)
+        if(MazeType == MazeTypeEnum.Tutorial)
             Cursor.lockState = CursorLockMode.None;
-        Debug.Log("start tut: " + startTut);
+        Debug.Log("start tut: " + MazeType);
         finishedTutorial = false;
         MenuButton.gameObject.SetActive(false);
     }
@@ -56,7 +57,7 @@ public class tutorial : MonoBehaviour
          * Prompt player to look down and pick up their weapon of choice.
          */
 
-        Debug.Log("why: " + startTut);
+        Debug.Log("why: " + MazeType);
         if(load == 0)
             return;
         
@@ -88,7 +89,7 @@ public class tutorial : MonoBehaviour
          * and pausing the game)
          */
 
-        if(startTut == 0)
+        if(MazeType != MazeTypeEnum.Tutorial)
             return;
 
         //pauseAudio(true);
@@ -117,7 +118,7 @@ public class tutorial : MonoBehaviour
          * Talk about each function and how to use them (1-9 keys)
          */
 
-        if(startTut == 0)
+        if(MazeType != MazeTypeEnum.Tutorial)
             return;
 
         while (!powerUpPickup)
@@ -180,7 +181,7 @@ public class tutorial : MonoBehaviour
          * to roll, run and left click to heavy attack)
          */
 
-        if(startTut == 0)
+        if(MazeType != MazeTypeEnum.Tutorial)
             return;
 
         if (!encounteredCombat)
@@ -206,7 +207,7 @@ public class tutorial : MonoBehaviour
          * Once player kills first skeleton: Point to the coin counter after the player picked up the coins
          */
 
-        if(startTut == 0)
+        if(MazeType != MazeTypeEnum.Tutorial)
             return;
 
         if (!enemyDeath)
@@ -261,7 +262,7 @@ public class tutorial : MonoBehaviour
          * Once player reaches portal: End the tutorial, tell player to try easy or medium maze for practice,
          * and hard for a good challenge.
          */
-        if(startTut == 0)
+        if(MazeType != MazeTypeEnum.Tutorial)
             return;
 
         

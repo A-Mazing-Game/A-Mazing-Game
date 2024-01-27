@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Threading;
+using Maze;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -71,9 +72,9 @@ public class GameController : MonoBehaviour
 
     public void movePlayer()
     {
-        x = generator.startCol * generator.hallWidth;
+        x = generator.StartCol * generator.HallWidth;
         y = 1;
-        z = generator.startRow * generator.hallWidth;
+        z = generator.StartRow * generator.HallWidth;
         player.transform.position = new Vector3(z, y, z);
 
     }
@@ -84,10 +85,10 @@ public class GameController : MonoBehaviour
         //attempts to get rows and cols, if not found sets to 25
         int numberRows = PlayerPrefs.GetInt("rows", 25);
         int numberCols = PlayerPrefs.GetInt("cols", 25);
-        generator.GenerateNewMaze(numberRows,numberCols, OnStartTrigger, reduceHealth, endGame) ;
-        x = generator.startCol * generator.hallWidth;
+        generator.GenerateNewMaze(numberRows,numberCols) ;
+        x = generator.StartCol * generator.HallWidth;
         y = 1;
-        z = generator.startRow * generator.hallWidth;
+        z = generator.StartRow * generator.HallWidth;
         
         // Thread.Sleep(10000);
         // Debug.Log("start row " + x + " start col " + z);
@@ -112,15 +113,6 @@ public class GameController : MonoBehaviour
         player.GetComponent<Inventory2>().SetUp();
 
         StartNewMaze();
-
-    }
-    
-    public void DestroyPowerUp(GameObject trigger, GameObject other)
-    {
-        mz.RemoveEnemyNode(trigger, 1);
-        Debug.Log(trigger.tag);
-        Destroy(trigger);
-
     }
 
     public void endGame(GameObject trigger, GameObject other)

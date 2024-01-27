@@ -24,16 +24,12 @@ public class Arrows : InventoryItemBase
         isDropped = true;
         arrow.SetActive(false);
         gameObject.SetActive(true);
-        if (!gameObject.CompareTag("Start Arrow"))
-            mz.arrowList.AddLast(gameObject);
         gameObject.transform.rotation = Quaternion.Euler(DropRotation);
     }
 
     public override void OnPickup()
     {
         isDropped = false;
-        if (!gameObject.CompareTag("Start Arrow"))
-            mz.RemoveEnemyNode(gameObject, 2);
         Vector3 temp = new Vector3(0, -10, 0);
         gameObject.transform.position += temp;
         gameObject.SetActive(false);
