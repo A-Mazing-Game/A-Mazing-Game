@@ -83,8 +83,8 @@ public class GameController : MonoBehaviour
     private void StartNewMaze()
     {
         //attempts to get rows and cols, if not found sets to 25
-        int numberRows = PlayerPrefs.GetInt("rows", 25);
-        int numberCols = PlayerPrefs.GetInt("cols", 25);
+        int numberRows = NewMazeConfiguration.Rows;
+        int numberCols = NewMazeConfiguration.Columns;
         generator.GenerateNewMaze(numberRows,numberCols) ;
         x = generator.StartCol * generator.HallWidth;
         y = 1;
