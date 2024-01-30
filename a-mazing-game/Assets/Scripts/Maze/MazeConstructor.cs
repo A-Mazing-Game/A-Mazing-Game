@@ -51,11 +51,11 @@ namespace Maze
         public float HallWidth { get; private set; }
         public int StartRow { get; private set; }
         public int StartCol { get; private set; }
-    
+
         /// <summary>
         /// The type of maze to generate. <see cref="MazeTypeEnum"/>
         /// </summary>
-        public MazeTypeEnum MazeType => (MazeTypeEnum)PlayerPrefs.GetInt("mazeType", 0);
+        public MazeTypeEnum MazeType => NewMazeConfiguration.MazeType;
 
         private MazeDataGenerator dataGenerator;
         private MazeMeshGenerator meshGenerator;
@@ -78,11 +78,11 @@ namespace Maze
             {
                 case MazeTypeEnum.Small:
                 case MazeTypeEnum.Tutorial:
-                    desiredEnemies = -2;
+                    desiredEnemies = 5;
                     break;
             
                 case MazeTypeEnum.Medium:
-                    desiredEnemies = -2;
+                    desiredEnemies = 10;
                     break;
             
                 case MazeTypeEnum.Large:
