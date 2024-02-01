@@ -10,11 +10,14 @@ public class Arrow : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     public AudioClip arrowAudio;
     public GameObject player;
-    bool isPlaying = false;
 
     public void Setup(Vector3 shootDir)
     {
         this.shootDir = shootDir;
+        playerAudioSource.PlayOneShot(arrowAudio, 0.7f);
+        Transform player = GameObject.Find("Player").transform;
+        transform.LookAt(player);
+        transform.Rotate(Vector3.back, 70);
         Destroy(gameObject, 5f);
     }
 
@@ -27,11 +30,7 @@ public class Arrow : MonoBehaviour
 
     private IEnumerator OnTriggerEnter(Collider other)
     {
-        if (!isPlaying)
-        {
-            playerAudioSource.PlayOneShot(arrowAudio, 0.7f);
-            isPlaying = true;
-        }
+        
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<NavMeshAgent>().isStopped = true;
